@@ -75,7 +75,7 @@ export default function QuickOrderPage() {
         }
       }
       
-      return { ...line, [field]: value }
+      return { ...line, quantity: Number(value) }
     }))
   }
 
