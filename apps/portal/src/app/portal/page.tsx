@@ -1,200 +1,190 @@
 import { getServerSession } from 'next-auth'
-import Link from 'next/link'
 import { authOptions } from '@/lib/auth'
-import { db } from '@/lib/db'
-import { 
-  FileText, 
-  Package, 
-  Folder, 
-  Clock, 
-  ArrowRight,
-  AlertCircle,
-  CheckCircle2
-} from 'lucide-react'
+import { prisma } from '@/lib/db'
+import Link from 'next/link'
+import { redirect } from 'next/navigation'
 
 export default async function PortalDashboard() {
   const session = await getServerSession(authOptions)
   
-  if (!session) {
-    return null
+  if (!session?.user?.email) {
+    redirect('/login')
   }
 
-  // Fetch user's data
-  const [cases, quotes, projects] = await Promise.all([
-    db.case.findMany({
-      where: { customerId: session.user.id },
-      orderBy: { createdAt: 'desc' },
-      take: 5,
-    }),
-    db.quote.findMany({
-      where: { customerId: session.user.id },
-      orderBy: { createdAt: 'desc' },
-      take: 5,
-    }),
-    db.project.findMany({
-      where: { customerId: session.user.id },
-      orderBy: { createdAt: 'desc' },
-      take: 5,
-    }),
-  ])
+  // Get user with their cases and quotes
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+    include: {
+      cases: {
+        orderBy: { createdAt: 'desc' },
+        take: 5,
+      },
+      quotes: {
+        orderBy: { createdAt: 'desc' },
+        take: 5,
+      },
+    },
+  })
+
+  if (!user) {
+    redirect('/login')
+  }
 
   // Calculate stats
-  const openCases = cases.filter(c => !['COMPLETED', 'CLOSED'].includes(c.status)).length
-  const pendingQuotes = quotes.filter(q => q.status === 'SENT').length
-  const activeProjects = projects.length
+  const totalCases = user.cases.length
+  const openCases = user.cases.filter(c => c.status !== 'CLOSED' && c.status !== 'RESOLVED').length
+  const totalQuotes = user.quotes.length
+  const pendingQuotes = user.quotes.filter(q => q.status === 'DRAFT' || q.status === 'SENT').length
+
+  const stats = [
+    { label: 'Total Cases', value: totalCases, color: 'bg-blue-500' },
+    { label: 'Open Cases', value: openCases, color: 'bg-yellow-500' },
+    { label: 'Total Quotes', value: totalQuotes, color: 'bg-green-500' },
+    { label: 'Pending Quotes', value: pendingQuotes, color: 'bg-purple-500' },
+  ]
+
+  const getStatusColor = (status: string) => {
+    const colors: Record<string, string> = {
+      NEW: 'bg-blue-100 text-blue-800',
+      OPEN: 'bg-yellow-100 text-yellow-800',
+      IN_PROGRESS: 'bg-purple-100 text-purple-800',
+      PENDING_CUSTOMER: 'bg-orange-100 text-orange-800',
+      RESOLVED: 'bg-green-100 text-green-800',
+      CLOSED: 'bg-gray-100 text-gray-800',
+      DRAFT: 'bg-gray-100 text-gray-800',
+      SENT: 'bg-blue-100 text-blue-800',
+      ACCEPTED: 'bg-green-100 text-green-800',
+      REJECTED: 'bg-red-100 text-red-800',
+      EXPIRED: 'bg-red-100 text-red-800',
+    }
+    return colors[status] || 'bg-gray-100 text-gray-800'
+  }
 
   return (
-    <div className="max-w-6xl">
-      <div className="mb-8">
+    <div className="space-y-8">
+      {/* Welcome */}
+      <div>
         <h1 className="text-2xl font-bold text-gray-900">
-          Welcome back, {session.user.name?.split(' ')[0] || 'there'}
+          Welcome back, {user.name || user.email}
         </h1>
-        <p className="mt-1 text-gray-600">
+        <p className="text-gray-600">
+          {user.companyName && `${user.companyName} • `}
           Here&apos;s what&apos;s happening with your account
         </p>
       </div>
 
-      {/* Stats */}
-      <div className="mb-8 grid gap-4 sm:grid-cols-3">
-        <div className="card p-6">
-          <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-100">
-              <FileText className="h-6 w-6 text-blue-600" />
+      {/* Stats Grid */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {stats.map((stat) => (
+          <div key={stat.label} className="bg-white rounded-lg shadow p-6">
+            <div className={`w-12 h-12 ${stat.color} rounded-lg flex items-center justify-center mb-4`}>
+              <span className="text-white text-xl font-bold">{stat.value}</span>
             </div>
-            <div>
-              <p className="text-2xl font-bold text-gray-900">{openCases}</p>
-              <p className="text-sm text-gray-600">Open Cases</p>
-            </div>
+            <p className="text-gray-600 text-sm">{stat.label}</p>
           </div>
-        </div>
+        ))}
+      </div>
 
-        <div className="card p-6">
-          <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-yellow-100">
-              <Package className="h-6 w-6 text-yellow-600" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-gray-900">{pendingQuotes}</p>
-              <p className="text-sm text-gray-600">Pending Quotes</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="card p-6">
-          <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-              <Folder className="h-6 w-6 text-green-600" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-gray-900">{activeProjects}</p>
-              <p className="text-sm text-gray-600">Active Projects</p>
-            </div>
-          </div>
+      {/* Quick Actions */}
+      <div className="bg-white rounded-lg shadow p-6">
+        <h2 className="text-lg font-semibold mb-4">Quick Actions</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <Link
+            href="/tools/rfq"
+            className="flex flex-col items-center p-4 border rounded-lg hover:border-[#FFD60A] hover:bg-yellow-50 transition-colors"
+          >
+            <span className="text-2xl mb-2">📝</span>
+            <span className="text-sm font-medium">Request Quote</span>
+          </Link>
+          <Link
+            href="/portal/cases"
+            className="flex flex-col items-center p-4 border rounded-lg hover:border-[#FFD60A] hover:bg-yellow-50 transition-colors"
+          >
+            <span className="text-2xl mb-2">📋</span>
+            <span className="text-sm font-medium">View Cases</span>
+          </Link>
+          <Link
+            href="/portal/quotes"
+            className="flex flex-col items-center p-4 border rounded-lg hover:border-[#FFD60A] hover:bg-yellow-50 transition-colors"
+          >
+            <span className="text-2xl mb-2">💰</span>
+            <span className="text-sm font-medium">View Quotes</span>
+          </Link>
+          <Link
+            href="/products"
+            className="flex flex-col items-center p-4 border rounded-lg hover:border-[#FFD60A] hover:bg-yellow-50 transition-colors"
+          >
+            <span className="text-2xl mb-2">🛒</span>
+            <span className="text-sm font-medium">Browse Products</span>
+          </Link>
         </div>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid md:grid-cols-2 gap-6">
         {/* Recent Cases */}
-        <div className="card">
-          <div className="card-header flex items-center justify-between">
-            <h2 className="font-semibold text-gray-900">Recent Cases</h2>
-            <Link href="/portal/cases" className="text-sm text-brand-dark hover:text-brand flex items-center gap-1">
-              View all <ArrowRight className="h-3 w-3" />
+        <div className="bg-white rounded-lg shadow">
+          <div className="p-4 border-b flex justify-between items-center">
+            <h2 className="font-semibold">Recent Cases</h2>
+            <Link href="/portal/cases" className="text-sm text-[#FFD60A] hover:underline">
+              View all →
             </Link>
           </div>
-          <div className="card-content">
-            {cases.length === 0 ? (
-              <p className="text-center text-sm text-gray-500 py-8">
-                No cases yet. Need help? <Link href="/tools/rfq" className="text-brand-dark hover:text-brand">Submit a request</Link>
-              </p>
-            ) : (
-              <div className="space-y-4">
-                {cases.map((c) => (
-                  <Link
-                    key={c.id}
-                    href={`/portal/cases/${c.id}`}
-                    className="flex items-center justify-between rounded-lg border border-gray-100 p-3 hover:border-gray-200 hover:bg-gray-50"
-                  >
-                    <div className="flex items-center gap-3">
-                      {c.status === 'NEED_INFO' ? (
-                        <AlertCircle className="h-5 w-5 text-orange-500" />
-                      ) : c.status === 'COMPLETED' ? (
-                        <CheckCircle2 className="h-5 w-5 text-green-500" />
-                      ) : (
-                        <Clock className="h-5 w-5 text-blue-500" />
-                      )}
-                      <div>
-                        <p className="font-medium text-gray-900">{c.caseNumber}</p>
-                        <p className="text-sm text-gray-600">{c.subject}</p>
-                      </div>
-                    </div>
-                    <span className={`status-${c.status.toLowerCase().replace('_', '-')}`}>
-                      {c.status.replace('_', ' ')}
-                    </span>
-                  </Link>
-                ))}
+          <div className="divide-y">
+            {user.cases.length === 0 ? (
+              <div className="p-4 text-center text-gray-500">
+                No cases yet. <Link href="/tools/rfq" className="text-[#FFD60A] hover:underline">Create your first request</Link>
               </div>
+            ) : (
+              user.cases.map((caseItem) => (
+                <div key={caseItem.id} className="p-4 hover:bg-gray-50">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <p className="font-medium text-gray-900">{caseItem.subject}</p>
+                      <p className="text-sm text-gray-500">
+                        {caseItem.caseNumber} • {caseItem.type.replace('_', ' ')}
+                      </p>
+                    </div>
+                    <span className={`text-xs px-2 py-1 rounded ${getStatusColor(caseItem.status)}`}>
+                      {caseItem.status.replace('_', ' ')}
+                    </span>
+                  </div>
+                </div>
+              ))
             )}
           </div>
         </div>
 
         {/* Recent Quotes */}
-        <div className="card">
-          <div className="card-header flex items-center justify-between">
-            <h2 className="font-semibold text-gray-900">Recent Quotes</h2>
-            <Link href="/portal/quotes" className="text-sm text-brand-dark hover:text-brand flex items-center gap-1">
-              View all <ArrowRight className="h-3 w-3" />
+        <div className="bg-white rounded-lg shadow">
+          <div className="p-4 border-b flex justify-between items-center">
+            <h2 className="font-semibold">Recent Quotes</h2>
+            <Link href="/portal/quotes" className="text-sm text-[#FFD60A] hover:underline">
+              View all →
             </Link>
           </div>
-          <div className="card-content">
-            {quotes.length === 0 ? (
-              <p className="text-center text-sm text-gray-500 py-8">
-                No quotes yet. <Link href="/tools/rfq" className="text-brand-dark hover:text-brand">Request a quote</Link>
-              </p>
-            ) : (
-              <div className="space-y-4">
-                {quotes.map((q) => (
-                  <Link
-                    key={q.id}
-                    href={`/portal/quotes/${q.id}`}
-                    className="flex items-center justify-between rounded-lg border border-gray-100 p-3 hover:border-gray-200 hover:bg-gray-50"
-                  >
-                    <div>
-                      <p className="font-medium text-gray-900">{q.quoteNumber}</p>
-                      <p className="text-sm text-gray-600">
-                        Valid until {new Date(q.validUntil).toLocaleDateString()}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-semibold text-gray-900">
-                        ${Number(q.totalAmount).toLocaleString()}
-                      </p>
-                      <span className={`badge-${q.status === 'SENT' ? 'yellow' : q.status === 'ACCEPTED' ? 'green' : 'gray'}`}>
-                        {q.status}
-                      </span>
-                    </div>
-                  </Link>
-                ))}
+          <div className="divide-y">
+            {user.quotes.length === 0 ? (
+              <div className="p-4 text-center text-gray-500">
+                No quotes yet. Quotes will appear here when created.
               </div>
+            ) : (
+              user.quotes.map((quote) => (
+                <div key={quote.id} className="p-4 hover:bg-gray-50">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <p className="font-medium text-gray-900">{quote.quoteNumber}</p>
+                      <p className="text-sm text-gray-500">
+                        ${quote.totalAmount.toNumber().toLocaleString()}
+                      </p>
+                    </div>
+                    <span className={`text-xs px-2 py-1 rounded ${getStatusColor(quote.status)}`}>
+                      {quote.status}
+                    </span>
+                  </div>
+                </div>
+              ))
             )}
           </div>
-        </div>
-      </div>
-
-      {/* Quick actions footer */}
-      <div className="mt-8 rounded-xl bg-gray-900 p-6 text-white">
-        <h3 className="text-lg font-semibold">Need Help?</h3>
-        <p className="mt-1 text-gray-400">Our team is ready to assist with your lighting projects</p>
-        <div className="mt-4 flex flex-wrap gap-3">
-          <Link href="/tools/rfq" className="btn-primary btn-sm">
-            Request Quote
-          </Link>
-          <Link href="/tools/bom-upload" className="btn bg-white/10 hover:bg-white/20 btn-sm text-white">
-            Upload BOM
-          </Link>
-          <Link href="/support" className="btn bg-white/10 hover:bg-white/20 btn-sm text-white">
-            Contact Support
-          </Link>
         </div>
       </div>
     </div>

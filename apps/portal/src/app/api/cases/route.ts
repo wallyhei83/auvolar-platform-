@@ -1,31 +1,62 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { db } from '@/lib/db'
-import { generateCaseNumber, calculateSLA } from '@/lib/utils'
+import { prisma } from '@/lib/db'
+
+// Generate case number
+function generateCaseNumber(): string {
+  const prefix = 'CS'
+  const timestamp = Date.now().toString(36).toUpperCase()
+  const random = Math.random().toString(36).substring(2, 6).toUpperCase()
+  return `${prefix}-${timestamp}-${random}`
+}
+
+// Calculate SLA based on case type
+function calculateSLA(type: string, priority: string): Date {
+  const now = new Date()
+  let hoursToAdd = 48 // Default 48 hours
+
+  // Adjust based on type
+  const typeHours: Record<string, number> = {
+    RFQ: 24,
+    BOM_REVIEW: 48,
+    RMA: 24,
+    PHOTOMETRIC: 72,
+    REBATE: 72,
+    GENERAL: 48,
+  }
+  hoursToAdd = typeHours[type] || 48
+
+  // Adjust based on priority
+  if (priority === 'URGENT') hoursToAdd = Math.min(hoursToAdd, 8)
+  else if (priority === 'HIGH') hoursToAdd = Math.min(hoursToAdd, 24)
+
+  now.setHours(now.getHours() + hoursToAdd)
+  return now
+}
 
 // POST /api/cases - Create a new case
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
 
-    if (!session) {
+    if (!session?.user?.email) {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
     }
 
     const body = await request.json()
-    const { type, subject, message, relatedSkus, relatedOrderIds, attachments } = body
+    const { type, subject, description, priority = 'MEDIUM' } = body
 
     // Validate required fields
-    if (!type || !subject || !message) {
+    if (!type || !subject || !description) {
       return NextResponse.json(
-        { message: 'Missing required fields: type, subject, message' },
+        { message: 'Missing required fields: type, subject, description' },
         { status: 400 }
       )
     }
 
     // Validate case type
-    const validTypes = ['RFQ', 'BOM', 'RMA', 'SHIPPING_DAMAGE', 'PHOTOMETRIC', 'REBATE', 'NET_TERMS', 'SUPPORT']
+    const validTypes = ['RFQ', 'BOM_REVIEW', 'RMA', 'PHOTOMETRIC', 'REBATE', 'GENERAL']
     if (!validTypes.includes(type)) {
       return NextResponse.json(
         { message: `Invalid case type. Must be one of: ${validTypes.join(', ')}` },
@@ -33,9 +64,9 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Get user details
-    const user = await db.user.findUnique({
-      where: { id: session.user.id },
+    // Get user
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email },
     })
 
     if (!user) {
@@ -43,37 +74,18 @@ export async function POST(request: NextRequest) {
     }
 
     // Create case
-    const caseRecord = await db.case.create({
+    const caseRecord = await prisma.case.create({
       data: {
         caseNumber: generateCaseNumber(),
         type,
-        status: 'RECEIVED',
-        customerId: session.user.id,
-        contactEmail: user.email,
-        companyName: user.companyName,
+        status: 'NEW',
+        priority,
+        customerId: user.id,
         subject,
-        customerMessage: message,
-        relatedSkus: relatedSkus || [],
-        relatedOrderIds: relatedOrderIds || [],
-        slaDueAt: calculateSLA(type),
+        description,
+        slaDueAt: calculateSLA(type, priority),
       },
     })
-
-    // Create attachments if provided
-    if (attachments && attachments.length > 0) {
-      await db.caseAttachment.createMany({
-        data: attachments.map((att: { filename: string; url: string; mimeType?: string; fileSize?: number }) => ({
-          caseId: caseRecord.id,
-          filename: att.filename,
-          url: att.url,
-          mimeType: att.mimeType,
-          fileSize: att.fileSize,
-          uploadedBy: session.user.id,
-        })),
-      })
-    }
-
-    // TODO: Send confirmation email
 
     return NextResponse.json({
       message: 'Case created successfully',
@@ -99,8 +111,16 @@ export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
 
-    if (!session) {
+    if (!session?.user?.email) {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email },
+    })
+
+    if (!user) {
+      return NextResponse.json({ message: 'User not found' }, { status: 404 })
     }
 
     const { searchParams } = new URL(request.url)
@@ -109,22 +129,33 @@ export async function GET(request: NextRequest) {
     const page = parseInt(searchParams.get('page') || '1')
     const limit = parseInt(searchParams.get('limit') || '20')
 
-    const where: Record<string, unknown> = { customerId: session.user.id }
+    // Build where clause based on user role
+    const where: Record<string, unknown> = {}
+    
+    // Admins/staff see all cases, customers see only their own
+    if (user.role === 'CUSTOMER') {
+      where.customerId = user.id
+    }
+    
     if (type) where.type = type
     if (status) where.status = status
 
     const [cases, total] = await Promise.all([
-      db.case.findMany({
+      prisma.case.findMany({
         where,
         orderBy: { createdAt: 'desc' },
         skip: (page - 1) * limit,
         take: limit,
         include: {
-          attachments: true,
-          _count: { select: { messages: true } },
+          customer: {
+            select: { name: true, email: true, companyName: true },
+          },
+          assignee: {
+            select: { name: true, email: true },
+          },
         },
       }),
-      db.case.count({ where }),
+      prisma.case.count({ where }),
     ])
 
     return NextResponse.json({

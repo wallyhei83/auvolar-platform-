@@ -1,156 +1,142 @@
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
+import { prisma } from '@/lib/db'
 import Link from 'next/link'
-import { db } from '@/lib/db'
-import { 
-  FileText, 
-  Package, 
-  Users, 
-  AlertTriangle,
-  ArrowRight,
-  Clock,
-  CheckCircle2,
-  TrendingUp
-} from 'lucide-react'
+import { redirect } from 'next/navigation'
 
 export default async function AdminDashboard() {
-  // Fetch dashboard stats
+  const session = await getServerSession(authOptions)
+  
+  if (!session?.user?.email) {
+    redirect('/login')
+  }
+
+  // Check if user is admin
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+  })
+
+  if (!user || (user.role !== 'ADMIN' && user.role !== 'STAFF')) {
+    redirect('/portal')
+  }
+
+  // Get stats
   const [
+    totalUsers,
     totalCases,
-    openCases,
-    slaBreach,
     totalQuotes,
+    openCases,
     pendingQuotes,
-    totalCustomers,
     recentCases,
-    recentQuotes,
+    recentUsers,
   ] = await Promise.all([
-    db.case.count(),
-    db.case.count({ where: { status: { notIn: ['COMPLETED', 'CLOSED'] } } }),
-    db.case.count({ where: { slaBreached: true, status: { notIn: ['COMPLETED', 'CLOSED'] } } }),
-    db.quote.count(),
-    db.quote.count({ where: { status: 'SENT' } }),
-    db.user.count({ where: { role: 'CUSTOMER' } }),
-    db.case.findMany({
-      orderBy: { createdAt: 'desc' },
+    prisma.user.count(),
+    prisma.case.count(),
+    prisma.quote.count(),
+    prisma.case.count({ where: { status: { in: ['NEW', 'OPEN', 'IN_PROGRESS'] } } }),
+    prisma.quote.count({ where: { status: { in: ['DRAFT', 'SENT'] } } }),
+    prisma.case.findMany({
       take: 5,
-      include: { customer: true },
+      orderBy: { createdAt: 'desc' },
+      include: {
+        customer: { select: { name: true, companyName: true } },
+      },
     }),
-    db.quote.findMany({
-      orderBy: { createdAt: 'desc' },
+    prisma.user.findMany({
       take: 5,
-      include: { customer: true },
+      orderBy: { createdAt: 'desc' },
+      select: { id: true, name: true, email: true, companyName: true, createdAt: true },
     }),
   ])
 
+  // Calculate cases needing attention (past SLA or urgent)
+  const urgentCases = await prisma.case.count({
+    where: {
+      OR: [
+        { priority: 'URGENT', status: { notIn: ['RESOLVED', 'CLOSED'] } },
+        { slaDueAt: { lt: new Date() }, status: { notIn: ['RESOLVED', 'CLOSED'] } },
+      ],
+    },
+  })
+
   const stats = [
-    {
-      name: 'Open Cases',
-      value: openCases,
-      total: totalCases,
-      icon: FileText,
-      color: 'blue',
-      href: '/admin/cases',
-    },
-    {
-      name: 'SLA Breaches',
-      value: slaBreach,
-      icon: AlertTriangle,
-      color: slaBreach > 0 ? 'red' : 'green',
-      href: '/admin/cases?filter=breached',
-    },
-    {
-      name: 'Pending Quotes',
-      value: pendingQuotes,
-      total: totalQuotes,
-      icon: Package,
-      color: 'yellow',
-      href: '/admin/quotes',
-    },
-    {
-      name: 'Customers',
-      value: totalCustomers,
-      icon: Users,
-      color: 'green',
-      href: '/admin/customers',
-    },
+    { label: 'Total Users', value: totalUsers, icon: '👥', href: '/admin/users' },
+    { label: 'Total Cases', value: totalCases, icon: '📋', href: '/admin/cases' },
+    { label: 'Open Cases', value: openCases, icon: '🔔', href: '/admin/cases?status=open', alert: openCases > 0 },
+    { label: 'Urgent/Overdue', value: urgentCases, icon: '🚨', href: '/admin/cases?urgent=true', alert: urgentCases > 0 },
+    { label: 'Total Quotes', value: totalQuotes, icon: '💰', href: '/admin/quotes' },
+    { label: 'Pending Quotes', value: pendingQuotes, icon: '⏳', href: '/admin/quotes?status=pending' },
   ]
 
-  const colorClasses: Record<string, string> = {
-    blue: 'bg-blue-100 text-blue-600',
-    red: 'bg-red-100 text-red-600',
-    yellow: 'bg-yellow-100 text-yellow-600',
-    green: 'bg-green-100 text-green-600',
+  const getStatusColor = (status: string) => {
+    const colors: Record<string, string> = {
+      NEW: 'bg-blue-100 text-blue-800',
+      OPEN: 'bg-yellow-100 text-yellow-800',
+      IN_PROGRESS: 'bg-purple-100 text-purple-800',
+      PENDING_CUSTOMER: 'bg-orange-100 text-orange-800',
+      RESOLVED: 'bg-green-100 text-green-800',
+      CLOSED: 'bg-gray-100 text-gray-800',
+    }
+    return colors[status] || 'bg-gray-100 text-gray-800'
   }
 
   return (
-    <div className="max-w-7xl">
-      <div className="mb-8">
+    <div className="space-y-8">
+      {/* Header */}
+      <div>
         <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
-        <p className="mt-1 text-gray-600">Overview of operations</p>
+        <p className="text-gray-600">Welcome back, {user.name || user.email}</p>
       </div>
 
       {/* Stats Grid */}
-      <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
         {stats.map((stat) => (
           <Link
-            key={stat.name}
+            key={stat.label}
             href={stat.href}
-            className="card p-6 transition-all hover:shadow-md"
+            className={`bg-white rounded-lg shadow p-4 hover:shadow-md transition-shadow ${
+              stat.alert ? 'ring-2 ring-red-500' : ''
+            }`}
           >
-            <div className="flex items-center gap-4">
-              <div className={`flex h-12 w-12 items-center justify-center rounded-full ${colorClasses[stat.color]}`}>
-                <stat.icon className="h-6 w-6" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-gray-900">
-                  {stat.value}
-                  {stat.total !== undefined && (
-                    <span className="text-sm font-normal text-gray-500">/{stat.total}</span>
-                  )}
-                </p>
-                <p className="text-sm text-gray-600">{stat.name}</p>
-              </div>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-2xl">{stat.icon}</span>
+              {stat.alert && <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>}
             </div>
+            <p className="text-2xl font-bold">{stat.value}</p>
+            <p className="text-sm text-gray-600">{stat.label}</p>
           </Link>
         ))}
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid lg:grid-cols-2 gap-6">
         {/* Recent Cases */}
-        <div className="card">
-          <div className="card-header flex items-center justify-between">
-            <h2 className="font-semibold text-gray-900">Recent Cases</h2>
-            <Link href="/admin/cases" className="text-sm text-brand-dark hover:text-brand flex items-center gap-1">
-              View all <ArrowRight className="h-3 w-3" />
+        <div className="bg-white rounded-lg shadow">
+          <div className="p-4 border-b flex justify-between items-center">
+            <h2 className="font-semibold">Recent Cases</h2>
+            <Link href="/admin/cases" className="text-sm text-[#FFD60A] hover:underline">
+              View all →
             </Link>
           </div>
-          <div className="divide-y divide-gray-100">
+          <div className="divide-y">
             {recentCases.length === 0 ? (
-              <p className="p-6 text-center text-sm text-gray-500">No cases yet</p>
+              <div className="p-4 text-center text-gray-500">No cases yet</div>
             ) : (
-              recentCases.map((c) => (
+              recentCases.map((caseItem) => (
                 <Link
-                  key={c.id}
-                  href={`/admin/cases/${c.id}`}
-                  className="flex items-center justify-between p-4 hover:bg-gray-50"
+                  key={caseItem.id}
+                  href={`/admin/cases/${caseItem.id}`}
+                  className="p-4 hover:bg-gray-50 block"
                 >
-                  <div className="flex items-center gap-3">
-                    {c.slaBreached ? (
-                      <AlertTriangle className="h-5 w-5 text-red-500" />
-                    ) : c.status === 'COMPLETED' ? (
-                      <CheckCircle2 className="h-5 w-5 text-green-500" />
-                    ) : (
-                      <Clock className="h-5 w-5 text-blue-500" />
-                    )}
+                  <div className="flex justify-between items-start">
                     <div>
-                      <p className="font-medium text-gray-900">{c.caseNumber}</p>
-                      <p className="text-sm text-gray-600">{c.customer.companyName || c.customer.name}</p>
+                      <p className="font-medium text-gray-900">{caseItem.subject}</p>
+                      <p className="text-sm text-gray-500">
+                        {caseItem.caseNumber} • {caseItem.customer?.companyName || caseItem.customer?.name || 'Unknown'}
+                      </p>
                     </div>
-                  </div>
-                  <div className="text-right">
-                    <span className={`status-${c.status.toLowerCase().replace('_', '-')}`}>
-                      {c.status.replace('_', ' ')}
+                    <span className={`text-xs px-2 py-1 rounded ${getStatusColor(caseItem.status)}`}>
+                      {caseItem.status.replace('_', ' ')}
                     </span>
-                    <p className="mt-1 text-xs text-gray-500">{c.type}</p>
                   </div>
                 </Link>
               ))
@@ -158,37 +144,32 @@ export default async function AdminDashboard() {
           </div>
         </div>
 
-        {/* Recent Quotes */}
-        <div className="card">
-          <div className="card-header flex items-center justify-between">
-            <h2 className="font-semibold text-gray-900">Recent Quotes</h2>
-            <Link href="/admin/quotes" className="text-sm text-brand-dark hover:text-brand flex items-center gap-1">
-              View all <ArrowRight className="h-3 w-3" />
+        {/* Recent Users */}
+        <div className="bg-white rounded-lg shadow">
+          <div className="p-4 border-b flex justify-between items-center">
+            <h2 className="font-semibold">Recent Registrations</h2>
+            <Link href="/admin/users" className="text-sm text-[#FFD60A] hover:underline">
+              View all →
             </Link>
           </div>
-          <div className="divide-y divide-gray-100">
-            {recentQuotes.length === 0 ? (
-              <p className="p-6 text-center text-sm text-gray-500">No quotes yet</p>
+          <div className="divide-y">
+            {recentUsers.length === 0 ? (
+              <div className="p-4 text-center text-gray-500">No users yet</div>
             ) : (
-              recentQuotes.map((q) => (
-                <Link
-                  key={q.id}
-                  href={`/admin/quotes/${q.id}`}
-                  className="flex items-center justify-between p-4 hover:bg-gray-50"
-                >
-                  <div>
-                    <p className="font-medium text-gray-900">{q.quoteNumber}</p>
-                    <p className="text-sm text-gray-600">{q.customer.companyName || q.customer.name}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-semibold text-gray-900">
-                      ${Number(q.totalAmount).toLocaleString()}
-                    </p>
-                    <span className={`badge-${q.status === 'SENT' ? 'yellow' : q.status === 'ACCEPTED' ? 'green' : 'gray'}`}>
-                      {q.status}
+              recentUsers.map((regUser) => (
+                <div key={regUser.id} className="p-4 hover:bg-gray-50">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <p className="font-medium text-gray-900">{regUser.name || regUser.email}</p>
+                      <p className="text-sm text-gray-500">
+                        {regUser.companyName || regUser.email}
+                      </p>
+                    </div>
+                    <span className="text-xs text-gray-400">
+                      {new Date(regUser.createdAt).toLocaleDateString()}
                     </span>
                   </div>
-                </Link>
+                </div>
               ))
             )}
           </div>
@@ -196,45 +177,38 @@ export default async function AdminDashboard() {
       </div>
 
       {/* Quick Actions */}
-      <div className="mt-8 grid gap-4 sm:grid-cols-3">
-        <Link
-          href="/admin/cases?filter=need-info"
-          className="card p-4 flex items-center gap-4 hover:shadow-md transition-all"
-        >
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-100">
-            <AlertTriangle className="h-5 w-5 text-orange-600" />
-          </div>
-          <div>
-            <p className="font-medium text-gray-900">Cases Needing Info</p>
-            <p className="text-sm text-gray-600">Review and respond</p>
-          </div>
-        </Link>
-
-        <Link
-          href="/admin/tax-exempt?filter=pending"
-          className="card p-4 flex items-center gap-4 hover:shadow-md transition-all"
-        >
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100">
-            <FileText className="h-5 w-5 text-blue-600" />
-          </div>
-          <div>
-            <p className="font-medium text-gray-900">Tax Exempt Review</p>
-            <p className="text-sm text-gray-600">Pending approvals</p>
-          </div>
-        </Link>
-
-        <Link
-          href="/admin/integrations"
-          className="card p-4 flex items-center gap-4 hover:shadow-md transition-all"
-        >
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100">
-            <TrendingUp className="h-5 w-5 text-green-600" />
-          </div>
-          <div>
-            <p className="font-medium text-gray-900">Integration Status</p>
-            <p className="text-sm text-gray-600">QBO, Tax, Shipping</p>
-          </div>
-        </Link>
+      <div className="bg-white rounded-lg shadow p-6">
+        <h2 className="font-semibold mb-4">Quick Actions</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <Link
+            href="/admin/cases"
+            className="flex flex-col items-center p-4 border rounded-lg hover:border-[#FFD60A] hover:bg-yellow-50 transition-colors"
+          >
+            <span className="text-2xl mb-2">📋</span>
+            <span className="text-sm font-medium">Manage Cases</span>
+          </Link>
+          <Link
+            href="/admin/quotes"
+            className="flex flex-col items-center p-4 border rounded-lg hover:border-[#FFD60A] hover:bg-yellow-50 transition-colors"
+          >
+            <span className="text-2xl mb-2">💰</span>
+            <span className="text-sm font-medium">Manage Quotes</span>
+          </Link>
+          <Link
+            href="/admin/users"
+            className="flex flex-col items-center p-4 border rounded-lg hover:border-[#FFD60A] hover:bg-yellow-50 transition-colors"
+          >
+            <span className="text-2xl mb-2">👥</span>
+            <span className="text-sm font-medium">Manage Users</span>
+          </Link>
+          <Link
+            href="/products"
+            className="flex flex-col items-center p-4 border rounded-lg hover:border-[#FFD60A] hover:bg-yellow-50 transition-colors"
+          >
+            <span className="text-2xl mb-2">📦</span>
+            <span className="text-sm font-medium">View Products</span>
+          </Link>
+        </div>
       </div>
     </div>
   )

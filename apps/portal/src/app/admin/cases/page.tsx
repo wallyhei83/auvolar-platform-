@@ -1,205 +1,193 @@
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
+import { prisma } from '@/lib/db'
 import Link from 'next/link'
-import { db } from '@/lib/db'
-import { 
-  Search, 
-  Filter, 
-  Clock, 
-  AlertTriangle, 
-  CheckCircle2,
-  ArrowUpRight
-} from 'lucide-react'
+import { redirect } from 'next/navigation'
 
-export default async function AdminCasesPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ filter?: string; type?: string; status?: string }>
-}) {
-  const params = await searchParams
-  const filter = params.filter
-  const typeFilter = params.type
-  const statusFilter = params.status
-
-  // Build where clause
-  const where: Record<string, unknown> = {}
+export default async function AdminCasesPage() {
+  const session = await getServerSession(authOptions)
   
-  if (filter === 'breached') {
-    where.slaBreached = true
-    where.status = { notIn: ['COMPLETED', 'CLOSED'] }
-  } else if (filter === 'need-info') {
-    where.status = 'NEED_INFO'
+  if (!session?.user?.email) {
+    redirect('/login')
   }
-  
-  if (typeFilter) where.type = typeFilter
-  if (statusFilter) where.status = statusFilter
 
-  const cases = await db.case.findMany({
-    where,
-    orderBy: [
-      { slaBreached: 'desc' },
-      { slaDueAt: 'asc' },
-    ],
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+  })
+
+  if (!user || (user.role !== 'ADMIN' && user.role !== 'STAFF')) {
+    redirect('/portal')
+  }
+
+  const cases = await prisma.case.findMany({
+    orderBy: { createdAt: 'desc' },
     include: {
-      customer: true,
-      assignedTo: true,
-      _count: { select: { messages: true, attachments: true } },
+      customer: {
+        select: { name: true, email: true, companyName: true },
+      },
+      assignee: {
+        select: { name: true, email: true },
+      },
     },
   })
 
-  const stats = await db.case.groupBy({
-    by: ['status'],
-    _count: true,
+  const staff = await prisma.user.findMany({
+    where: { role: { in: ['ADMIN', 'STAFF'] } },
+    select: { id: true, name: true, email: true },
   })
 
-  const statusCounts = stats.reduce((acc, s) => {
-    acc[s.status] = s._count
+  const getStatusColor = (status: string) => {
+    const colors: Record<string, string> = {
+      NEW: 'bg-blue-100 text-blue-800',
+      OPEN: 'bg-yellow-100 text-yellow-800',
+      IN_PROGRESS: 'bg-purple-100 text-purple-800',
+      PENDING_CUSTOMER: 'bg-orange-100 text-orange-800',
+      RESOLVED: 'bg-green-100 text-green-800',
+      CLOSED: 'bg-gray-100 text-gray-800',
+    }
+    return colors[status] || 'bg-gray-100 text-gray-800'
+  }
+
+  const getPriorityColor = (priority: string) => {
+    const colors: Record<string, string> = {
+      LOW: 'text-gray-600 bg-gray-100',
+      MEDIUM: 'text-yellow-700 bg-yellow-100',
+      HIGH: 'text-orange-700 bg-orange-100',
+      URGENT: 'text-red-700 bg-red-100',
+    }
+    return colors[priority] || 'text-gray-600 bg-gray-100'
+  }
+
+  const isOverdue = (slaDueAt: Date | null, status: string) => {
+    if (!slaDueAt) return false
+    if (status === 'RESOLVED' || status === 'CLOSED') return false
+    return new Date(slaDueAt) < new Date()
+  }
+
+  // Group stats
+  const statsByStatus = cases.reduce((acc, c) => {
+    acc[c.status] = (acc[c.status] || 0) + 1
     return acc
   }, {} as Record<string, number>)
 
   return (
-    <div className="max-w-7xl">
-      <div className="mb-6 flex items-center justify-between">
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Case Management</h1>
-          <p className="mt-1 text-gray-600">Manage customer requests and support tickets</p>
+          <p className="text-gray-600">Manage all customer cases and support requests</p>
         </div>
       </div>
 
       {/* Stats */}
-      <div className="mb-6 grid gap-4 sm:grid-cols-5">
-        {[
-          { label: 'Received', status: 'RECEIVED', color: 'blue' },
-          { label: 'In Review', status: 'IN_REVIEW', color: 'yellow' },
-          { label: 'Need Info', status: 'NEED_INFO', color: 'orange' },
-          { label: 'Completed', status: 'COMPLETED', color: 'green' },
-          { label: 'Closed', status: 'CLOSED', color: 'gray' },
-        ].map(({ label, status, color }) => (
-          <Link
-            key={status}
-            href={`/admin/cases?status=${status}`}
-            className={`card p-4 text-center hover:shadow-md transition-shadow ${
-              statusFilter === status ? 'ring-2 ring-brand' : ''
-            }`}
-          >
-            <p className="text-2xl font-bold text-gray-900">{statusCounts[status] || 0}</p>
-            <p className="text-sm text-gray-600">{label}</p>
-          </Link>
-        ))}
-      </div>
-
-      {/* Filters */}
-      <div className="mb-6 flex gap-4">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search by case number, customer, or subject..."
-            className="input pl-10"
-          />
+      <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
+        <div className="bg-white rounded-lg shadow p-4">
+          <p className="text-2xl font-bold">{cases.length}</p>
+          <p className="text-sm text-gray-600">Total</p>
         </div>
-        <select className="input w-auto" defaultValue={typeFilter || ''}>
-          <option value="">All Types</option>
-          <option value="RFQ">RFQ</option>
-          <option value="BOM">BOM</option>
-          <option value="RMA">RMA</option>
-          <option value="SHIPPING_DAMAGE">Shipping Damage</option>
-          <option value="PHOTOMETRIC">Photometric</option>
-          <option value="REBATE">Rebate</option>
-          <option value="NET_TERMS">Net Terms</option>
-          <option value="SUPPORT">Support</option>
-        </select>
-        <Link
-          href="/admin/cases?filter=breached"
-          className={`btn ${filter === 'breached' ? 'btn-primary' : 'btn-outline'} btn-md`}
-        >
-          <AlertTriangle className="mr-2 h-4 w-4" />
-          SLA Breached
-        </Link>
+        <div className="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500">
+          <p className="text-2xl font-bold text-blue-600">{statsByStatus['NEW'] || 0}</p>
+          <p className="text-sm text-gray-600">New</p>
+        </div>
+        <div className="bg-white rounded-lg shadow p-4 border-l-4 border-yellow-500">
+          <p className="text-2xl font-bold text-yellow-600">{statsByStatus['OPEN'] || 0}</p>
+          <p className="text-sm text-gray-600">Open</p>
+        </div>
+        <div className="bg-white rounded-lg shadow p-4 border-l-4 border-purple-500">
+          <p className="text-2xl font-bold text-purple-600">{statsByStatus['IN_PROGRESS'] || 0}</p>
+          <p className="text-sm text-gray-600">In Progress</p>
+        </div>
+        <div className="bg-white rounded-lg shadow p-4 border-l-4 border-orange-500">
+          <p className="text-2xl font-bold text-orange-600">{statsByStatus['PENDING_CUSTOMER'] || 0}</p>
+          <p className="text-sm text-gray-600">Pending</p>
+        </div>
+        <div className="bg-white rounded-lg shadow p-4 border-l-4 border-green-500">
+          <p className="text-2xl font-bold text-green-600">
+            {(statsByStatus['RESOLVED'] || 0) + (statsByStatus['CLOSED'] || 0)}
+          </p>
+          <p className="text-sm text-gray-600">Resolved</p>
+        </div>
       </div>
 
       {/* Cases Table */}
-      <div className="card overflow-hidden">
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Case</th>
-              <th>Customer</th>
-              <th>Type</th>
-              <th>Status</th>
-              <th>SLA</th>
-              <th>Assigned</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {cases.length === 0 ? (
-              <tr>
-                <td colSpan={7} className="text-center py-8 text-gray-500">
-                  No cases found
-                </td>
-              </tr>
-            ) : (
-              cases.map((c) => {
-                const slaDate = new Date(c.slaDueAt)
-                const isOverdue = slaDate < new Date() && !['COMPLETED', 'CLOSED'].includes(c.status)
-                const hoursLeft = Math.round((slaDate.getTime() - Date.now()) / (1000 * 60 * 60))
-
-                return (
-                  <tr key={c.id}>
-                    <td>
-                      <div>
-                        <p className="font-medium text-gray-900">{c.caseNumber}</p>
-                        <p className="text-sm text-gray-500 truncate max-w-[200px]">{c.subject}</p>
-                      </div>
-                    </td>
-                    <td>
-                      <div>
-                        <p className="font-medium text-gray-900">{c.customer.companyName || c.customer.name}</p>
-                        <p className="text-sm text-gray-500">{c.customer.email}</p>
-                      </div>
-                    </td>
-                    <td>
-                      <span className="badge-gray">{c.type}</span>
-                    </td>
-                    <td>
-                      <span className={`status-${c.status.toLowerCase().replace('_', '-')}`}>
-                        {c.status.replace('_', ' ')}
-                      </span>
-                    </td>
-                    <td>
-                      <div className="flex items-center gap-2">
-                        {c.slaBreached || isOverdue ? (
-                          <AlertTriangle className="h-4 w-4 text-red-500" />
-                        ) : hoursLeft < 4 ? (
-                          <Clock className="h-4 w-4 text-orange-500" />
-                        ) : (
-                          <Clock className="h-4 w-4 text-gray-400" />
-                        )}
-                        <span className={`text-sm ${c.slaBreached || isOverdue ? 'text-red-600 font-medium' : 'text-gray-600'}`}>
-                          {c.slaBreached || isOverdue ? 'Overdue' : `${hoursLeft}h left`}
+      <div className="bg-white rounded-lg shadow overflow-hidden">
+        {cases.length === 0 ? (
+          <div className="p-12 text-center">
+            <span className="text-4xl mb-4 block">📭</span>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">No cases yet</h3>
+            <p className="text-gray-600">Cases will appear here when customers create them</p>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Case</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Customer</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Priority</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Assigned</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">SLA</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Created</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y">
+                {cases.map((caseItem) => {
+                  const overdue = isOverdue(caseItem.slaDueAt, caseItem.status)
+                  return (
+                    <tr key={caseItem.id} className={`hover:bg-gray-50 ${overdue ? 'bg-red-50' : ''}`}>
+                      <td className="px-4 py-3">
+                        <Link href={`/admin/cases/${caseItem.id}`} className="hover:text-[#FFD60A]">
+                          <p className="font-medium text-gray-900 line-clamp-1">{caseItem.subject}</p>
+                          <p className="text-xs text-gray-500">{caseItem.caseNumber}</p>
+                        </Link>
+                      </td>
+                      <td className="px-4 py-3">
+                        <p className="text-sm font-medium">{caseItem.customer?.name || 'Unknown'}</p>
+                        <p className="text-xs text-gray-500">{caseItem.customer?.companyName}</p>
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className="text-sm">{caseItem.type.replace('_', ' ')}</span>
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className={`text-xs px-2 py-1 rounded ${getStatusColor(caseItem.status)}`}>
+                          {caseItem.status.replace('_', ' ')}
                         </span>
-                      </div>
-                    </td>
-                    <td>
-                      {c.assignedTo ? (
-                        <span className="text-sm text-gray-900">{c.assignedTo.name}</span>
-                      ) : (
-                        <span className="text-sm text-gray-400">Unassigned</span>
-                      )}
-                    </td>
-                    <td>
-                      <Link
-                        href={`/admin/cases/${c.id}`}
-                        className="btn-ghost btn-sm"
-                      >
-                        <ArrowUpRight className="h-4 w-4" />
-                      </Link>
-                    </td>
-                  </tr>
-                )
-              })
-            )}
-          </tbody>
-        </table>
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className={`text-xs px-2 py-1 rounded ${getPriorityColor(caseItem.priority)}`}>
+                          {caseItem.priority}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-sm">
+                        {caseItem.assignee ? (
+                          <span className="text-gray-900">{caseItem.assignee.name}</span>
+                        ) : (
+                          <span className="text-gray-400 italic">Unassigned</span>
+                        )}
+                      </td>
+                      <td className="px-4 py-3">
+                        {caseItem.slaDueAt ? (
+                          <span className={`text-xs ${overdue ? 'text-red-600 font-medium' : 'text-gray-600'}`}>
+                            {overdue ? '⚠️ ' : ''}
+                            {new Date(caseItem.slaDueAt).toLocaleDateString()}
+                          </span>
+                        ) : (
+                          <span className="text-gray-400">—</span>
+                        )}
+                      </td>
+                      <td className="px-4 py-3 text-xs text-gray-500">
+                        {new Date(caseItem.createdAt).toLocaleDateString()}
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   )

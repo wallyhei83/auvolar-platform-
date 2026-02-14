@@ -1,106 +1,175 @@
 import { getServerSession } from 'next-auth'
-import Link from 'next/link'
 import { authOptions } from '@/lib/auth'
-import { db } from '@/lib/db'
-import { Plus, Clock, AlertCircle, CheckCircle2, Search } from 'lucide-react'
+import { prisma } from '@/lib/db'
+import Link from 'next/link'
+import { redirect } from 'next/navigation'
 
-export default async function CasesPage() {
+export default async function PortalCasesPage() {
   const session = await getServerSession(authOptions)
   
-  if (!session) return null
+  if (!session?.user?.email) {
+    redirect('/login')
+  }
 
-  const cases = await db.case.findMany({
-    where: { customerId: session.user.id },
-    orderBy: { createdAt: 'desc' },
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
   })
 
-  const statusIcon = (status: string, breached: boolean) => {
-    if (breached) return <AlertCircle className="h-5 w-5 text-red-500" />
-    switch (status) {
-      case 'NEED_INFO': return <AlertCircle className="h-5 w-5 text-orange-500" />
-      case 'COMPLETED': return <CheckCircle2 className="h-5 w-5 text-green-500" />
-      case 'CLOSED': return <CheckCircle2 className="h-5 w-5 text-gray-400" />
-      default: return <Clock className="h-5 w-5 text-blue-500" />
+  if (!user) {
+    redirect('/login')
+  }
+
+  const cases = await prisma.case.findMany({
+    where: { customerId: user.id },
+    orderBy: { createdAt: 'desc' },
+    include: {
+      assignee: {
+        select: { name: true, email: true },
+      },
+    },
+  })
+
+  const getStatusColor = (status: string) => {
+    const colors: Record<string, string> = {
+      NEW: 'bg-blue-100 text-blue-800',
+      OPEN: 'bg-yellow-100 text-yellow-800',
+      IN_PROGRESS: 'bg-purple-100 text-purple-800',
+      PENDING_CUSTOMER: 'bg-orange-100 text-orange-800',
+      RESOLVED: 'bg-green-100 text-green-800',
+      CLOSED: 'bg-gray-100 text-gray-800',
     }
+    return colors[status] || 'bg-gray-100 text-gray-800'
+  }
+
+  const getPriorityColor = (priority: string) => {
+    const colors: Record<string, string> = {
+      LOW: 'text-gray-600',
+      MEDIUM: 'text-yellow-600',
+      HIGH: 'text-orange-600',
+      URGENT: 'text-red-600',
+    }
+    return colors[priority] || 'text-gray-600'
+  }
+
+  const getTypeIcon = (type: string) => {
+    const icons: Record<string, string> = {
+      RFQ: '📝',
+      BOM_REVIEW: '📋',
+      RMA: '🔄',
+      PHOTOMETRIC: '💡',
+      REBATE: '💰',
+      GENERAL: '❓',
+    }
+    return icons[type] || '📄'
   }
 
   return (
-    <div className="max-w-5xl">
-      <div className="mb-6 flex items-center justify-between">
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">My Cases</h1>
-          <p className="mt-1 text-gray-600">Track your requests and support tickets</p>
+          <p className="text-gray-600">Track and manage your support requests</p>
         </div>
-        <Link href="/tools/rfq" className="btn-primary btn-md">
-          <Plus className="mr-2 h-4 w-4" />
-          New Request
+        <Link
+          href="/portal/cases/new"
+          className="bg-[#FFD60A] text-black px-4 py-2 rounded-lg font-medium hover:bg-yellow-400"
+        >
+          + New Case
         </Link>
       </div>
 
-      {/* Search and filters */}
-      <div className="mb-6 flex gap-4">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search cases..."
-            className="input pl-10"
-          />
+      {/* Stats */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="bg-white rounded-lg shadow p-4">
+          <p className="text-2xl font-bold">{cases.length}</p>
+          <p className="text-sm text-gray-600">Total Cases</p>
         </div>
-        <select className="input w-auto">
-          <option value="">All Types</option>
-          <option value="RFQ">RFQ</option>
-          <option value="BOM">BOM</option>
-          <option value="RMA">RMA</option>
-          <option value="SUPPORT">Support</option>
-        </select>
-        <select className="input w-auto">
-          <option value="">All Status</option>
-          <option value="RECEIVED">Received</option>
-          <option value="IN_REVIEW">In Review</option>
-          <option value="NEED_INFO">Need Info</option>
-          <option value="COMPLETED">Completed</option>
-        </select>
+        <div className="bg-white rounded-lg shadow p-4">
+          <p className="text-2xl font-bold text-blue-600">
+            {cases.filter(c => c.status === 'NEW').length}
+          </p>
+          <p className="text-sm text-gray-600">New</p>
+        </div>
+        <div className="bg-white rounded-lg shadow p-4">
+          <p className="text-2xl font-bold text-purple-600">
+            {cases.filter(c => c.status === 'IN_PROGRESS').length}
+          </p>
+          <p className="text-sm text-gray-600">In Progress</p>
+        </div>
+        <div className="bg-white rounded-lg shadow p-4">
+          <p className="text-2xl font-bold text-green-600">
+            {cases.filter(c => c.status === 'RESOLVED' || c.status === 'CLOSED').length}
+          </p>
+          <p className="text-sm text-gray-600">Resolved</p>
+        </div>
       </div>
 
-      {/* Cases list */}
-      {cases.length === 0 ? (
-        <div className="card p-12 text-center">
-          <p className="text-gray-500 mb-4">You don&apos;t have any cases yet.</p>
-          <Link href="/tools/rfq" className="btn-primary btn-md">
-            Submit Your First Request
-          </Link>
-        </div>
-      ) : (
-        <div className="card divide-y divide-gray-100">
-          {cases.map((c) => (
+      {/* Cases List */}
+      <div className="bg-white rounded-lg shadow overflow-hidden">
+        {cases.length === 0 ? (
+          <div className="p-12 text-center">
+            <span className="text-4xl mb-4 block">📭</span>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">No cases yet</h3>
+            <p className="text-gray-600 mb-4">
+              Create your first case to get started with support
+            </p>
             <Link
-              key={c.id}
-              href={`/portal/cases/${c.id}`}
-              className="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors"
+              href="/portal/cases/new"
+              className="inline-block bg-[#FFD60A] text-black px-6 py-2 rounded-lg font-medium hover:bg-yellow-400"
             >
-              <div className="flex items-center gap-4">
-                {statusIcon(c.status, c.slaBreached)}
-                <div>
-                  <div className="flex items-center gap-2">
-                    <p className="font-medium text-gray-900">{c.caseNumber}</p>
-                    <span className="badge-gray text-xs">{c.type}</span>
-                  </div>
-                  <p className="text-sm text-gray-600 mt-0.5">{c.subject}</p>
-                </div>
-              </div>
-              <div className="text-right">
-                <span className={`status-${c.status.toLowerCase().replace('_', '-')}`}>
-                  {c.status.replace('_', ' ')}
-                </span>
-                <p className="text-xs text-gray-500 mt-1">
-                  {new Date(c.createdAt).toLocaleDateString()}
-                </p>
-              </div>
+              Create Case
             </Link>
-          ))}
-        </div>
-      )}
+          </div>
+        ) : (
+          <table className="w-full">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Case</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Priority</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Assigned To</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Created</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y">
+              {cases.map((caseItem) => (
+                <tr key={caseItem.id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4">
+                    <Link href={`/portal/cases/${caseItem.id}`} className="hover:text-[#FFD60A]">
+                      <p className="font-medium text-gray-900">{caseItem.subject}</p>
+                      <p className="text-sm text-gray-500">{caseItem.caseNumber}</p>
+                    </Link>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className="flex items-center gap-2">
+                      <span>{getTypeIcon(caseItem.type)}</span>
+                      <span className="text-sm">{caseItem.type.replace('_', ' ')}</span>
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className={`text-xs px-2 py-1 rounded ${getStatusColor(caseItem.status)}`}>
+                      {caseItem.status.replace('_', ' ')}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className={`text-sm font-medium ${getPriorityColor(caseItem.priority)}`}>
+                      {caseItem.priority}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-600">
+                    {caseItem.assignee?.name || 'Unassigned'}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500">
+                    {new Date(caseItem.createdAt).toLocaleDateString()}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   )
 }
