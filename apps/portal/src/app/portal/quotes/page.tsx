@@ -22,9 +22,6 @@ export default async function PortalQuotesPage() {
   const quotes = await prisma.quote.findMany({
     where: { customerId: user.id },
     orderBy: { createdAt: 'desc' },
-    include: {
-      items: true,
-    },
   })
 
   const getStatusColor = (status: string) => {
@@ -40,9 +37,9 @@ export default async function PortalQuotesPage() {
     return colors[status] || 'bg-gray-100 text-gray-800'
   }
 
-  const isExpired = (expiresAt: Date | null) => {
-    if (!expiresAt) return false
-    return new Date(expiresAt) < new Date()
+  const isExpired = (validUntil: Date | null) => {
+    if (!validUntil) return false
+    return new Date(validUntil) < new Date()
   }
 
   return (
@@ -117,7 +114,7 @@ export default async function PortalQuotesPage() {
             </thead>
             <tbody className="divide-y">
               {quotes.map((quote) => {
-                const expired = isExpired(quote.expiresAt)
+                const expired = isExpired(quote.validUntil)
                 return (
                   <tr key={quote.id} className={`hover:bg-gray-50 ${expired && quote.status === 'SENT' ? 'bg-red-50' : ''}`}>
                     <td className="px-6 py-4">
@@ -126,7 +123,7 @@ export default async function PortalQuotesPage() {
                       </Link>
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-600">
-                      {quote.items.length} item{quote.items.length !== 1 ? 's' : ''}
+                      {Array.isArray(quote.items) ? quote.items.length : 0} item{(Array.isArray(quote.items) ? quote.items.length : 0) !== 1 ? 's' : ''}
                     </td>
                     <td className="px-6 py-4 font-medium">
                       ${quote.totalAmount.toNumber().toLocaleString()}
@@ -137,10 +134,10 @@ export default async function PortalQuotesPage() {
                       </span>
                     </td>
                     <td className="px-6 py-4 text-sm">
-                      {quote.expiresAt ? (
+                      {quote.validUntil ? (
                         <span className={expired ? 'text-red-600' : 'text-gray-600'}>
                           {expired ? '⚠️ Expired ' : ''}
-                          {new Date(quote.expiresAt).toLocaleDateString()}
+                          {new Date(quote.validUntil).toLocaleDateString()}
                         </span>
                       ) : (
                         <span className="text-gray-400">—</span>
