@@ -1,0 +1,29 @@
+{
+  "name": "auvolar-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Auvolar Commercial-Ready B2B Lighting Platform",
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "services/*"
+  ],
+  "scripts": {
+    "dev": "pnpm --filter portal dev",
+    "build": "pnpm --filter portal build",
+    "start": "pnpm --filter portal start",
+    "db:generate": "pnpm --filter portal prisma generate",
+    "db:push": "pnpm --filter portal prisma db push",
+    "db:migrate": "pnpm --filter portal prisma migrate dev",
+    "db:seed": "pnpm --filter portal prisma db seed",
+    "lint": "pnpm -r lint",
+    "clean": "pnpm -r clean"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  },
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
