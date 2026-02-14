@@ -28,11 +28,9 @@ export default async function PortalQuotesPage() {
     const colors: Record<string, string> = {
       DRAFT: 'bg-gray-100 text-gray-800',
       SENT: 'bg-blue-100 text-blue-800',
-      VIEWED: 'bg-purple-100 text-purple-800',
       ACCEPTED: 'bg-green-100 text-green-800',
-      REJECTED: 'bg-red-100 text-red-800',
       EXPIRED: 'bg-orange-100 text-orange-800',
-      CONVERTED: 'bg-teal-100 text-teal-800',
+      CANCELLED: 'bg-red-100 text-red-800',
     }
     return colors[status] || 'bg-gray-100 text-gray-800'
   }
@@ -66,7 +64,7 @@ export default async function PortalQuotesPage() {
         </div>
         <div className="bg-white rounded-lg shadow p-4">
           <p className="text-2xl font-bold text-blue-600">
-            {quotes.filter(q => q.status === 'SENT' || q.status === 'VIEWED').length}
+            {quotes.filter(q => q.status === 'SENT').length}
           </p>
           <p className="text-sm text-gray-600">Pending Review</p>
         </div>
