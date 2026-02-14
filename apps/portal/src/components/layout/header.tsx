@@ -5,70 +5,176 @@ import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { 
   Search, ShoppingCart, User, Menu, X, Phone, Truck, Clock,
-  ChevronDown, Zap, FileText, Upload, Calculator, Package,
-  Headphones, MapPin
+  ChevronDown, ChevronRight, Zap, Package, Upload
 } from 'lucide-react'
 
-// Product categories for mega menu
+// 产品分类 - 多级菜单结构
 const productCategories = {
-  indoor: {
-    title: 'Indoor Lighting',
-    items: [
-      { name: 'High Bay Lights', href: '/products/high-bay', description: 'Warehouse & industrial' },
-      { name: 'Linear High Bay', href: '/products/linear-high-bay', description: 'Aisle & open spaces' },
-      { name: 'Troffers & Panels', href: '/products/troffer', description: 'Office & commercial' },
-      { name: 'Garage & Canopy', href: '/products/garage', description: 'Parking structures' },
-      { name: 'Strip Lights', href: '/products/strip', description: 'Task & accent' },
-      { name: 'Vapor Tight', href: '/products/vapor-tight', description: 'Wet & dusty locations' },
-    ]
-  },
   outdoor: {
     title: 'Outdoor Lighting',
-    items: [
-      { name: 'Wall Packs', href: '/products/wall-pack', description: 'Building perimeter' },
-      { name: 'Area Lights', href: '/products/area-light', description: 'Parking & pathways' },
-      { name: 'Flood Lights', href: '/products/flood', description: 'Security & sports' },
-      { name: 'Canopy Lights', href: '/products/canopy', description: 'Gas stations & covered' },
-      { name: 'Street Lights', href: '/products/street', description: 'Roads & pathways' },
-      { name: 'Bollards', href: '/products/bollard', description: 'Landscape & walkways' },
+    href: '/products/outdoor',
+    subcategories: [
+      {
+        title: 'Area Lights',
+        href: '/products/outdoor/area-light',
+        items: [
+          { name: 'Parking Lot Lights', href: '/products/outdoor/area-light/parking-lot' },
+          { name: 'Street Lights', href: '/products/outdoor/area-light/street' },
+          { name: 'Shoe Box Lights', href: '/products/outdoor/area-light/shoe-box' },
+        ]
+      },
+      {
+        title: 'Flood Lights',
+        href: '/products/outdoor/flood',
+        items: [
+          { name: 'Sports Flood Lights', href: '/products/outdoor/flood/sports' },
+          { name: 'Security Flood Lights', href: '/products/outdoor/flood/security' },
+        ]
+      },
+      {
+        title: 'Wall Packs',
+        href: '/products/outdoor/wall-pack',
+        items: [
+          { name: 'Full Cutoff', href: '/products/outdoor/wall-pack/full-cutoff' },
+          { name: 'Semi Cutoff', href: '/products/outdoor/wall-pack/semi-cutoff' },
+        ]
+      },
+      {
+        title: 'Canopy Lights',
+        href: '/products/outdoor/canopy',
+        items: [
+          { name: 'Gas Station Canopy', href: '/products/outdoor/canopy/gas-station' },
+          { name: 'Parking Garage', href: '/products/outdoor/canopy/parking-garage' },
+        ]
+      },
+      {
+        title: 'Bollard Lights',
+        href: '/products/outdoor/bollard',
+        items: []
+      },
+      {
+        title: 'Post Top Lights',
+        href: '/products/outdoor/post-top',
+        items: []
+      },
     ]
   },
-  specialty: {
-    title: 'Specialty & Accessories',
-    items: [
-      { name: 'LED Tubes', href: '/products/tubes', description: 'T8/T5 replacements' },
-      { name: 'Sports Lighting', href: '/products/sports', description: 'Fields & courts' },
-      { name: 'Emergency & Exit', href: '/products/emergency', description: 'Safety lighting' },
-      { name: 'Sensors & Controls', href: '/products/controls', description: 'Motion & daylight' },
-      { name: 'Mounting & Accessories', href: '/products/accessories', description: 'Hardware & parts' },
+  solar: {
+    title: 'Solar Lighting',
+    href: '/products/solar',
+    subcategories: [
+      {
+        title: 'Solar Street Lights',
+        href: '/products/solar/street',
+        items: [
+          { name: 'All-in-One Solar', href: '/products/solar/street/all-in-one' },
+          { name: 'Split Solar', href: '/products/solar/street/split' },
+        ]
+      },
+      {
+        title: 'Solar Flood Lights',
+        href: '/products/solar/flood',
+        items: []
+      },
+      {
+        title: 'Solar Garden Lights',
+        href: '/products/solar/garden',
+        items: []
+      },
+      {
+        title: 'Solar Wall Lights',
+        href: '/products/solar/wall',
+        items: []
+      },
     ]
-  }
+  },
+  indoor: {
+    title: 'Indoor Lighting',
+    href: '/products/indoor',
+    subcategories: [
+      {
+        title: 'High Bay Lights',
+        href: '/products/indoor/high-bay',
+        items: [
+          { name: 'UFO High Bay', href: '/products/indoor/high-bay/ufo' },
+          { name: 'Linear High Bay', href: '/products/indoor/high-bay/linear' },
+        ]
+      },
+      {
+        title: 'Troffers & Panels',
+        href: '/products/indoor/troffer',
+        items: [
+          { name: '2x2 Troffers', href: '/products/indoor/troffer/2x2' },
+          { name: '2x4 Troffers', href: '/products/indoor/troffer/2x4' },
+          { name: 'Flat Panels', href: '/products/indoor/troffer/panel' },
+        ]
+      },
+      {
+        title: 'LED Tubes',
+        href: '/products/indoor/tubes',
+        items: [
+          { name: 'T8 Tubes', href: '/products/indoor/tubes/t8' },
+          { name: 'T5 Tubes', href: '/products/indoor/tubes/t5' },
+        ]
+      },
+      {
+        title: 'Strip Lights',
+        href: '/products/indoor/strip',
+        items: []
+      },
+      {
+        title: 'Vapor Tight',
+        href: '/products/indoor/vapor-tight',
+        items: []
+      },
+      {
+        title: 'Wrap Lights',
+        href: '/products/indoor/wrap',
+        items: []
+      },
+      {
+        title: 'Garage Lights',
+        href: '/products/indoor/garage',
+        items: []
+      },
+      {
+        title: 'Downlights',
+        href: '/products/indoor/downlight',
+        items: []
+      },
+    ]
+  },
 }
 
+// 应用场景
 const applications = [
-  { name: 'Warehouse', href: '/applications/warehouse', icon: '🏭' },
-  { name: 'Manufacturing', href: '/applications/manufacturing', icon: '⚙️' },
-  { name: 'Retail & Grocery', href: '/applications/retail', icon: '🛒' },
-  { name: 'Office & Corporate', href: '/applications/office', icon: '🏢' },
-  { name: 'Parking & Garage', href: '/applications/parking', icon: '🅿️' },
-  { name: 'Gas Station & Canopy', href: '/applications/gas-station', icon: '⛽' },
-  { name: 'Sports & Recreation', href: '/applications/sports', icon: '🏟️' },
-  { name: 'Education', href: '/applications/education', icon: '🏫' },
+  { name: 'Warehouse Lighting', href: '/applications/warehouse' },
+  { name: 'Manufacturing Lighting', href: '/applications/manufacturing' },
+  { name: 'Retail & Grocery', href: '/applications/retail' },
+  { name: 'Office Lighting', href: '/applications/office' },
+  { name: 'Parking Lot Lighting', href: '/applications/parking' },
+  { name: 'Gas Station Lighting', href: '/applications/gas-station' },
+  { name: 'Sports Lighting', href: '/applications/sports' },
+  { name: 'Education Lighting', href: '/applications/education' },
+  { name: 'Cold Storage Lighting', href: '/applications/cold-storage' },
+  { name: 'Hospital & Healthcare', href: '/applications/healthcare' },
 ]
 
-const tools = [
-  { name: 'Quick Order', href: '/tools/quick-order', description: 'Paste SKU + Qty to order fast', icon: Package },
-  { name: 'Upload BOM', href: '/tools/bom-upload', description: 'Get quote from your bill of materials', icon: Upload },
-  { name: 'Replacement Finder', href: '/tools/replacement', description: 'Find LED replacement for old fixtures', icon: Search },
-  { name: 'ROI Calculator', href: '/tools/roi-calculator', description: 'Calculate energy savings & payback', icon: Calculator },
-  { name: 'Rebate Finder', href: '/tools/rebate', description: 'Find utility rebates in your area', icon: MapPin },
-  { name: 'IES Library', href: '/resources/ies', description: 'Download photometric data files', icon: FileText },
+// 服务
+const services = [
+  { name: 'Lighting Design', href: '/services/lighting-design', description: 'Custom photometric layouts' },
+  { name: 'Lighting Installation Guide', href: '/services/installation-guide', description: 'Step-by-step installation support' },
+  { name: 'Rebate Assistance', href: '/services/rebate-assistance', description: 'Utility rebate application help' },
+  { name: 'ROI Assistance', href: '/services/roi-assistance', description: 'Energy savings calculation' },
+  { name: 'Contractor Network', href: '/services/contractor-network', description: 'Find certified installers' },
+  { name: 'LaaS (Lighting as a Service)', href: '/services/laas', description: 'Zero upfront cost lighting' },
 ]
 
 export function Header() {
   const { data: session } = useSession()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [activeMenu, setActiveMenu] = useState<string | null>(null)
+  const [activeSubMenu, setActiveSubMenu] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
 
   return (
@@ -88,7 +194,7 @@ export function Header() {
           </div>
           <div className="flex items-center gap-6">
             <Link href="/track-order" className="hover:text-brand">Track Order</Link>
-            <Link href="/support" className="hover:text-brand">Get Support</Link>
+            <Link href="/support" className="hover:text-brand">Support</Link>
             <a href="tel:1-888-555-0123" className="flex items-center gap-1.5 hover:text-brand">
               <Phone className="h-3.5 w-3.5" />
               <span className="hidden sm:inline">1-888-555-0123</span>
@@ -133,13 +239,6 @@ export function Header() {
             >
               <Package className="h-4 w-4" />
               Quick Order
-            </Link>
-            <Link
-              href="/tools/bom-upload"
-              className="flex items-center gap-1.5 rounded-lg border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 hover:border-brand hover:text-brand"
-            >
-              <Upload className="h-4 w-4" />
-              Upload BOM
             </Link>
           </div>
 
@@ -192,52 +291,91 @@ export function Header() {
       {/* Main Navigation - Desktop */}
       <nav className="hidden border-b border-gray-100 bg-white lg:block">
         <div className="mx-auto flex max-w-7xl items-center px-4 sm:px-6 lg:px-8">
-          {/* Products Dropdown */}
+          {/* Home */}
+          <Link href="/" className="px-4 py-3 text-sm font-medium text-gray-700 hover:text-brand">
+            Home
+          </Link>
+
+          {/* Products Mega Menu */}
           <div
             className="relative"
             onMouseEnter={() => setActiveMenu('products')}
-            onMouseLeave={() => setActiveMenu(null)}
+            onMouseLeave={() => { setActiveMenu(null); setActiveSubMenu(null); }}
           >
             <button className="flex items-center gap-1 px-4 py-3 text-sm font-medium text-gray-700 hover:text-brand">
               Products
               <ChevronDown className="h-4 w-4" />
             </button>
             {activeMenu === 'products' && (
-              <div className="absolute left-0 top-full z-50 w-[800px] rounded-b-xl border border-t-0 border-gray-200 bg-white p-6 shadow-xl">
-                <div className="grid grid-cols-3 gap-8">
+              <div className="absolute left-0 top-full z-50 flex w-[900px] rounded-b-xl border border-t-0 border-gray-200 bg-white shadow-xl">
+                {/* Level 2 - Category List */}
+                <div className="w-56 border-r border-gray-100 bg-gray-50 py-4">
+                  <div className="px-4 pb-2 text-xs font-semibold uppercase text-gray-500">Categories</div>
                   {Object.entries(productCategories).map(([key, category]) => (
-                    <div key={key}>
-                      <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-500">
-                        {category.title}
-                      </h3>
-                      <ul className="space-y-2">
-                        {category.items.map((item) => (
-                          <li key={item.name}>
-                            <Link
-                              href={item.href}
-                              className="group block rounded-lg p-2 hover:bg-gray-50"
-                            >
-                              <span className="font-medium text-gray-900 group-hover:text-brand">
-                                {item.name}
-                              </span>
-                              <span className="block text-xs text-gray-500">
-                                {item.description}
-                              </span>
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
+                    <div
+                      key={key}
+                      onMouseEnter={() => setActiveSubMenu(key)}
+                      className={`flex cursor-pointer items-center justify-between px-4 py-2.5 text-sm ${
+                        activeSubMenu === key ? 'bg-white text-brand' : 'text-gray-700 hover:bg-white'
+                      }`}
+                    >
+                      <span className="font-medium">{category.title}</span>
+                      <ChevronRight className="h-4 w-4" />
                     </div>
                   ))}
+                  <div className="mt-4 border-t border-gray-200 px-4 pt-4">
+                    <Link href="/products" className="text-sm font-medium text-brand hover:underline">
+                      View All Products →
+                    </Link>
+                  </div>
                 </div>
-                <div className="mt-6 flex items-center justify-between border-t border-gray-100 pt-4">
-                  <Link href="/products" className="text-sm font-medium text-brand hover:underline">
-                    View All Products →
-                  </Link>
-                  <Link href="/products?filter=dlc" className="text-sm text-gray-600 hover:text-brand">
-                    DLC Eligible Products
-                  </Link>
-                </div>
+
+                {/* Level 3 - Subcategories */}
+                {activeSubMenu && (
+                  <div className="flex-1 p-6">
+                    <div className="mb-4">
+                      <Link 
+                        href={productCategories[activeSubMenu as keyof typeof productCategories].href}
+                        className="text-lg font-semibold text-gray-900 hover:text-brand"
+                      >
+                        {productCategories[activeSubMenu as keyof typeof productCategories].title}
+                      </Link>
+                    </div>
+                    <div className="grid grid-cols-3 gap-6">
+                      {productCategories[activeSubMenu as keyof typeof productCategories].subcategories.map((sub) => (
+                        <div key={sub.title}>
+                          <Link
+                            href={sub.href}
+                            className="font-medium text-gray-900 hover:text-brand"
+                          >
+                            {sub.title}
+                          </Link>
+                          {/* Level 4 - Items */}
+                          {sub.items.length > 0 && (
+                            <ul className="mt-2 space-y-1">
+                              {sub.items.map((item) => (
+                                <li key={item.name}>
+                                  <Link
+                                    href={item.href}
+                                    className="text-sm text-gray-600 hover:text-brand"
+                                  >
+                                    {item.name}
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {!activeSubMenu && (
+                  <div className="flex flex-1 items-center justify-center p-6 text-gray-400">
+                    <span>Hover over a category to see subcategories</span>
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -253,75 +391,58 @@ export function Header() {
               <ChevronDown className="h-4 w-4" />
             </button>
             {activeMenu === 'applications' && (
-              <div className="absolute left-0 top-full z-50 w-[500px] rounded-b-xl border border-t-0 border-gray-200 bg-white p-6 shadow-xl">
-                <div className="grid grid-cols-2 gap-2">
+              <div className="absolute left-0 top-full z-50 w-72 rounded-b-xl border border-t-0 border-gray-200 bg-white p-4 shadow-xl">
+                <div className="space-y-1">
                   {applications.map((app) => (
                     <Link
                       key={app.name}
                       href={app.href}
-                      className="flex items-center gap-3 rounded-lg p-3 hover:bg-gray-50"
+                      className="block rounded-lg px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-brand"
                     >
-                      <span className="text-2xl">{app.icon}</span>
-                      <span className="font-medium text-gray-900">{app.name}</span>
+                      {app.name}
                     </Link>
                   ))}
+                </div>
+                <div className="mt-3 border-t border-gray-100 pt-3">
+                  <Link href="/applications" className="text-sm font-medium text-brand hover:underline">
+                    View All Applications →
+                  </Link>
                 </div>
               </div>
             )}
           </div>
 
-          {/* Tools Dropdown */}
+          {/* Tailor Purchasing */}
+          <Link href="/tailor-purchasing" className="px-4 py-3 text-sm font-medium text-gray-700 hover:text-brand">
+            Tailor Purchasing
+          </Link>
+
+          {/* Service Dropdown */}
           <div
             className="relative"
-            onMouseEnter={() => setActiveMenu('tools')}
+            onMouseEnter={() => setActiveMenu('service')}
             onMouseLeave={() => setActiveMenu(null)}
           >
             <button className="flex items-center gap-1 px-4 py-3 text-sm font-medium text-gray-700 hover:text-brand">
-              Tools & Resources
+              Service
               <ChevronDown className="h-4 w-4" />
             </button>
-            {activeMenu === 'tools' && (
-              <div className="absolute left-0 top-full z-50 w-[400px] rounded-b-xl border border-t-0 border-gray-200 bg-white p-4 shadow-xl">
+            {activeMenu === 'service' && (
+              <div className="absolute left-0 top-full z-50 w-80 rounded-b-xl border border-t-0 border-gray-200 bg-white p-4 shadow-xl">
                 <div className="space-y-1">
-                  {tools.map((tool) => (
+                  {services.map((service) => (
                     <Link
-                      key={tool.name}
-                      href={tool.href}
-                      className="group flex items-start gap-3 rounded-lg p-3 hover:bg-gray-50"
+                      key={service.name}
+                      href={service.href}
+                      className="block rounded-lg px-3 py-2 hover:bg-gray-50"
                     >
-                      <tool.icon className="mt-0.5 h-5 w-5 text-gray-400 group-hover:text-brand" />
-                      <div>
-                        <span className="font-medium text-gray-900 group-hover:text-brand">
-                          {tool.name}
-                        </span>
-                        <span className="block text-xs text-gray-500">
-                          {tool.description}
-                        </span>
-                      </div>
+                      <span className="font-medium text-gray-900 group-hover:text-brand">{service.name}</span>
+                      <span className="block text-xs text-gray-500">{service.description}</span>
                     </Link>
                   ))}
                 </div>
               </div>
             )}
-          </div>
-
-          {/* Simple Links */}
-          <Link href="/support" className="px-4 py-3 text-sm font-medium text-gray-700 hover:text-brand">
-            Support
-          </Link>
-          <Link href="/about" className="px-4 py-3 text-sm font-medium text-gray-700 hover:text-brand">
-            About
-          </Link>
-
-          {/* Right Side - Contact */}
-          <div className="ml-auto flex items-center gap-4">
-            <a
-              href="tel:1-888-555-0123"
-              className="flex items-center gap-2 text-sm text-gray-600 hover:text-brand"
-            >
-              <Headphones className="h-4 w-4" />
-              Talk to a Specialist
-            </a>
           </div>
         </div>
       </nav>
@@ -342,79 +463,84 @@ export function Header() {
               </div>
             </div>
 
-            {/* Mobile Quick Actions */}
-            <div className="mb-6 grid grid-cols-2 gap-2">
-              <Link
-                href="/tools/quick-order"
-                className="flex items-center justify-center gap-2 rounded-lg bg-gray-100 p-3 text-sm font-medium"
-              >
-                <Package className="h-4 w-4" />
-                Quick Order
-              </Link>
-              <Link
-                href="/tools/bom-upload"
-                className="flex items-center justify-center gap-2 rounded-lg bg-gray-100 p-3 text-sm font-medium"
-              >
-                <Upload className="h-4 w-4" />
-                Upload BOM
-              </Link>
-            </div>
-
             {/* Mobile Navigation */}
             <div className="space-y-4">
+              {/* Home */}
+              <Link href="/" className="block py-2 font-medium text-gray-900">
+                Home
+              </Link>
+
+              {/* Products */}
               <div>
-                <h3 className="mb-2 text-xs font-semibold uppercase text-gray-500">Products</h3>
-                <div className="space-y-1">
-                  {Object.values(productCategories).flatMap(cat => cat.items.slice(0, 3)).map((item) => (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      className="block rounded-lg p-2 text-gray-700 hover:bg-gray-50"
-                    >
-                      {item.name}
-                    </Link>
+                <div className="mb-2 flex items-center justify-between py-2 font-medium text-gray-900">
+                  <span>Products</span>
+                </div>
+                <div className="ml-4 space-y-2">
+                  {Object.entries(productCategories).map(([key, category]) => (
+                    <details key={key} className="group">
+                      <summary className="flex cursor-pointer items-center justify-between py-1 text-sm text-gray-700">
+                        {category.title}
+                        <ChevronRight className="h-4 w-4 transition-transform group-open:rotate-90" />
+                      </summary>
+                      <div className="ml-4 mt-1 space-y-1">
+                        {category.subcategories.map((sub) => (
+                          <Link
+                            key={sub.title}
+                            href={sub.href}
+                            className="block py-1 text-sm text-gray-600"
+                          >
+                            {sub.title}
+                          </Link>
+                        ))}
+                      </div>
+                    </details>
                   ))}
-                  <Link href="/products" className="block p-2 text-sm font-medium text-brand">
-                    View All Products →
-                  </Link>
                 </div>
               </div>
 
+              {/* Applications */}
               <div>
-                <h3 className="mb-2 text-xs font-semibold uppercase text-gray-500">Applications</h3>
-                <div className="grid grid-cols-2 gap-1">
+                <div className="mb-2 py-2 font-medium text-gray-900">Applications</div>
+                <div className="ml-4 space-y-1">
                   {applications.slice(0, 6).map((app) => (
                     <Link
                       key={app.name}
                       href={app.href}
-                      className="flex items-center gap-2 rounded-lg p-2 text-gray-700 hover:bg-gray-50"
+                      className="block py-1 text-sm text-gray-600"
                     >
-                      <span>{app.icon}</span>
-                      <span className="text-sm">{app.name}</span>
+                      {app.name}
                     </Link>
                   ))}
+                  <Link href="/applications" className="block py-1 text-sm text-brand">
+                    View All →
+                  </Link>
                 </div>
               </div>
 
+              {/* Tailor Purchasing */}
+              <Link href="/tailor-purchasing" className="block py-2 font-medium text-gray-900">
+                Tailor Purchasing
+              </Link>
+
+              {/* Service */}
               <div>
-                <h3 className="mb-2 text-xs font-semibold uppercase text-gray-500">Tools</h3>
-                <div className="space-y-1">
-                  {tools.slice(0, 4).map((tool) => (
+                <div className="mb-2 py-2 font-medium text-gray-900">Service</div>
+                <div className="ml-4 space-y-1">
+                  {services.map((service) => (
                     <Link
-                      key={tool.name}
-                      href={tool.href}
-                      className="block rounded-lg p-2 text-gray-700 hover:bg-gray-50"
+                      key={service.name}
+                      href={service.href}
+                      className="block py-1 text-sm text-gray-600"
                     >
-                      {tool.name}
+                      {service.name}
                     </Link>
                   ))}
                 </div>
               </div>
 
               <div className="border-t border-gray-200 pt-4">
-                <Link href="/support" className="block p-2 text-gray-700">Support</Link>
-                <Link href="/about" className="block p-2 text-gray-700">About Us</Link>
-                <Link href="/track-order" className="block p-2 text-gray-700">Track Order</Link>
+                <Link href="/support" className="block py-2 text-gray-700">Support</Link>
+                <Link href="/track-order" className="block py-2 text-gray-700">Track Order</Link>
               </div>
             </div>
 
