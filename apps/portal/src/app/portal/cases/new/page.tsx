@@ -15,7 +15,7 @@ const caseTypes = [
 
 const priorities = [
   { value: 'LOW', label: 'Low', color: 'text-gray-600' },
-  { value: 'MEDIUM', label: 'Medium', color: 'text-yellow-600' },
+  { value: 'NORMAL', label: 'Normal', color: 'text-blue-600' },
   { value: 'HIGH', label: 'High', color: 'text-orange-600' },
   { value: 'URGENT', label: 'Urgent', color: 'text-red-600' },
 ]
@@ -28,7 +28,7 @@ export default function NewCasePage() {
     type: '',
     subject: '',
     description: '',
-    priority: 'MEDIUM',
+    priority: 'NORMAL',
   })
 
   const handleSubmit = async (e: React.FormEvent) => {

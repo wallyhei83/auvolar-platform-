@@ -16,7 +16,7 @@ export default async function AdminDashboard() {
     where: { email: session.user.email },
   })
 
-  if (!user || (user.role !== 'ADMIN' && user.role !== 'STAFF')) {
+  if (!user || (user.role !== 'ADMIN' && user.role !== 'STAFF' && user.role !== 'SUPER_ADMIN')) {
     redirect('/portal')
   }
 
@@ -33,7 +33,7 @@ export default async function AdminDashboard() {
     prisma.user.count(),
     prisma.case.count(),
     prisma.quote.count(),
-    prisma.case.count({ where: { status: { in: ['NEW', 'OPEN', 'IN_PROGRESS'] } } }),
+    prisma.case.count({ where: { status: { in: ['RECEIVED', 'IN_REVIEW', 'NEED_INFO'] } } }),
     prisma.quote.count({ where: { status: { in: ['DRAFT', 'SENT'] } } }),
     prisma.case.findMany({
       take: 5,
@@ -53,8 +53,8 @@ export default async function AdminDashboard() {
   const urgentCases = await prisma.case.count({
     where: {
       OR: [
-        { priority: 'URGENT', status: { notIn: ['RESOLVED', 'CLOSED'] } },
-        { slaDueAt: { lt: new Date() }, status: { notIn: ['RESOLVED', 'CLOSED'] } },
+        { priority: 'URGENT', status: { notIn: ['COMPLETED', 'CLOSED'] } },
+        { slaDueAt: { lt: new Date() }, status: { notIn: ['COMPLETED', 'CLOSED'] } },
       ],
     },
   })
@@ -70,11 +70,10 @@ export default async function AdminDashboard() {
 
   const getStatusColor = (status: string) => {
     const colors: Record<string, string> = {
-      NEW: 'bg-blue-100 text-blue-800',
-      OPEN: 'bg-yellow-100 text-yellow-800',
-      IN_PROGRESS: 'bg-purple-100 text-purple-800',
-      PENDING_CUSTOMER: 'bg-orange-100 text-orange-800',
-      RESOLVED: 'bg-green-100 text-green-800',
+      RECEIVED: 'bg-blue-100 text-blue-800',
+      IN_REVIEW: 'bg-yellow-100 text-yellow-800',
+      NEED_INFO: 'bg-orange-100 text-orange-800',
+      COMPLETED: 'bg-green-100 text-green-800',
       CLOSED: 'bg-gray-100 text-gray-800',
     }
     return colors[status] || 'bg-gray-100 text-gray-800'

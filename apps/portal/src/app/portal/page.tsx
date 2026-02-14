@@ -32,7 +32,7 @@ export default async function PortalDashboard() {
 
   // Calculate stats
   const totalCases = user.cases.length
-  const openCases = user.cases.filter(c => c.status !== 'CLOSED' && c.status !== 'RESOLVED').length
+  const openCases = user.cases.filter(c => c.status !== 'CLOSED' && c.status !== 'COMPLETED').length
   const totalQuotes = user.quotes.length
   const pendingQuotes = user.quotes.filter(q => q.status === 'DRAFT' || q.status === 'SENT').length
 
@@ -45,11 +45,10 @@ export default async function PortalDashboard() {
 
   const getStatusColor = (status: string) => {
     const colors: Record<string, string> = {
-      NEW: 'bg-blue-100 text-blue-800',
-      OPEN: 'bg-yellow-100 text-yellow-800',
-      IN_PROGRESS: 'bg-purple-100 text-purple-800',
-      PENDING_CUSTOMER: 'bg-orange-100 text-orange-800',
-      RESOLVED: 'bg-green-100 text-green-800',
+      RECEIVED: 'bg-blue-100 text-blue-800',
+      IN_REVIEW: 'bg-yellow-100 text-yellow-800',
+      NEED_INFO: 'bg-orange-100 text-orange-800',
+      COMPLETED: 'bg-green-100 text-green-800',
       CLOSED: 'bg-gray-100 text-gray-800',
       DRAFT: 'bg-gray-100 text-gray-800',
       SENT: 'bg-blue-100 text-blue-800',

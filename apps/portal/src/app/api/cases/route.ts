@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { type, subject, description, priority = 'MEDIUM' } = body
+    const { type, subject, description, priority = 'NORMAL' } = body
 
     // Validate required fields
     if (!type || !subject || !description) {
@@ -78,11 +78,13 @@ export async function POST(request: NextRequest) {
       data: {
         caseNumber: generateCaseNumber(),
         type,
-        status: 'NEW',
+        status: 'RECEIVED',
         priority,
         customerId: user.id,
+        contactEmail: user.email,
+        companyName: user.companyName,
         subject,
-        description,
+        customerMessage: description,
         slaDueAt: calculateSLA(type, priority),
       },
     })
@@ -150,7 +152,7 @@ export async function GET(request: NextRequest) {
           customer: {
             select: { name: true, email: true, companyName: true },
           },
-          assignee: {
+          assignedTo: {
             select: { name: true, email: true },
           },
         },

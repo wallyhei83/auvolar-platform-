@@ -15,7 +15,7 @@ export default async function AdminCasesPage() {
     where: { email: session.user.email },
   })
 
-  if (!user || (user.role !== 'ADMIN' && user.role !== 'STAFF')) {
+  if (!user || (user.role !== 'ADMIN' && user.role !== 'STAFF' && user.role !== 'SUPER_ADMIN')) {
     redirect('/portal')
   }
 
@@ -25,24 +25,18 @@ export default async function AdminCasesPage() {
       customer: {
         select: { name: true, email: true, companyName: true },
       },
-      assignee: {
+      assignedTo: {
         select: { name: true, email: true },
       },
     },
   })
 
-  const staff = await prisma.user.findMany({
-    where: { role: { in: ['ADMIN', 'STAFF'] } },
-    select: { id: true, name: true, email: true },
-  })
-
   const getStatusColor = (status: string) => {
     const colors: Record<string, string> = {
-      NEW: 'bg-blue-100 text-blue-800',
-      OPEN: 'bg-yellow-100 text-yellow-800',
-      IN_PROGRESS: 'bg-purple-100 text-purple-800',
-      PENDING_CUSTOMER: 'bg-orange-100 text-orange-800',
-      RESOLVED: 'bg-green-100 text-green-800',
+      RECEIVED: 'bg-blue-100 text-blue-800',
+      IN_REVIEW: 'bg-yellow-100 text-yellow-800',
+      NEED_INFO: 'bg-orange-100 text-orange-800',
+      COMPLETED: 'bg-green-100 text-green-800',
       CLOSED: 'bg-gray-100 text-gray-800',
     }
     return colors[status] || 'bg-gray-100 text-gray-800'
@@ -51,7 +45,7 @@ export default async function AdminCasesPage() {
   const getPriorityColor = (priority: string) => {
     const colors: Record<string, string> = {
       LOW: 'text-gray-600 bg-gray-100',
-      MEDIUM: 'text-yellow-700 bg-yellow-100',
+      NORMAL: 'text-blue-700 bg-blue-100',
       HIGH: 'text-orange-700 bg-orange-100',
       URGENT: 'text-red-700 bg-red-100',
     }
@@ -60,7 +54,7 @@ export default async function AdminCasesPage() {
 
   const isOverdue = (slaDueAt: Date | null, status: string) => {
     if (!slaDueAt) return false
-    if (status === 'RESOLVED' || status === 'CLOSED') return false
+    if (status === 'COMPLETED' || status === 'CLOSED') return false
     return new Date(slaDueAt) < new Date()
   }
 
@@ -81,32 +75,28 @@ export default async function AdminCasesPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         <div className="bg-white rounded-lg shadow p-4">
           <p className="text-2xl font-bold">{cases.length}</p>
           <p className="text-sm text-gray-600">Total</p>
         </div>
         <div className="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500">
-          <p className="text-2xl font-bold text-blue-600">{statsByStatus['NEW'] || 0}</p>
-          <p className="text-sm text-gray-600">New</p>
+          <p className="text-2xl font-bold text-blue-600">{statsByStatus['RECEIVED'] || 0}</p>
+          <p className="text-sm text-gray-600">Received</p>
         </div>
         <div className="bg-white rounded-lg shadow p-4 border-l-4 border-yellow-500">
-          <p className="text-2xl font-bold text-yellow-600">{statsByStatus['OPEN'] || 0}</p>
-          <p className="text-sm text-gray-600">Open</p>
-        </div>
-        <div className="bg-white rounded-lg shadow p-4 border-l-4 border-purple-500">
-          <p className="text-2xl font-bold text-purple-600">{statsByStatus['IN_PROGRESS'] || 0}</p>
-          <p className="text-sm text-gray-600">In Progress</p>
+          <p className="text-2xl font-bold text-yellow-600">{statsByStatus['IN_REVIEW'] || 0}</p>
+          <p className="text-sm text-gray-600">In Review</p>
         </div>
         <div className="bg-white rounded-lg shadow p-4 border-l-4 border-orange-500">
-          <p className="text-2xl font-bold text-orange-600">{statsByStatus['PENDING_CUSTOMER'] || 0}</p>
-          <p className="text-sm text-gray-600">Pending</p>
+          <p className="text-2xl font-bold text-orange-600">{statsByStatus['NEED_INFO'] || 0}</p>
+          <p className="text-sm text-gray-600">Need Info</p>
         </div>
         <div className="bg-white rounded-lg shadow p-4 border-l-4 border-green-500">
           <p className="text-2xl font-bold text-green-600">
-            {(statsByStatus['RESOLVED'] || 0) + (statsByStatus['CLOSED'] || 0)}
+            {(statsByStatus['COMPLETED'] || 0) + (statsByStatus['CLOSED'] || 0)}
           </p>
-          <p className="text-sm text-gray-600">Resolved</p>
+          <p className="text-sm text-gray-600">Completed</p>
         </div>
       </div>
 
@@ -162,8 +152,8 @@ export default async function AdminCasesPage() {
                         </span>
                       </td>
                       <td className="px-4 py-3 text-sm">
-                        {caseItem.assignee ? (
-                          <span className="text-gray-900">{caseItem.assignee.name}</span>
+                        {caseItem.assignedTo ? (
+                          <span className="text-gray-900">{caseItem.assignedTo.name}</span>
                         ) : (
                           <span className="text-gray-400 italic">Unassigned</span>
                         )}

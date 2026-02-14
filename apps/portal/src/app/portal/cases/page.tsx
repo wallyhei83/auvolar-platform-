@@ -23,7 +23,7 @@ export default async function PortalCasesPage() {
     where: { customerId: user.id },
     orderBy: { createdAt: 'desc' },
     include: {
-      assignee: {
+      assignedTo: {
         select: { name: true, email: true },
       },
     },
@@ -31,11 +31,10 @@ export default async function PortalCasesPage() {
 
   const getStatusColor = (status: string) => {
     const colors: Record<string, string> = {
-      NEW: 'bg-blue-100 text-blue-800',
-      OPEN: 'bg-yellow-100 text-yellow-800',
-      IN_PROGRESS: 'bg-purple-100 text-purple-800',
-      PENDING_CUSTOMER: 'bg-orange-100 text-orange-800',
-      RESOLVED: 'bg-green-100 text-green-800',
+      RECEIVED: 'bg-blue-100 text-blue-800',
+      IN_REVIEW: 'bg-yellow-100 text-yellow-800',
+      NEED_INFO: 'bg-orange-100 text-orange-800',
+      COMPLETED: 'bg-green-100 text-green-800',
       CLOSED: 'bg-gray-100 text-gray-800',
     }
     return colors[status] || 'bg-gray-100 text-gray-800'
@@ -44,7 +43,7 @@ export default async function PortalCasesPage() {
   const getPriorityColor = (priority: string) => {
     const colors: Record<string, string> = {
       LOW: 'text-gray-600',
-      MEDIUM: 'text-yellow-600',
+      NORMAL: 'text-blue-600',
       HIGH: 'text-orange-600',
       URGENT: 'text-red-600',
     }
@@ -87,21 +86,21 @@ export default async function PortalCasesPage() {
         </div>
         <div className="bg-white rounded-lg shadow p-4">
           <p className="text-2xl font-bold text-blue-600">
-            {cases.filter(c => c.status === 'NEW').length}
+            {cases.filter(c => c.status === 'RECEIVED').length}
           </p>
-          <p className="text-sm text-gray-600">New</p>
+          <p className="text-sm text-gray-600">Received</p>
         </div>
         <div className="bg-white rounded-lg shadow p-4">
-          <p className="text-2xl font-bold text-purple-600">
-            {cases.filter(c => c.status === 'IN_PROGRESS').length}
+          <p className="text-2xl font-bold text-yellow-600">
+            {cases.filter(c => c.status === 'IN_REVIEW').length}
           </p>
-          <p className="text-sm text-gray-600">In Progress</p>
+          <p className="text-sm text-gray-600">In Review</p>
         </div>
         <div className="bg-white rounded-lg shadow p-4">
           <p className="text-2xl font-bold text-green-600">
-            {cases.filter(c => c.status === 'RESOLVED' || c.status === 'CLOSED').length}
+            {cases.filter(c => c.status === 'COMPLETED' || c.status === 'CLOSED').length}
           </p>
-          <p className="text-sm text-gray-600">Resolved</p>
+          <p className="text-sm text-gray-600">Completed</p>
         </div>
       </div>
 
@@ -159,7 +158,7 @@ export default async function PortalCasesPage() {
                     </span>
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-600">
-                    {caseItem.assignee?.name || 'Unassigned'}
+                    {caseItem.assignedTo?.name || 'Unassigned'}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-500">
                     {new Date(caseItem.createdAt).toLocaleDateString()}
