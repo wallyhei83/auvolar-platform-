@@ -7,48 +7,48 @@ import {
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 
-// Product categories
+// Product categories - links match route structure
 const categories = [
   { 
     name: 'High Bay Lights', 
     description: 'Warehouses, manufacturing, gyms',
     image: '/images/categories/high-bay.jpg',
-    href: '/products/high-bay',
+    href: '/products/indoor/high-bay',
     badge: 'Best Seller'
   },
   { 
     name: 'Wall Packs', 
     description: 'Building perimeter, security',
     image: '/images/categories/wall-pack.jpg',
-    href: '/products/wall-pack',
+    href: '/products/outdoor/wall-pack',
     badge: null
   },
   { 
     name: 'Area Lights', 
     description: 'Parking lots, pathways',
     image: '/images/categories/area-light.jpg',
-    href: '/products/area-light',
+    href: '/products/outdoor/area-light',
     badge: null
   },
   { 
     name: 'Troffers & Panels', 
     description: 'Office, retail, education',
     image: '/images/categories/troffer.jpg',
-    href: '/products/troffer',
+    href: '/products/indoor/troffer',
     badge: null
   },
   { 
-    name: 'Linear High Bay', 
-    description: 'Aisles, open floor plans',
-    image: '/images/categories/linear.jpg',
-    href: '/products/linear-high-bay',
+    name: 'Solar Lights', 
+    description: 'Off-grid street & area lights',
+    image: '/images/categories/solar.jpg',
+    href: '/products/solar',
     badge: 'New'
   },
   { 
     name: 'LED Tubes', 
     description: 'T8/T5 retrofit replacements',
     image: '/images/categories/tubes.jpg',
-    href: '/products/tubes',
+    href: '/products/indoor/tubes',
     badge: null
   },
 ]
@@ -99,15 +99,15 @@ const tools = [
     name: 'Rebate Finder',
     description: 'Find utility rebates in your area',
     icon: MapPin,
-    href: '/tools/rebate',
+    href: '/tools/rebate-finder',
     time: '2 min'
   },
   {
-    name: 'Spec Package',
-    description: 'Download Cut Sheet, IES, DLC in one click',
+    name: 'Request Quote',
+    description: 'Get custom pricing for your project',
     icon: FileText,
-    href: '/tools/spec-package',
-    time: 'Instant'
+    href: '/tools/rfq',
+    time: '24h response'
   },
 ]
 
