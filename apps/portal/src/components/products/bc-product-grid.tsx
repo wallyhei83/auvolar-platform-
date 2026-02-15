@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Lightbulb, ShoppingCart, Loader2, Plus, Minus, CheckCircle2, Clock } from 'lucide-react'
+import { Lightbulb, ShoppingCart, Loader2, Plus, Minus, CheckCircle2, Clock, Check } from 'lucide-react'
+import { useCart } from '@/lib/cart-context'
 
 interface BCProduct {
   id: number
@@ -46,6 +47,7 @@ interface BCProductGridProps {
 }
 
 export function BCProductGrid({ categoryFilter, limit = 20, showCategories = true }: BCProductGridProps) {
+  const { addToCart, loading: cartLoading } = useCart()
   const [products, setProducts] = useState<BCProduct[]>([])
   const [categories, setCategories] = useState<BCCategory[]>([])
   const [loading, setLoading] = useState(true)
@@ -53,6 +55,7 @@ export function BCProductGrid({ categoryFilter, limit = 20, showCategories = tru
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [quantities, setQuantities] = useState<Record<number, number>>({})
+  const [addedProducts, setAddedProducts] = useState<Record<number, boolean>>({})
 
   useEffect(() => {
     fetchProducts()
@@ -253,9 +256,39 @@ export function BCProductGrid({ categoryFilter, limit = 20, showCategories = tru
                       <Plus className="w-3 h-3" />
                     </button>
                   </div>
-                  <button className="flex-1 bg-brand hover:bg-yellow-400 text-black py-2 px-3 rounded-lg text-sm font-semibold flex items-center justify-center gap-1">
-                    <ShoppingCart className="w-4 h-4" />
-                    Add
+                  <button
+                    onClick={async () => {
+                      await addToCart({
+                        productId: product.id,
+                        name: product.name,
+                        sku: product.sku,
+                        price: product.salePrice && product.salePrice < product.price ? product.salePrice : product.price,
+                        quantity: quantities[product.id] || 1,
+                        image: getPrimaryImage(product) || undefined,
+                      })
+                      setAddedProducts(prev => ({ ...prev, [product.id]: true }))
+                      setTimeout(() => setAddedProducts(prev => ({ ...prev, [product.id]: false })), 2000)
+                    }}
+                    disabled={cartLoading}
+                    className={`flex-1 py-2 px-3 rounded-lg text-sm font-semibold flex items-center justify-center gap-1 transition-colors ${
+                      addedProducts[product.id]
+                        ? 'bg-green-500 text-white'
+                        : 'bg-brand hover:bg-yellow-400 text-black'
+                    }`}
+                  >
+                    {addedProducts[product.id] ? (
+                      <>
+                        <Check className="w-4 h-4" />
+                        Added!
+                      </>
+                    ) : cartLoading ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <>
+                        <ShoppingCart className="w-4 h-4" />
+                        Add
+                      </>
+                    )}
                   </button>
                 </div>
               </div>
