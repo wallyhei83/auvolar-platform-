@@ -168,7 +168,7 @@ export default function HomePage() {
                 </div>
                 <div className="mt-3 flex flex-wrap gap-2 text-sm text-gray-400">
                   <span>Popular:</span>
-                  <Link href="/products/high-bay" className="text-brand hover:underline">High Bay</Link>
+                  <Link href="/products/indoor/high-bay" className="text-brand hover:underline">High Bay</Link>
                   <Link href="/tools/replacement?q=400w+mh" className="text-brand hover:underline">400W MH Replacement</Link>
                   <Link href="/products?filter=dlc" className="text-brand hover:underline">DLC Eligible</Link>
                 </div>

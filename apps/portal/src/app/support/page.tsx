@@ -218,7 +218,7 @@ export default function SupportPage() {
               <h3 className="mt-4 font-semibold text-black">Submit Ticket</h3>
               <p className="mt-1 text-gray-800">Get help via email</p>
               <Link
-                href="/support/ticket"
+                href="/contact"
                 className="mt-2 inline-block rounded-lg bg-black px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
               >
                 Open Ticket

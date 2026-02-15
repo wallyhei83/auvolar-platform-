@@ -119,7 +119,7 @@ function LoginForm() {
                 </label>
               </div>
 
-              <Link href="/forgot-password" className="text-sm font-medium text-brand-dark hover:text-brand">
+              <Link href="/support" className="text-sm font-medium text-brand-dark hover:text-brand">
                 Forgot password?
               </Link>
             </div>

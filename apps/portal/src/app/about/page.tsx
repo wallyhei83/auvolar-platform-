@@ -198,7 +198,7 @@ export default function AboutPage() {
                   ))}
                 </div>
                 <Link
-                  href="/compliance"
+                  href="/about"
                   className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-brand hover:underline"
                 >
                   View Compliance Center
