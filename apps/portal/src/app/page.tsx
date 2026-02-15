@@ -414,7 +414,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-2">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900">Why Contractors Choose LumilinkAI</h2>
+              <h2 className="text-2xl font-bold text-gray-900">Why Contractors Choose Auvolar</h2>
               <p className="mt-4 text-gray-600">
                 We understand the demands of commercial lighting projects. That's why we offer
                 competitive pricing, fast shipping, and the technical support you need to get the job done right.
@@ -461,7 +461,7 @@ export default function HomePage() {
                   ))}
                 </div>
                 <blockquote className="mt-4 text-lg text-gray-700">
-                  "LumilinkAI has been our go-to supplier for the past two years. Fast shipping,
+                  "Auvolar has been our go-to supplier for the past two years. Fast shipping,
                   quality products, and their technical team actually knows lighting. Can't ask for more."
                 </blockquote>
                 <div className="mt-6 flex items-center gap-4">

@@ -82,7 +82,7 @@ export default function RebateFinderPage() {
             <div className="p-4 bg-blue-50 rounded-lg">
               <h3 className="font-medium text-blue-800 mb-2">📋 Pre-Qualified Products</h3>
               <p className="text-sm text-blue-700">
-                All LumilinkAI products are DLC listed and rebate-eligible
+                All Auvolar products are DLC listed and rebate-eligible
               </p>
             </div>
           </div>

@@ -270,9 +270,9 @@ export default function ServicePage() {
                   <Phone className="w-5 h-5" />
                   <span>1-888-555-0123</span>
                 </a>
-                <a href="mailto:services@lumilinkai.com" className="flex items-center gap-3 text-gray-300 hover:text-white">
+                <a href="mailto:services@auvolar.com" className="flex items-center gap-3 text-gray-300 hover:text-white">
                   <Mail className="w-5 h-5" />
-                  <span>services@lumilinkai.com</span>
+                  <span>services@auvolar.com</span>
                 </a>
               </div>
             </div>

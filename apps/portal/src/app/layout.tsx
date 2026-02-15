@@ -9,8 +9,8 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: {
-    default: 'LumilinkAI - Light Done Right',
-    template: '%s | LumilinkAI',
+    default: 'Auvolar - Light Done Right',
+    template: '%s | Auvolar',
   },
   description: 'Commercial LED lighting solutions for contractors and businesses. Quality products, competitive pricing, expert support.',
   keywords: ['LED lighting', 'commercial lighting', 'high bay', 'wall pack', 'contractor pricing', 'B2B lighting'],

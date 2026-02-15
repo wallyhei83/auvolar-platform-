@@ -179,8 +179,8 @@ export default function RMAPage() {
             <a href="tel:1-888-555-0123" className="px-6 py-3 bg-white text-gray-900 font-semibold rounded-lg hover:bg-gray-100">
               📞 1-888-555-0123
             </a>
-            <a href="mailto:support@lumilinkai.com" className="px-6 py-3 bg-yellow-400 text-black font-semibold rounded-lg hover:bg-yellow-500">
-              ✉️ support@lumilinkai.com
+            <a href="mailto:support@auvolar.com" className="px-6 py-3 bg-yellow-400 text-black font-semibold rounded-lg hover:bg-yellow-500">
+              ✉️ support@auvolar.com
             </a>
           </div>
         </div>

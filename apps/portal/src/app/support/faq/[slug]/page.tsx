@@ -158,7 +158,7 @@ const faqContent: Record<string, { title: string; category: string; content: str
         <li><strong>Ship the product:</strong> Prepaid label provided for approved claims</li>
         <li><strong>Get replacement:</strong> Ships within 5-7 days of inspection</li>
       </ol>
-      <p>Questions? Contact <a href="mailto:support@lumilinkai.com">support@lumilinkai.com</a></p>
+      <p>Questions? Contact <a href="mailto:support@auvolar.com">support@auvolar.com</a></p>
     `,
   },
   'damaged-shipment': {
@@ -169,7 +169,7 @@ const faqContent: Record<string, { title: string; category: string; content: str
       <ol>
         <li><strong>Document the damage:</strong> Take photos of packaging and products</li>
         <li><strong>Note on delivery receipt:</strong> Write "damaged" before signing</li>
-        <li><strong>Contact us within 48 hours:</strong> Email photos to support@lumilinkai.com</li>
+        <li><strong>Contact us within 48 hours:</strong> Email photos to support@auvolar.com</li>
       </ol>
       <h3>What happens next:</h3>
       <ul>
@@ -322,7 +322,7 @@ const faqContent: Record<string, { title: string; category: string; content: str
         <li>Submit completed application with references</li>
         <li>Approval within 3-5 business days</li>
       </ol>
-      <p>Contact <a href="mailto:accounting@lumilinkai.com">accounting@lumilinkai.com</a> for details.</p>
+      <p>Contact <a href="mailto:accounting@auvolar.com">accounting@auvolar.com</a> for details.</p>
     `,
   },
   'tax-exempt': {
@@ -343,7 +343,7 @@ const faqContent: Record<string, { title: string; category: string; content: str
         <li>Government purchase exemption</li>
       </ul>
       <p>Once approved, tax will be automatically removed from future orders.</p>
-      <p>Questions? Email <a href="mailto:accounting@lumilinkai.com">accounting@lumilinkai.com</a></p>
+      <p>Questions? Email <a href="mailto:accounting@auvolar.com">accounting@auvolar.com</a></p>
     `,
   },
   'project-quote': {
@@ -387,7 +387,7 @@ const faqContent: Record<string, { title: string; category: string; content: str
         <li>Enter your PO number</li>
         <li>Complete the order</li>
       </ol>
-      <p>Alternatively, email your PO to <a href="mailto:orders@lumilinkai.com">orders@lumilinkai.com</a></p>
+      <p>Alternatively, email your PO to <a href="mailto:orders@auvolar.com">orders@auvolar.com</a></p>
       <p>Need Net Terms? See <a href="/support/faq/net-terms">How to apply for Net Terms</a>.</p>
     `,
   },
@@ -437,7 +437,7 @@ export default async function FAQPage({ params }: { params: Promise<{ slug: stri
               <Link href="/support" className="px-6 py-3 bg-white text-gray-700 font-medium rounded-lg hover:bg-gray-50 text-center border">
                 Browse All FAQs
               </Link>
-              <a href="mailto:support@lumilinkai.com" className="px-6 py-3 bg-yellow-400 text-black font-medium rounded-lg hover:bg-yellow-500 text-center">
+              <a href="mailto:support@auvolar.com" className="px-6 py-3 bg-yellow-400 text-black font-medium rounded-lg hover:bg-yellow-500 text-center">
                 Contact Support
               </a>
             </div>

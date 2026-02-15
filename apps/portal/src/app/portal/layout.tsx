@@ -44,7 +44,7 @@ export default async function PortalLayout({
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand">
                 <Zap className="h-5 w-5 text-black" />
               </div>
-              <span className="text-lg font-bold">LumilinkAI</span>
+              <span className="text-lg font-bold">Auvolar</span>
             </Link>
             <ChevronRight className="h-4 w-4 text-gray-400" />
             <span className="text-sm text-gray-600">Customer Portal</span>

@@ -49,7 +49,7 @@ function LoginForm() {
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand">
               <Zap className="h-6 w-6 text-black" />
             </div>
-            <span className="text-2xl font-bold">LumilinkAI</span>
+            <span className="text-2xl font-bold">Auvolar</span>
           </div>
         </Link>
         <h2 className="mt-6 text-center text-2xl font-bold text-gray-900">
@@ -140,7 +140,7 @@ function LoginForm() {
                 <div className="w-full border-t border-gray-200" />
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="bg-white px-2 text-gray-500">New to LumilinkAI?</span>
+                <span className="bg-white px-2 text-gray-500">New to Auvolar?</span>
               </div>
             </div>
 

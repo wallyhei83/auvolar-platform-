@@ -62,7 +62,7 @@ export default function WarrantyPage() {
           </div>
           <h1 className="text-3xl font-bold text-white sm:text-4xl">Warranty Information</h1>
           <p className="mx-auto mt-4 max-w-xl text-green-100">
-            All LumilinkAI products are backed by our comprehensive manufacturer warranty.
+            All Auvolar products are backed by our comprehensive manufacturer warranty.
           </p>
         </div>
       </section>

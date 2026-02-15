@@ -56,7 +56,7 @@ export default function AboutPage() {
               Light Done Right
             </h1>
             <p className="mt-6 text-xl text-gray-300">
-              LumilinkAI is your partner for commercial and industrial LED lighting. 
+              Auvolar is your partner for commercial and industrial LED lighting. 
               We combine quality products, competitive pricing, and expert support to help 
               contractors and facility managers complete projects successfully.
             </p>
@@ -101,7 +101,7 @@ export default function AboutPage() {
               <h2 className="text-3xl font-bold text-gray-900">Our Story</h2>
               <div className="mt-6 space-y-4 text-gray-600">
                 <p>
-                  LumilinkAI was founded with a simple mission: make commercial LED lighting 
+                  Auvolar was founded with a simple mission: make commercial LED lighting 
                   accessible, affordable, and easy to source for the professionals who need it most.
                 </p>
                 <p>
@@ -111,7 +111,7 @@ export default function AboutPage() {
                   commercial projects.
                 </p>
                 <p>
-                  We built LumilinkAI to be different. Every product in our catalog is carefully 
+                  We built Auvolar to be different. Every product in our catalog is carefully 
                   vetted for quality and performance. Our inventory is accurate and updated in real-time. 
                   And our team includes lighting specialists who can help you find the right solution 
                   for any application.
@@ -163,7 +163,7 @@ export default function AboutPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-2">
             <div>
-              <h2 className="text-3xl font-bold text-gray-900">Why Choose LumilinkAI</h2>
+              <h2 className="text-3xl font-bold text-gray-900">Why Choose Auvolar</h2>
               <ul className="mt-8 space-y-4">
                 {[
                   'DLC and UL-listed products backed by manufacturer warranties',
@@ -237,7 +237,7 @@ export default function AboutPage() {
               </div>
               <div>
                 <p className="text-sm text-gray-700">Email</p>
-                <p className="font-semibold text-black">sales@lumilinkai.com</p>
+                <p className="font-semibold text-black">sales@auvolar.com</p>
               </div>
             </div>
             

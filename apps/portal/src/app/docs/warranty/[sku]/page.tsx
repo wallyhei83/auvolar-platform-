@@ -46,9 +46,9 @@ export default function WarrantyPage() {
 
         {/* Warranty Overview */}
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-8 text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">LumilinkAI Limited Warranty</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Auvolar Limited Warranty</h2>
           <p className="text-gray-600">
-            All LumilinkAI LED products are backed by our comprehensive manufacturer warranty, 
+            All Auvolar LED products are backed by our comprehensive manufacturer warranty, 
             providing protection against defects in materials and workmanship.
           </p>
         </div>

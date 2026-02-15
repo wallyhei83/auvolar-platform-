@@ -94,7 +94,7 @@ export function Footer() {
                 <Zap className="h-6 w-6 text-black" />
               </div>
               <div>
-                <span className="text-xl font-bold text-white">LumilinkAI</span>
+                <span className="text-xl font-bold text-white">Auvolar</span>
                 <span className="block text-xs text-gray-500">Light Done Right</span>
               </div>
             </Link>
@@ -109,9 +109,9 @@ export function Footer() {
                 <Phone className="h-4 w-4 text-brand" />
                 1-888-555-0123
               </a>
-              <a href="mailto:sales@lumilinkai.com" className="flex items-center gap-2 hover:text-white">
+              <a href="mailto:sales@auvolar.com" className="flex items-center gap-2 hover:text-white">
                 <Mail className="h-4 w-4 text-brand" />
-                sales@lumilinkai.com
+                sales@auvolar.com
               </a>
               <div className="flex items-start gap-2">
                 <MapPin className="h-4 w-4 text-brand mt-0.5" />
@@ -165,7 +165,7 @@ export function Footer() {
         <div className="mt-8 border-t border-gray-800 pt-8">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <p className="text-sm text-gray-500">
-              © {new Date().getFullYear()} LumilinkAI. All rights reserved.
+              © {new Date().getFullYear()} Auvolar. All rights reserved.
             </p>
             <div className="flex gap-6 text-sm text-gray-500">
               <Link href="/privacy" className="hover:text-white">Privacy Policy</Link>
