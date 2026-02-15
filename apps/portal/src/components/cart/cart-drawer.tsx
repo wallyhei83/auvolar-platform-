@@ -13,11 +13,9 @@ interface CartDrawerProps {
 export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   const { items, itemCount, subtotal, loading, updateQuantity, removeItem, checkout } = useCart()
 
-  const handleCheckout = async () => {
-    const checkoutUrl = await checkout()
-    if (checkoutUrl) {
-      window.location.href = checkoutUrl
-    }
+  const handleCheckout = () => {
+    // For now, redirect to cart page for checkout
+    window.location.href = '/cart'
   }
 
   if (!isOpen) return null
