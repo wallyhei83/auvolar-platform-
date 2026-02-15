@@ -71,7 +71,7 @@ async function getInStockProducts(): Promise<InStockProduct[]> {
           thumbnail: primaryImage?.url_thumbnail || null,
           shippingStatus,
           shippingDays,
-          url: `/bc-products/${p.id}`,
+          url: `/bc-products?id=${p.id}`,
           categories: p.categories || [],
         };
       });
