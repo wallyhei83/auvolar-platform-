@@ -32,6 +32,8 @@ export async function GET() {
 
     return NextResponse.json({
       success: true,
+      version: 'v3-single-product-fix',
+      deployedAt: new Date().toISOString(),
       store: {
         name: storeInfo.name,
         domain: storeInfo.domain,
