@@ -10,24 +10,28 @@ interface BCProduct {
   name: string;
   sku: string;
   price: number;
-  sale_price: number;
+  salePrice: number;
+  msrp: number;
   description: string;
   images: Array<{
-    url_standard: string;
-    url_thumbnail: string;
-    description: string;
-    is_thumbnail: boolean;
+    url: string;
+    thumbnail: string;
+    zoom: string;
+    isPrimary: boolean;
   }>;
-  inventory_level: number;
-  availability: string;
+  inventory: number;
+  inStock: boolean;
   categories: number[];
   weight: number;
-  width: number;
-  height: number;
-  depth: number;
-  custom_fields: Array<{
-    name: string;
-    value: string;
+  variants: Array<{
+    id: number;
+    sku: string;
+    price: number;
+    inventory: number;
+    options: Array<{
+      name: string;
+      value: string;
+    }>;
   }>;
 }
 
@@ -106,10 +110,10 @@ export default function BCProductDetailPage() {
     );
   }
 
-  const displayPrice = product.sale_price > 0 ? product.sale_price : product.price;
-  const hasDiscount = product.sale_price > 0 && product.sale_price < product.price;
-  const inStock = product.inventory_level > 0 || product.availability === 'available';
-  const mainImage = product.images?.[selectedImage]?.url_standard || '/placeholder-product.png';
+  const displayPrice = product.salePrice > 0 ? product.salePrice : product.price;
+  const hasDiscount = product.salePrice > 0 && product.salePrice < product.price;
+  const inStock = product.inStock;
+  const mainImage = product.images?.[selectedImage]?.url || product.images?.[selectedImage]?.zoom || '/placeholder-product.png';
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -151,7 +155,7 @@ export default function BCProductDetailPage() {
                     }`}
                   >
                     <Image
-                      src={image.url_thumbnail || image.url_standard}
+                      src={image.thumbnail || image.url}
                       alt={`${product.name} - Image ${index + 1}`}
                       width={80}
                       height={80}
@@ -178,7 +182,7 @@ export default function BCProductDetailPage() {
               </span>
               {hasDiscount && (
                 <span className="text-xl text-gray-400 line-through">
-                  ${product.price.toFixed(2)}
+                  ${product.msrp?.toFixed(2) || product.price.toFixed(2)}
                 </span>
               )}
             </div>
@@ -189,8 +193,8 @@ export default function BCProductDetailPage() {
                 <>
                   <span className="w-3 h-3 bg-green-500 rounded-full"></span>
                   <span className="text-green-700 font-medium">In Stock</span>
-                  {product.inventory_level > 0 && (
-                    <span className="text-gray-500">({product.inventory_level} available)</span>
+                  {product.inventory > 0 && (
+                    <span className="text-gray-500">({product.inventory} available)</span>
                   )}
                 </>
               ) : (
@@ -263,51 +267,36 @@ export default function BCProductDetailPage() {
               </div>
             )}
 
-            {/* Custom Fields / Specifications */}
-            {product.custom_fields && product.custom_fields.length > 0 && (
+            {/* Variants / Options */}
+            {product.variants && product.variants.length > 1 && (
               <div className="border-t pt-6">
-                <h2 className="text-lg font-semibold text-gray-900 mb-3">Specifications</h2>
-                <dl className="grid grid-cols-2 gap-x-4 gap-y-2">
-                  {product.custom_fields.map((field, index) => (
-                    <div key={index} className="flex justify-between col-span-2 py-2 border-b border-gray-100">
-                      <dt className="text-gray-500">{field.name}</dt>
-                      <dd className="text-gray-900 font-medium">{field.value}</dd>
+                <h2 className="text-lg font-semibold text-gray-900 mb-3">Available Options</h2>
+                <div className="space-y-2">
+                  {product.variants.slice(0, 5).map((variant) => (
+                    <div key={variant.id} className="flex items-center justify-between py-2 px-3 bg-gray-50 rounded-lg">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm text-gray-600">{variant.sku}</span>
+                        {variant.options.map((opt, i) => (
+                          <span key={i} className="text-xs bg-gray-200 px-2 py-0.5 rounded">
+                            {opt.value}
+                          </span>
+                        ))}
+                      </div>
+                      <span className="font-medium">${variant.price.toFixed(2)}</span>
                     </div>
                   ))}
-                </dl>
+                  {product.variants.length > 5 && (
+                    <p className="text-sm text-gray-500 pl-3">+ {product.variants.length - 5} more options</p>
+                  )}
+                </div>
               </div>
             )}
 
-            {/* Dimensions */}
-            {(product.weight > 0 || product.width > 0) && (
+            {/* Weight */}
+            {product.weight > 0 && (
               <div className="border-t pt-6">
-                <h2 className="text-lg font-semibold text-gray-900 mb-3">Dimensions</h2>
-                <dl className="grid grid-cols-2 gap-4 text-sm">
-                  {product.weight > 0 && (
-                    <div>
-                      <dt className="text-gray-500">Weight</dt>
-                      <dd className="text-gray-900 font-medium">{product.weight} lbs</dd>
-                    </div>
-                  )}
-                  {product.width > 0 && (
-                    <div>
-                      <dt className="text-gray-500">Width</dt>
-                      <dd className="text-gray-900 font-medium">{product.width}"</dd>
-                    </div>
-                  )}
-                  {product.height > 0 && (
-                    <div>
-                      <dt className="text-gray-500">Height</dt>
-                      <dd className="text-gray-900 font-medium">{product.height}"</dd>
-                    </div>
-                  )}
-                  {product.depth > 0 && (
-                    <div>
-                      <dt className="text-gray-500">Depth</dt>
-                      <dd className="text-gray-900 font-medium">{product.depth}"</dd>
-                    </div>
-                  )}
-                </dl>
+                <h2 className="text-lg font-semibold text-gray-900 mb-3">Shipping</h2>
+                <p className="text-gray-600">Weight: {product.weight} lbs</p>
               </div>
             )}
           </div>
