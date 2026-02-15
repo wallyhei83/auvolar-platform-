@@ -6,49 +6,50 @@ import {
 } from 'lucide-react'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
+import { FeaturedProducts } from '@/components/home/featured-products'
 
-// Product categories - links match route structure
+// Product categories - links match route structure with real images
 const categories = [
   { 
     name: 'High Bay Lights', 
     description: 'Warehouses, manufacturing, gyms',
-    image: '/images/categories/high-bay.jpg',
+    image: 'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=600&q=80',
     href: '/products/indoor/high-bay',
     badge: 'Best Seller'
   },
   { 
     name: 'Wall Packs', 
     description: 'Building perimeter, security',
-    image: '/images/categories/wall-pack.jpg',
+    image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/130/images/405/QQ20260212-142924__81406.1770878366.386.513.png?c=1',
     href: '/products/outdoor/wall-pack',
     badge: null
   },
   { 
     name: 'Area Lights', 
     description: 'Parking lots, pathways',
-    image: '/images/categories/area-light.jpg',
+    image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/113/images/412/Area_Light_OT75W-420W_Black__19697.1770976359.386.513.jpg?c=1',
     href: '/products/outdoor/area-light',
     badge: null
   },
   { 
     name: 'Troffers & Panels', 
     description: 'Office, retail, education',
-    image: '/images/categories/troffer.jpg',
+    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80',
     href: '/products/indoor/troffer',
     badge: null
   },
   { 
     name: 'Solar Lights', 
     description: 'Off-grid street & area lights',
-    image: '/images/categories/solar.jpg',
+    image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/119/images/562/Solar_Wallpack_Light_AN-SBR6W_-6K-WH__87869.1771053883.386.513.jpg?c=1',
     href: '/products/solar',
     badge: 'New'
   },
   { 
     name: 'LED Tubes', 
     description: 'T8/T5 retrofit replacements',
-    image: '/images/categories/tubes.jpg',
-    href: '/products/indoor/tubes',
+    image: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=600&q=80',
+    href: '/products/indoor/led-tube',
     badge: null
   },
 ]
@@ -293,11 +294,12 @@ export default function HomePage() {
                 href={category.href}
                 className="group relative overflow-hidden rounded-xl border border-gray-200 bg-white transition-all hover:border-brand hover:shadow-lg"
               >
-                <div className="aspect-[4/3] bg-gradient-to-br from-gray-100 to-gray-200">
-                  {/* Placeholder for product image */}
-                  <div className="flex h-full items-center justify-center">
-                    <Zap className="h-16 w-16 text-gray-300" />
-                  </div>
+                <div className="aspect-[4/3] bg-gray-100 overflow-hidden">
+                  <img 
+                    src={category.image}
+                    alt={category.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
                 </div>
                 {category.badge && (
                   <span className="absolute right-3 top-3 rounded-full bg-brand px-2.5 py-1 text-xs font-semibold text-black">
@@ -360,38 +362,7 @@ export default function HomePage() {
             </Link>
           </div>
           
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-            {featuredProducts.map((product) => (
-              <Link
-                key={product.sku}
-                href={`/products/${product.sku}`}
-                className="group rounded-xl border border-gray-200 bg-white p-4 transition-all hover:border-brand hover:shadow-md"
-              >
-                <div className="aspect-square rounded-lg bg-gray-100">
-                  <div className="flex h-full items-center justify-center">
-                    <Zap className="h-10 w-10 text-gray-300" />
-                  </div>
-                </div>
-                <div className="mt-3">
-                  {product.dlc && (
-                    <span className="inline-block rounded bg-green-100 px-1.5 py-0.5 text-[10px] font-semibold text-green-700">
-                      DLC
-                    </span>
-                  )}
-                  <h3 className="mt-1 text-sm font-medium text-gray-900 group-hover:text-brand">
-                    {product.name}
-                  </h3>
-                  <p className="text-xs text-gray-500">{product.sku}</p>
-                  <div className="mt-2 flex items-center justify-between">
-                    <span className="font-semibold text-gray-900">{product.price}</span>
-                    <span className={`text-xs ${product.stock === 'In Stock' ? 'text-green-600' : 'text-amber-600'}`}>
-                      {product.stock}
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
+          <FeaturedProducts />
         </div>
       </section>
 
