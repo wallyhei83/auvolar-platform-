@@ -7,6 +7,7 @@ import {
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { FeaturedProducts } from '@/components/home/featured-products'
+import InStockProducts from '@/components/home/in-stock-products'
 
 // Product categories with matching BC product images
 const categories = [
@@ -349,22 +350,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Featured Products - In Stock */}
-      <section className="py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex items-end justify-between">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900">In Stock & Ready to Ship</h2>
-              <p className="mt-2 text-gray-600">Ships within 24 hours • Fast delivery</p>
-            </div>
-            <Link href="/products?filter=in-stock" className="hidden text-sm font-medium text-brand hover:underline sm:block">
-              View All In-Stock →
-            </Link>
-          </div>
-          
-          <FeaturedProducts />
-        </div>
-      </section>
+      {/* In Stock & Ready to Ship - Live from BigCommerce */}
+      <InStockProducts />
 
       {/* Contractor Tools */}
       <section className="bg-black py-16">
