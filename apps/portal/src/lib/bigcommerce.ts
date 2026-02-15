@@ -291,12 +291,14 @@ export async function createCart(items: {
   product_id: number
   quantity: number
   variant_id?: number
+  option_selections?: { option_id: number; option_value: number }[]
 }[], customerId?: number): Promise<{ data: BCCart }> {
   const body: any = {
     line_items: items.map(item => ({
       product_id: item.product_id,
       quantity: item.quantity,
       ...(item.variant_id && { variant_id: item.variant_id }),
+      ...(item.option_selections && { option_selections: item.option_selections }),
     })),
   }
   if (customerId) body.customer_id = customerId
