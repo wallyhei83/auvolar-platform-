@@ -241,15 +241,14 @@ function ProductDetail({ productId }: { productId: string }) {
                   try {
                     await addToCart({
                       productId: product.id,
-                      variantId: selectedVariant?.id,
                       name: product.name,
-                      sku: selectedVariant?.sku || product.sku,
-                      price: selectedVariant?.price || product.price,
+                      sku: product.sku,
+                      price: product.price,
                       quantity: quantity,
                       image: product.images?.[0]?.thumbnail || product.images?.[0]?.url,
                     })
                     toast({
-                      title: "Added to Cart",
+                      title: "Added to Cart ✓",
                       description: `${quantity}x ${product.name}`,
                     })
                   } catch (err) {
