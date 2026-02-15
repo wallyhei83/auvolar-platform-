@@ -248,6 +248,3 @@ function NotFoundPage({ slug }: { slug: string }) {
     </div>
   )
 }
-
-// Required for useState
-import { useState } from 'react'
