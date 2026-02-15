@@ -9,8 +9,8 @@ export async function GET(request: NextRequest) {
   const limit = parseInt(searchParams.get('limit') || '12')
   
   try {
-    // Fetch products with images, sorted by inventory
-    const url = `https://api.bigcommerce.com/stores/${BC_STORE_HASH}/v3/catalog/products?include=images&is_visible=true&inventory_level:min=1&limit=50&sort=inventory_level&direction=desc`
+    // Fetch products with images (BC API doesn't support inventory_level filter, so we filter manually)
+    const url = `https://api.bigcommerce.com/stores/${BC_STORE_HASH}/v3/catalog/products?include=images&is_visible=true&limit=100`
     
     const response = await fetch(url, {
       headers: {
@@ -28,9 +28,10 @@ export async function GET(request: NextRequest) {
     
     const data = await response.json()
     
-    // Filter products with actual inventory and format response
+    // Filter products with actual inventory, sort by inventory descending
     const inStockProducts = data.data
       .filter((p: any) => p.inventory_level > 0)
+      .sort((a: any, b: any) => b.inventory_level - a.inventory_level)
       .slice(0, limit)
       .map((p: any) => {
         const primaryImage = p.images?.find((img: any) => img.is_thumbnail) || p.images?.[0]
