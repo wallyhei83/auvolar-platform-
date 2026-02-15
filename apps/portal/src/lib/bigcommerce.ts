@@ -43,19 +43,20 @@ export interface BCProduct {
   retail_price?: number
   cost_price?: number
   description: string
-  availability: string
-  inventory_level: number
-  inventory_tracking: string
-  categories: number[]
+  type?: 'physical' | 'digital'
+  availability?: string
+  inventory_level?: number
+  inventory_tracking?: 'none' | 'product' | 'variant'
+  categories?: number[]
   brand_id?: number
-  weight: number
-  width: number
-  height: number
-  depth: number
-  is_visible: boolean
-  custom_fields: { id: number; name: string; value: string }[]
-  variants: BCVariant[]
-  images: BCImage[]
+  weight?: number
+  width?: number
+  height?: number
+  depth?: number
+  is_visible?: boolean
+  custom_fields?: { id?: number; name: string; value: string }[]
+  variants?: BCVariant[]
+  images?: BCImage[]
 }
 
 export interface BCVariant {
