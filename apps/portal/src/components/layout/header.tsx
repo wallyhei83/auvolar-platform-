@@ -10,53 +10,40 @@ import {
 import { useCart } from '@/lib/cart-context'
 import { CartDrawer } from '@/components/cart/cart-drawer'
 
-// 产品分类 - 多级菜单结构
+// 产品分类 - 简化结构，链接到BC产品页面
 const productCategories = {
   outdoor: {
     title: 'Outdoor Lighting',
     href: '/products/outdoor',
     subcategories: [
       {
-        title: 'Area Lights',
-        href: '/products/outdoor/area-light',
-        items: [
-          { name: 'Parking Lot Lights', href: '/products/outdoor/area-light/parking-lot' },
-          { name: 'Street Lights', href: '/products/outdoor/area-light/street' },
-          { name: 'Shoe Box Lights', href: '/products/outdoor/area-light/shoe-box' },
-        ]
+        title: 'Area Lights',  // 合并了 Parking Lot, Street, Shoe Box
+        href: '/bc-products?category=area-parking',
+        items: []  // 不再有子分类
       },
       {
         title: 'Flood Lights',
-        href: '/products/outdoor/flood',
-        items: [
-          { name: 'Sports Flood Lights', href: '/products/outdoor/flood/sports' },
-          { name: 'Security Flood Lights', href: '/products/outdoor/flood/security' },
-        ]
+        href: '/bc-products?category=flood',
+        items: []
       },
       {
         title: 'Wall Packs',
-        href: '/products/outdoor/wall-pack',
-        items: [
-          { name: 'Full Cutoff', href: '/products/outdoor/wall-pack/full-cutoff' },
-          { name: 'Semi Cutoff', href: '/products/outdoor/wall-pack/semi-cutoff' },
-        ]
+        href: '/bc-products?category=wall-pack',
+        items: []
       },
       {
         title: 'Canopy Lights',
-        href: '/products/outdoor/canopy',
-        items: [
-          { name: 'Gas Station Canopy', href: '/products/outdoor/canopy/gas-station' },
-          { name: 'Parking Garage', href: '/products/outdoor/canopy/parking-garage' },
-        ]
+        href: '/bc-products?category=canopy',
+        items: []
       },
       {
         title: 'Bollard Lights',
-        href: '/products/outdoor/bollard',
+        href: '/bc-products?category=landscape',
         items: []
       },
       {
         title: 'Post Top Lights',
-        href: '/products/outdoor/post-top',
+        href: '/bc-products?category=landscape',
         items: []
       },
     ]
@@ -66,26 +53,13 @@ const productCategories = {
     href: '/products/solar',
     subcategories: [
       {
-        title: 'Solar Street Lights',
-        href: '/products/solar/street',
-        items: [
-          { name: 'All-in-One Solar', href: '/products/solar/street/all-in-one' },
-          { name: 'Split Solar', href: '/products/solar/street/split' },
-        ]
-      },
-      {
-        title: 'Solar Flood Lights',
-        href: '/products/solar/flood',
+        title: 'Solar Area Lights',
+        href: '/bc-products?category=solar',
         items: []
       },
       {
-        title: 'Solar Garden Lights',
-        href: '/products/solar/garden',
-        items: []
-      },
-      {
-        title: 'Solar Wall Lights',
-        href: '/products/solar/wall',
+        title: 'Solar Wall Packs',
+        href: '/bc-products?category=solar',
         items: []
       },
     ]
@@ -96,52 +70,37 @@ const productCategories = {
     subcategories: [
       {
         title: 'High Bay Lights',
-        href: '/products/indoor/high-bay',
-        items: [
-          { name: 'UFO High Bay', href: '/products/indoor/high-bay/ufo' },
-          { name: 'Linear High Bay', href: '/products/indoor/high-bay/linear' },
-        ]
+        href: '/bc-products?category=high-bay',
+        items: []
       },
       {
         title: 'Troffers & Panels',
-        href: '/products/indoor/troffer',
-        items: [
-          { name: '2x2 Troffers', href: '/products/indoor/troffer/2x2' },
-          { name: '2x4 Troffers', href: '/products/indoor/troffer/2x4' },
-          { name: 'Flat Panels', href: '/products/indoor/troffer/panel' },
-        ]
+        href: '/bc-products?category=troffer-panel',
+        items: []
       },
       {
         title: 'LED Tubes',
-        href: '/products/indoor/tubes',
-        items: [
-          { name: 'T8 Tubes', href: '/products/indoor/tubes/t8' },
-          { name: 'T5 Tubes', href: '/products/indoor/tubes/t5' },
-        ]
+        href: '/bc-products?category=led-tube',
+        items: []
       },
       {
         title: 'Strip Lights',
-        href: '/products/indoor/strip',
+        href: '/bc-products?category=strip',
         items: []
       },
       {
         title: 'Vapor Tight',
-        href: '/products/indoor/vapor-tight',
+        href: '/bc-products?category=vapor-tight',
         items: []
       },
       {
-        title: 'Wrap Lights',
-        href: '/products/indoor/wrap',
-        items: []
-      },
-      {
-        title: 'Garage Lights',
-        href: '/products/indoor/garage',
+        title: 'Canopy & Garage',
+        href: '/bc-products?category=canopy',
         items: []
       },
       {
         title: 'Downlights',
-        href: '/products/indoor/downlight',
+        href: '/bc-products?category=downlight',
         items: []
       },
     ]
