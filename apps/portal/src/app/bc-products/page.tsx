@@ -237,11 +237,24 @@ function ProductDetail({ productId }: { productId: string }) {
               <button 
                 onClick={() => {
                   if (!product) return
+                  
+                  // Find matching variant based on selected options
+                  let matchingVariant = product.variants?.[0] // Default to first variant
+                  if (product.variants && Object.keys(selectedOptions).length > 0) {
+                    matchingVariant = product.variants.find((v: any) => {
+                      if (!v.options) return false
+                      return v.options.every((opt: any) => 
+                        selectedOptions[opt.name] === opt.value
+                      )
+                    }) || product.variants[0]
+                  }
+                  
                   addToCart({
                     productId: product.id,
+                    variantId: matchingVariant?.id,
                     name: product.name,
-                    sku: product.sku,
-                    price: product.price,
+                    sku: matchingVariant?.sku || product.sku,
+                    price: matchingVariant?.price || product.price,
                     quantity: quantity,
                     image: product.images?.[0]?.thumbnail || product.images?.[0]?.url,
                   })
