@@ -8,48 +8,48 @@ import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { FeaturedProducts } from '@/components/home/featured-products'
 
-// Product categories - links match route structure with real BC product images
+// Product categories - only use matching BC product images, empty string for no BC product
 const categories = [
-  { 
-    name: 'High Bay Lights', 
-    description: 'Warehouses, manufacturing, gyms',
-    image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/126/images/393/MUM_1953__85455.1770876682.386.513.png?c=1', // Canopy light (closest to high bay)
-    href: '/products/indoor/high-bay',
-    badge: 'Best Seller'
-  },
   { 
     name: 'Wall Packs', 
     description: 'Building perimeter, security',
-    image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/123/images/571/Minni_Wallpack_AN-WPA26W_-5KP-BZ_Application_reference__40018.1771055698.386.513.jpg?c=1',
+    image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/123/images/571/Minni_Wallpack_AN-WPA26W_-5KP-BZ_Application_reference__40018.1771055698.386.513.jpg?c=1', // BC: Wall Pack (27)
     href: '/products/outdoor/wall-pack',
-    badge: null
+    badge: 'Best Seller'
   },
   { 
     name: 'Area Lights', 
     description: 'Parking lots, pathways',
-    image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/113/images/412/Area_Light_OT75W-420W_Black__19697.1770976359.386.513.jpg?c=1',
+    image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/113/images/412/Area_Light_OT75W-420W_Black__19697.1770976359.386.513.jpg?c=1', // BC: Area Light (26)
     href: '/products/outdoor/area-light',
     badge: null
   },
   { 
-    name: 'Troffers & Panels', 
-    description: 'Office, retail, education',
-    image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/131/images/569/Linear_strip_light_fixture_AN-WR4FT-38-30-22W_-345K_Application_reference__48907.1771055437.386.513.jpg?c=1', // Wraparound (ceiling fixture)
-    href: '/products/indoor/troffer',
+    name: 'Flood Lights', 
+    description: 'Sports fields, billboards, facades',
+    image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/124/images/390/01__25331.1770875986.386.513.jpg?c=1', // BC: Flood Light (28)
+    href: '/products/outdoor/flood',
     badge: null
   },
   { 
     name: 'Solar Lights', 
     description: 'Off-grid street & area lights',
-    image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/119/images/562/Solar_Wallpack_Light_AN-SBR6W_-6K-WH__87869.1771053883.386.513.jpg?c=1',
+    image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/119/images/562/Solar_Wallpack_Light_AN-SBR6W_-6K-WH__87869.1771053883.386.513.jpg?c=1', // BC: Solar Wall Pack (47)
     href: '/products/solar',
     badge: 'New'
   },
   { 
-    name: 'LED Tubes', 
-    description: 'T8/T5 retrofit replacements',
-    image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/125/images/568/Vapor_Tight_AN-VF4FT-NV40W_-5K_Application_reference__73869.1771054854.386.513.jpg?c=1', // Vapor tight (linear fixture)
-    href: '/products/indoor/led-tube',
+    name: 'Canopy & Garage', 
+    description: 'Parking garages, covered areas',
+    image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/136/images/544/Garage_Canopy_Light_AN-CN40-60-70W_-345K-WH__69331.1770891718.386.513.jpg?c=1', // BC: Canopy (53)
+    href: '/products/indoor/canopy',
+    badge: null
+  },
+  { 
+    name: 'Exit Signs', 
+    description: 'Emergency lighting fixtures',
+    image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/122/images/388/exit_01__21416.1770875723.386.513.png?c=1', // BC: Exit Light (48)
+    href: '/products/indoor/exit',
     badge: null
   },
 ]

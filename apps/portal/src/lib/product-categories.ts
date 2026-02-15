@@ -55,7 +55,7 @@ export const productCategories: MainCategory[] = [
         name: 'High Bay Lights',
         description: 'UFO and linear LED high bay lights for warehouses and industrial facilities with 20-45ft ceilings.',
         bcCategoryIds: [30, 31, 58], // UFO High Bay + Linear High Bay + Low Bay
-        image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/126/images/393/MUM_1953__85455.1770876682.386.513.png?c=1', // Canopy light (closest to high bay)
+        image: '', // No BC product yet
       },
       {
         id: 'troffer',
@@ -63,7 +63,7 @@ export const productCategories: MainCategory[] = [
         name: 'Troffers & Panels',
         description: 'LED panel lights and troffers for office and commercial drop ceiling installations.',
         bcCategoryIds: [33], // Panel Light
-        image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/131/images/569/Linear_strip_light_fixture_AN-WR4FT-38-30-22W_-345K_Application_reference__48907.1771055437.386.513.jpg?c=1', // Wraparound
+        image: '', // No BC product yet
       },
       {
         id: 'led-tube',
@@ -71,7 +71,7 @@ export const productCategories: MainCategory[] = [
         name: 'LED Tubes',
         description: 'T8 and T5 LED replacement tubes for fluorescent fixture upgrades.',
         bcCategoryIds: [36], // LED Tube
-        image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/125/images/568/Vapor_Tight_AN-VF4FT-NV40W_-5K_Application_reference__73869.1771054854.386.513.jpg?c=1', // Vapor tight (linear)
+        image: '', // No BC product yet
       },
       {
         id: 'strip',
@@ -95,7 +95,7 @@ export const productCategories: MainCategory[] = [
         name: 'Downlights',
         description: 'Recessed LED downlights for commercial and residential applications.',
         bcCategoryIds: [51], // Down Light
-        image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/129/images/399/4_bright__18328.1770877765.386.513.png?c=1', // Canopy light
+        image: '', // No BC Downlight product yet
       },
       {
         id: 'canopy',
@@ -151,7 +151,7 @@ export const productCategories: MainCategory[] = [
         name: 'Bollard Lights',
         description: 'LED bollard lights for pathways, gardens, and landscape lighting.',
         bcCategoryIds: [45], // Bollard Light
-        image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/116/images/380/WPS20260212101547__18513.1770862645.386.513.png?c=1', // Post Top light
+        image: '', // No BC Bollard product yet
       },
       {
         id: 'post-top',
@@ -167,7 +167,7 @@ export const productCategories: MainCategory[] = [
         name: 'Barn Lights',
         description: 'LED barn lights and dusk-to-dawn security lights for agricultural and rural applications.',
         bcCategoryIds: [55, 57], // Barn Light + Security Light
-        image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/124/images/390/01__25331.1770875986.386.513.jpg?c=1', // Flood light
+        image: '', // No BC Barn Light product yet
       },
     ],
   },
@@ -183,7 +183,7 @@ export const productCategories: MainCategory[] = [
         name: 'Solar Area Lights',
         description: 'All-in-one solar LED area lights for off-grid parking and street lighting.',
         bcCategoryIds: [59], // Solar Area Light
-        image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/119/images/562/Solar_Wallpack_Light_AN-SBR6W_-6K-WH__87869.1771053883.386.513.jpg?c=1', // Solar Wall Pack
+        image: '', // No BC Solar Area product yet (only have Solar Wall Pack)
       },
       {
         id: 'solar-wall',
@@ -207,7 +207,7 @@ export const productCategories: MainCategory[] = [
         name: 'Grow Lights',
         description: 'LED grow lights for indoor farming, greenhouses, and horticulture.',
         bcCategoryIds: [56], // Grow Light
-        image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/133/images/409/01__90678.1770878345.386.513.jpg?c=1', // Flood light
+        image: '', // No BC Grow Light product yet
       },
     ],
   },
