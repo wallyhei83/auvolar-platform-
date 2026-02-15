@@ -11,6 +11,8 @@ import {
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { BCProductGrid } from '@/components/products/bc-product-grid'
+import { useCart } from '@/lib/cart-context'
+import { useToast } from '@/components/ui/use-toast'
 
 // Merged category definitions
 const mergedCategories = [
@@ -34,6 +36,9 @@ function ProductDetail({ productId }: { productId: string }) {
   const [quantity, setQuantity] = useState(1)
   const [activeImage, setActiveImage] = useState(0)
   const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({})
+  const [addingToCart, setAddingToCart] = useState(false)
+  const { addToCart } = useCart()
+  const { toast } = useToast()
 
   useEffect(() => {
     async function fetchProduct() {
@@ -229,9 +234,43 @@ function ProductDetail({ productId }: { productId: string }) {
                   <Plus className="w-4 h-4" />
                 </button>
               </div>
-              <button className="flex-1 bg-brand hover:bg-yellow-400 text-black font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors">
-                <ShoppingCart className="w-5 h-5" />
-                Add to Cart • ${totalPrice.toFixed(2)}
+              <button 
+                onClick={async () => {
+                  if (!product) return
+                  setAddingToCart(true)
+                  try {
+                    await addToCart({
+                      productId: product.id,
+                      variantId: selectedVariant?.id,
+                      name: product.name,
+                      sku: selectedVariant?.sku || product.sku,
+                      price: selectedVariant?.price || product.price,
+                      quantity: quantity,
+                      image: product.images?.[0]?.thumbnail || product.images?.[0]?.url,
+                    })
+                    toast({
+                      title: "Added to Cart",
+                      description: `${quantity}x ${product.name}`,
+                    })
+                  } catch (err) {
+                    toast({
+                      title: "Error",
+                      description: "Failed to add to cart",
+                      variant: "destructive",
+                    })
+                  } finally {
+                    setAddingToCart(false)
+                  }
+                }}
+                disabled={addingToCart}
+                className="flex-1 bg-brand hover:bg-yellow-400 text-black font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
+              >
+                {addingToCart ? (
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                ) : (
+                  <ShoppingCart className="w-5 h-5" />
+                )}
+                {addingToCart ? 'Adding...' : `Add to Cart • $${totalPrice.toFixed(2)}`}
               </button>
             </div>
           </div>
