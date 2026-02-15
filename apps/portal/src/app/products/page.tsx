@@ -5,10 +5,11 @@ import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { 
   ChevronRight, Filter, Grid3X3, List, SlidersHorizontal, X,
-  Zap, Shield, Truck, ChevronDown, Search, Plus, Minus
+  Zap, Shield, Truck, ChevronDown, Search, Plus, Minus, Lightbulb
 } from 'lucide-react'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
+import { products as allProductsData } from '@/lib/product-data'
 
 // Filter options based on planning document
 const filterOptions = {
@@ -91,237 +92,50 @@ const sortOptions = [
   { value: 'wattage', label: 'Wattage' },
 ]
 
-// Mock products data
-const mockProducts = [
-  {
-    id: '1',
-    name: 'UFO High Bay Light',
-    sku: 'HB-UFO-150W-5K',
-    category: 'High Bay',
-    wattage: 150,
-    lumens: 22500,
-    cct: '5000K',
-    voltage: '120-277V',
-    price: 89,
-    msrp: 129,
-    stock: 'In Stock',
-    stockQty: 245,
-    dlc: true,
-    ul: true,
-    warranty: '5 Year',
-    description: 'Commercial UFO high bay for warehouses, gyms, and manufacturing',
-    beam: '120°',
-  },
-  {
-    id: '2',
-    name: 'UFO High Bay Light',
-    sku: 'HB-UFO-200W-5K',
-    category: 'High Bay',
-    wattage: 200,
-    lumens: 30000,
-    cct: '5000K',
-    voltage: '120-277V',
-    price: 109,
-    msrp: 159,
-    stock: 'In Stock',
-    stockQty: 180,
-    dlc: true,
-    ul: true,
-    warranty: '5 Year',
-    description: 'Commercial UFO high bay for large warehouses and industrial',
-    beam: '120°',
-  },
-  {
-    id: '3',
-    name: 'UFO High Bay Light',
-    sku: 'HB-UFO-240W-5K',
-    category: 'High Bay',
-    wattage: 240,
-    lumens: 36000,
-    cct: '5000K',
-    voltage: '120-277V',
-    price: 139,
-    msrp: 199,
-    stock: 'In Stock',
-    stockQty: 92,
-    dlc: true,
-    ul: true,
-    warranty: '5 Year',
-    description: 'High output UFO for very high ceilings',
-    beam: '90°',
-  },
-  {
-    id: '4',
-    name: 'Linear High Bay',
-    sku: 'LHB-220W-5K',
-    category: 'Linear High Bay',
-    wattage: 220,
-    lumens: 33000,
-    cct: '5000K',
-    voltage: '120-277V',
-    price: 129,
-    msrp: 179,
-    stock: 'In Stock',
-    stockQty: 156,
-    dlc: true,
-    ul: true,
-    warranty: '5 Year',
-    description: 'Linear high bay for aisles and open floor plans',
-    beam: '120°',
-  },
-  {
-    id: '5',
-    name: 'Wall Pack',
-    sku: 'WP-50W-5K',
-    category: 'Wall Pack',
-    wattage: 50,
-    lumens: 7000,
-    cct: '5000K',
-    voltage: '120-277V',
-    price: 59,
-    msrp: 89,
-    stock: 'In Stock',
-    stockQty: 320,
-    dlc: true,
-    ul: true,
-    warranty: '5 Year',
-    description: 'Full cutoff wall pack for building perimeter',
-    beam: 'Full Cutoff',
-  },
-  {
-    id: '6',
-    name: 'Wall Pack',
-    sku: 'WP-80W-5K',
-    category: 'Wall Pack',
-    wattage: 80,
-    lumens: 11200,
-    cct: '5000K',
-    voltage: '120-277V',
-    price: 79,
-    msrp: 119,
-    stock: 'In Stock',
-    stockQty: 210,
-    dlc: true,
-    ul: true,
-    warranty: '5 Year',
-    description: 'Full cutoff wall pack for larger areas',
-    beam: 'Full Cutoff',
-  },
-  {
-    id: '7',
-    name: 'Area Light Type III',
-    sku: 'AL-150W-T3-5K',
-    category: 'Area Light',
-    wattage: 150,
-    lumens: 21000,
-    cct: '5000K',
-    voltage: '120-277V',
-    price: 149,
-    msrp: 229,
-    stock: 'Ships in 3 days',
-    stockQty: 0,
-    dlc: true,
-    ul: true,
-    warranty: '10 Year',
-    description: 'Parking lot area light with Type III distribution',
-    beam: 'Type III',
-  },
-  {
-    id: '8',
-    name: 'Area Light Type V',
-    sku: 'AL-200W-T5-5K',
-    category: 'Area Light',
-    wattage: 200,
-    lumens: 28000,
-    cct: '5000K',
-    voltage: '120-277V',
-    price: 179,
-    msrp: 269,
-    stock: 'In Stock',
-    stockQty: 45,
-    dlc: true,
-    ul: true,
-    warranty: '10 Year',
-    description: 'Parking lot area light with Type V distribution',
-    beam: 'Type V',
-  },
-  {
-    id: '9',
-    name: '4ft LED Tube T8',
-    sku: 'T8-4FT-18W-5K',
-    category: 'LED Tubes',
-    wattage: 18,
-    lumens: 2200,
-    cct: '5000K',
-    voltage: '120-277V',
-    price: 8,
-    msrp: 15,
-    stock: 'In Stock',
-    stockQty: 2500,
-    dlc: false,
-    ul: true,
-    warranty: '5 Year',
-    description: 'Type A+B T8 LED tube, ballast bypass compatible',
-    beam: '220°',
-  },
-  {
-    id: '10',
-    name: '2x4 LED Troffer',
-    sku: 'TF-2x4-40W-4K',
-    category: 'Troffer',
-    wattage: 40,
-    lumens: 5000,
-    cct: '4000K',
-    voltage: '120-277V',
-    price: 69,
-    msrp: 99,
-    stock: 'In Stock',
-    stockQty: 180,
-    dlc: true,
-    ul: true,
-    warranty: '5 Year',
-    description: 'Drop ceiling troffer for office and commercial',
-    beam: 'Wide',
-  },
-  {
-    id: '11',
-    name: 'Vapor Tight 4ft',
-    sku: 'VT-4FT-40W-5K',
-    category: 'Vapor Tight',
-    wattage: 40,
-    lumens: 5200,
-    cct: '5000K',
-    voltage: '120-277V',
-    price: 49,
-    msrp: 79,
-    stock: 'In Stock',
-    stockQty: 290,
-    dlc: true,
-    ul: true,
-    warranty: '5 Year',
-    description: 'IP65 vapor tight for wet and dusty locations',
-    beam: '120°',
-  },
-  {
-    id: '12',
-    name: 'Canopy Light',
-    sku: 'CN-75W-5K',
-    category: 'Canopy',
-    wattage: 75,
-    lumens: 9750,
-    cct: '5000K',
-    voltage: '120-277V',
-    price: 89,
-    msrp: 139,
-    stock: 'In Stock',
-    stockQty: 125,
-    dlc: true,
-    ul: true,
-    warranty: '5 Year',
-    description: 'Surface mount canopy for gas stations and covered areas',
-    beam: '120°',
-  },
-]
+// Convert product data to display format
+const mockProducts = Object.values(allProductsData).map((product, index) => {
+  // Extract wattage from specs or name
+  const wattageMatch = product.name.match(/(\d+)W/)
+  const wattage = wattageMatch ? parseInt(wattageMatch[1]) : 0
+  
+  // Extract lumens from quickSpecs or specs
+  const lumensSpec = product.quickSpecs?.find(s => s.label === 'Lumens')
+  const lumens = lumensSpec ? parseInt(lumensSpec.value.replace(/[^0-9]/g, '')) : 0
+  
+  // Extract beam angle
+  const beamSpec = product.quickSpecs?.find(s => s.label === 'Beam')
+  const beam = beamSpec?.value || product.specs?.photometric?.['Beam Angle'] || '120°'
+  
+  // Get CCT
+  const cct = product.selectedVariant?.cct || '5000K'
+  
+  // Get voltage
+  const voltage = product.selectedVariant?.voltage || product.specs?.electrical?.['Input Voltage'] || '120-277V'
+  
+  // Check certifications
+  const dlc = product.certifications?.some(c => c.name.includes('DLC')) || false
+  const ul = product.certifications?.some(c => c.name.includes('UL')) || false
+
+  return {
+    id: String(index + 1),
+    name: product.name,
+    sku: product.sku,
+    category: product.subcategory,
+    wattage,
+    lumens,
+    cct,
+    voltage,
+    price: product.price,
+    msrp: product.msrp,
+    stock: product.stock,
+    stockQty: product.stockQty,
+    dlc,
+    ul,
+    warranty: `${product.warranty.years} Year`,
+    description: product.shortDescription || product.description,
+    beam,
+  }
+})
 
 export default function ProductsPage() {
   const searchParams = useSearchParams()
@@ -559,7 +373,7 @@ export default function ProductsPage() {
                   >
                     <div className={`relative ${viewMode === 'list' ? 'h-full' : 'aspect-square'} rounded-t-xl bg-gradient-to-br from-gray-100 to-gray-50 ${viewMode === 'list' ? 'rounded-l-xl rounded-tr-none' : ''}`}>
                       <div className="flex h-full items-center justify-center">
-                        <Zap className="h-16 w-16 text-gray-300" />
+                        <Lightbulb className="h-16 w-16 text-gray-300" />
                       </div>
                       {/* Badges */}
                       <div className="absolute left-3 top-3 flex flex-col gap-1">
