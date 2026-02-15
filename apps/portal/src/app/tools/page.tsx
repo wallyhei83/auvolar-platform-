@@ -45,7 +45,7 @@ const calculators = [
     name: 'Rebate Finder',
     description: 'Find utility rebates and incentives available in your area for DLC-listed products.',
     icon: MapPin,
-    href: '/tools/rebate',
+    href: '/tools/rebate-finder',
     time: '2 min',
   },
   {
