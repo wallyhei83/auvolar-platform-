@@ -110,10 +110,11 @@ export default function BCProductDetailPage() {
     );
   }
 
-  const displayPrice = product.salePrice > 0 ? product.salePrice : product.price;
-  const hasDiscount = product.salePrice > 0 && product.salePrice < product.price;
-  const inStock = product.inStock;
-  const mainImage = product.images?.[selectedImage]?.url || product.images?.[selectedImage]?.zoom || '/placeholder-product.png';
+  const displayPrice = (product.salePrice && product.salePrice > 0) ? product.salePrice : (product.price || 0);
+  const hasDiscount = product.salePrice && product.salePrice > 0 && product.salePrice < product.price;
+  const inStock = product.inStock ?? false;
+  const images = product.images || [];
+  const mainImage = images[selectedImage]?.url || images[selectedImage]?.zoom || images[0]?.url || '/placeholder-product.png';
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -144,9 +145,9 @@ export default function BCProductDetailPage() {
             </div>
             
             {/* Thumbnail Gallery */}
-            {product.images && product.images.length > 1 && (
+            {images.length > 1 && (
               <div className="flex gap-2 overflow-x-auto pb-2">
-                {product.images.map((image, index) => (
+                {images.map((image, index) => (
                   <button
                     key={index}
                     onClick={() => setSelectedImage(index)}
@@ -193,7 +194,7 @@ export default function BCProductDetailPage() {
                 <>
                   <span className="w-3 h-3 bg-green-500 rounded-full"></span>
                   <span className="text-green-700 font-medium">In Stock</span>
-                  {product.inventory > 0 && (
+                  {(product.inventory ?? 0) > 0 && (
                     <span className="text-gray-500">({product.inventory} available)</span>
                   )}
                 </>
@@ -276,13 +277,15 @@ export default function BCProductDetailPage() {
                     <div key={variant.id} className="flex items-center justify-between py-2 px-3 bg-gray-50 rounded-lg">
                       <div className="flex items-center gap-2">
                         <span className="text-sm text-gray-600">{variant.sku}</span>
-                        {variant.options.map((opt, i) => (
+                        {variant.options?.map((opt, i) => (
                           <span key={i} className="text-xs bg-gray-200 px-2 py-0.5 rounded">
                             {opt.value}
                           </span>
                         ))}
                       </div>
-                      <span className="font-medium">${variant.price.toFixed(2)}</span>
+                      <span className="font-medium">
+                        {variant.price != null ? `$${variant.price.toFixed(2)}` : 'Contact for price'}
+                      </span>
                     </div>
                   ))}
                   {product.variants.length > 5 && (
