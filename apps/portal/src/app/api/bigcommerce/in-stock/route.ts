@@ -3,6 +3,51 @@ import { NextRequest, NextResponse } from 'next/server'
 const BC_STORE_HASH = process.env.BIGCOMMERCE_STORE_HASH || 'hhcdvxqxzq'
 const BC_ACCESS_TOKEN = process.env.BIGCOMMERCE_ACCESS_TOKEN || 'taw41x7qx3rqu1hjmt04s20b665pse6'
 
+// Map BC category ID to website product URL
+const bcCategoryToUrl: Record<number, string> = {
+  // Outdoor
+  26: '/products/outdoor/area-light',      // Area Light
+  27: '/products/outdoor/wall-pack',       // Wall Pack
+  28: '/products/outdoor/flood',           // Flood Light
+  43: '/products/outdoor/area-light',      // Parking (maps to Area Light)
+  45: '/products/outdoor/bollard',         // Bollard
+  46: '/products/outdoor/post-top',        // Post Top
+  55: '/products/outdoor/barn',            // Barn Light
+  57: '/products/outdoor/barn',            // Security Light (maps to Barn)
+  
+  // Indoor
+  30: '/products/indoor/high-bay',         // UFO High Bay
+  31: '/products/indoor/high-bay',         // Linear High Bay
+  32: '/products/indoor/strip',            // Strip Light
+  33: '/products/indoor/troffer',          // Panel Light
+  35: '/products/indoor/vapor-tight',      // Tri-proof / Vapor Tight
+  36: '/products/indoor/led-tube',         // LED Tube
+  48: '/products/indoor/exit',             // Exit Light
+  51: '/products/indoor/downlight',        // Down Light
+  52: '/products/indoor/downlight',        // Ceiling Light
+  53: '/products/indoor/canopy',           // Garage & Canopy
+  58: '/products/indoor/high-bay',         // Low Bay
+  
+  // Solar
+  29: '/products/solar',                   // Solar Lighting
+  47: '/products/solar/solar-wall',        // Solar Wall Pack
+  59: '/products/solar/solar-area',        // Solar Area Light
+  
+  // Specialty
+  56: '/products/specialty/grow',          // Grow Light
+}
+
+function getProductUrl(categories: number[], productId: number): string {
+  // Find the first matching category URL
+  for (const catId of categories) {
+    if (bcCategoryToUrl[catId]) {
+      return bcCategoryToUrl[catId]
+    }
+  }
+  // Fallback to bc-products if no category match
+  return `/bc-products/${productId}`
+}
+
 // GET /api/bigcommerce/in-stock - Get products with inventory > 0
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
@@ -49,6 +94,8 @@ export async function GET(request: NextRequest) {
           shippingDays = 5
         }
         
+        const categories = p.categories || []
+        
         return {
           id: p.id,
           name: p.name,
@@ -60,8 +107,8 @@ export async function GET(request: NextRequest) {
           thumbnail: primaryImage?.url_thumbnail || null,
           shippingStatus,
           shippingDays,
-          url: `/bc-products/${p.id}`,
-          categories: p.categories || [],
+          url: getProductUrl(categories, p.id),
+          categories,
         }
       })
     
