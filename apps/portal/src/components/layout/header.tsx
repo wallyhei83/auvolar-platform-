@@ -10,8 +10,26 @@ import {
 import { useCart } from '@/lib/cart-context'
 import { CartDrawer } from '@/components/cart/cart-drawer'
 
+// 类型定义
+interface SubcategoryItem {
+  name: string
+  href: string
+}
+
+interface Subcategory {
+  title: string
+  href: string
+  items: SubcategoryItem[]
+}
+
+interface ProductCategory {
+  title: string
+  href: string
+  subcategories: Subcategory[]
+}
+
 // 产品分类 - 简化结构，链接到products页面（BC数据）
-const productCategories = {
+const productCategories: Record<string, ProductCategory> = {
   outdoor: {
     title: 'Outdoor Lighting',
     href: '/products/outdoor',
@@ -300,14 +318,14 @@ export function Header() {
                   <div className="flex-1 p-6">
                     <div className="mb-4">
                       <Link 
-                        href={productCategories[activeSubMenu as keyof typeof productCategories].href}
+                        href={productCategories[activeSubMenu].href}
                         className="text-lg font-semibold text-gray-900 hover:text-brand"
                       >
-                        {productCategories[activeSubMenu as keyof typeof productCategories].title}
+                        {productCategories[activeSubMenu].title}
                       </Link>
                     </div>
                     <div className="grid grid-cols-3 gap-6">
-                      {productCategories[activeSubMenu as keyof typeof productCategories].subcategories.map((sub) => (
+                      {productCategories[activeSubMenu].subcategories.map((sub) => (
                         <div key={sub.title}>
                           <Link
                             href={sub.href}
