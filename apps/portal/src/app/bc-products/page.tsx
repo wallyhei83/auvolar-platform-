@@ -246,6 +246,45 @@ function ProductDetail({ productId }: { productId: string }) {
             </button>
           </div>
 
+          {/* Downloads */}
+          <div className="mb-6">
+            <h3 className="text-sm font-semibold text-gray-900 mb-3">Downloads & Resources</h3>
+            <div className="grid grid-cols-2 gap-2">
+              <a 
+                href={`/docs/spec-sheets/${product.sku}.pdf`}
+                target="_blank"
+                className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm"
+              >
+                <FileText className="w-4 h-4 text-brand" />
+                <span>Spec Sheet</span>
+              </a>
+              <a 
+                href={`/docs/ies/${product.sku}.ies`}
+                target="_blank"
+                className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm"
+              >
+                <Download className="w-4 h-4 text-brand" />
+                <span>IES File</span>
+              </a>
+              <a 
+                href={`/docs/instructions/${product.sku}.pdf`}
+                target="_blank"
+                className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm"
+              >
+                <FileText className="w-4 h-4 text-brand" />
+                <span>Install Guide</span>
+              </a>
+              <a 
+                href={`/docs/warranty/${product.sku}.pdf`}
+                target="_blank"
+                className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm"
+              >
+                <Shield className="w-4 h-4 text-brand" />
+                <span>Warranty Info</span>
+              </a>
+            </div>
+          </div>
+
           {/* Trust Badges */}
           <div className="grid grid-cols-3 gap-4 p-4 bg-gray-50 rounded-xl">
             <div className="text-center">
