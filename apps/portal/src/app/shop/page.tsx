@@ -5,7 +5,7 @@ import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { 
   Sun, Building2, Lightbulb, Zap, Leaf, ChevronRight,
-  Factory, Car, ShoppingBag, Building, Warehouse, GasStation
+  Factory, Car, ShoppingBag, Building, Warehouse, Fuel
 } from 'lucide-react'
 import { mainCategories, getCategoriesByParent } from '@/lib/bc-categories'
 
