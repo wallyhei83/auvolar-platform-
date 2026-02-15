@@ -33,6 +33,7 @@ export async function POST(request: NextRequest) {
       product_id: item.product_id,
       quantity: item.quantity,
       ...(item.variant_id && { variant_id: item.variant_id }),
+      ...(item.option_selections && { option_selections: item.option_selections }),
     }))
 
     const newCart = await createCart(cartItems)
