@@ -10,7 +10,7 @@ import {
 import { useCart } from '@/lib/cart-context'
 import { CartDrawer } from '@/components/cart/cart-drawer'
 
-// 产品分类 - 简化结构，链接到BC产品页面
+// 产品分类 - 简化结构，链接到products页面（BC数据）
 const productCategories = {
   outdoor: {
     title: 'Outdoor Lighting',
@@ -18,32 +18,32 @@ const productCategories = {
     subcategories: [
       {
         title: 'Area Lights',  // 合并了 Parking Lot, Street, Shoe Box
-        href: '/bc-products?category=area-parking',
+        href: '/products/outdoor/area-light',
         items: []  // 不再有子分类
       },
       {
         title: 'Flood Lights',
-        href: '/bc-products?category=flood',
+        href: '/products/outdoor/flood',
         items: []
       },
       {
         title: 'Wall Packs',
-        href: '/bc-products?category=wall-pack',
+        href: '/products/outdoor/wall-pack',
         items: []
       },
       {
         title: 'Canopy Lights',
-        href: '/bc-products?category=canopy',
+        href: '/products/outdoor/canopy',
         items: []
       },
       {
         title: 'Bollard Lights',
-        href: '/bc-products?category=landscape',
+        href: '/products/outdoor/bollard',
         items: []
       },
       {
         title: 'Post Top Lights',
-        href: '/bc-products?category=landscape',
+        href: '/products/outdoor/post-top',
         items: []
       },
     ]
@@ -54,12 +54,12 @@ const productCategories = {
     subcategories: [
       {
         title: 'Solar Area Lights',
-        href: '/bc-products?category=solar',
+        href: '/products/solar/solar-area',
         items: []
       },
       {
         title: 'Solar Wall Packs',
-        href: '/bc-products?category=solar',
+        href: '/products/solar/solar-wall',
         items: []
       },
     ]
@@ -70,37 +70,37 @@ const productCategories = {
     subcategories: [
       {
         title: 'High Bay Lights',
-        href: '/bc-products?category=high-bay',
+        href: '/products/indoor/high-bay',
         items: []
       },
       {
         title: 'Troffers & Panels',
-        href: '/bc-products?category=troffer-panel',
+        href: '/products/indoor/troffer',
         items: []
       },
       {
         title: 'LED Tubes',
-        href: '/bc-products?category=led-tube',
+        href: '/products/indoor/led-tube',
         items: []
       },
       {
         title: 'Strip Lights',
-        href: '/bc-products?category=strip',
+        href: '/products/indoor/strip',
         items: []
       },
       {
         title: 'Vapor Tight',
-        href: '/bc-products?category=vapor-tight',
+        href: '/products/indoor/vapor-tight',
         items: []
       },
       {
         title: 'Canopy & Garage',
-        href: '/bc-products?category=canopy',
+        href: '/products/indoor/canopy',
         items: []
       },
       {
         title: 'Downlights',
-        href: '/bc-products?category=downlight',
+        href: '/products/indoor/downlight',
         items: []
       },
     ]
