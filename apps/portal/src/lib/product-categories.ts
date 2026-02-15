@@ -79,7 +79,7 @@ export const productCategories: MainCategory[] = [
         name: 'Strip Lights',
         description: 'LED strip lights for commercial and industrial linear lighting applications.',
         bcCategoryIds: [32], // Strip Light
-        image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/125/images/568/Vapor_Tight_AN-VF4FT-NV40W_-5K_Application_reference__73869.1771054854.386.513.jpg?c=1',
+        image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/131/images/569/Linear_strip_AN-WR4FT40W_-5K_Application_reference__27998.1771055058.386.513.jpg?c=1',
       },
       {
         id: 'vapor-tight',
