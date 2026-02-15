@@ -55,6 +55,7 @@ export const productCategories: MainCategory[] = [
         name: 'High Bay Lights',
         description: 'UFO and linear LED high bay lights for warehouses and industrial facilities with 20-45ft ceilings.',
         bcCategoryIds: [30, 31, 58], // UFO High Bay + Linear High Bay + Low Bay
+        image: 'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=600&q=80', // Warehouse with high bay lights
       },
       {
         id: 'troffer',
@@ -62,6 +63,7 @@ export const productCategories: MainCategory[] = [
         name: 'Troffers & Panels',
         description: 'LED panel lights and troffers for office and commercial drop ceiling installations.',
         bcCategoryIds: [33], // Panel Light
+        image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80', // Modern office with panel lights
       },
       {
         id: 'led-tube',
@@ -69,6 +71,7 @@ export const productCategories: MainCategory[] = [
         name: 'LED Tubes',
         description: 'T8 and T5 LED replacement tubes for fluorescent fixture upgrades.',
         bcCategoryIds: [36], // LED Tube
+        image: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=600&q=80', // LED tube lights
       },
       {
         id: 'strip',
@@ -76,6 +79,7 @@ export const productCategories: MainCategory[] = [
         name: 'Strip Lights',
         description: 'LED strip lights for commercial and industrial linear lighting applications.',
         bcCategoryIds: [32], // Strip Light
+        image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/125/images/568/Vapor_Tight_AN-VF4FT-NV40W_-5K_Application_reference__73869.1771054854.386.513.jpg?c=1',
       },
       {
         id: 'vapor-tight',
@@ -83,6 +87,7 @@ export const productCategories: MainCategory[] = [
         name: 'Vapor Tight',
         description: 'IP65+ rated LED fixtures for car washes, food processing, and harsh environments.',
         bcCategoryIds: [35], // Tri-proof Light
+        image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/125/images/568/Vapor_Tight_AN-VF4FT-NV40W_-5K_Application_reference__73869.1771054854.386.513.jpg?c=1',
       },
       {
         id: 'downlight',
@@ -90,6 +95,7 @@ export const productCategories: MainCategory[] = [
         name: 'Downlights',
         description: 'Recessed LED downlights for commercial and residential applications.',
         bcCategoryIds: [51], // Down Light
+        image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80', // Recessed downlights
       },
       {
         id: 'canopy',
@@ -97,6 +103,7 @@ export const productCategories: MainCategory[] = [
         name: 'Canopy & Garage',
         description: 'LED canopy lights for parking garages and covered areas.',
         bcCategoryIds: [53], // Garage & Canopy Light
+        image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/126/images/393/MUM_1953__85455.1770876682.386.513.png?c=1',
       },
       {
         id: 'exit',
@@ -104,6 +111,7 @@ export const productCategories: MainCategory[] = [
         name: 'Exit Signs',
         description: 'LED exit signs and emergency lighting fixtures.',
         bcCategoryIds: [48], // Exit Light
+        image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/122/images/388/exit_01__21417.1770876268.386.513.jpg?c=1',
       },
     ],
   },
@@ -119,6 +127,7 @@ export const productCategories: MainCategory[] = [
         name: 'Area Lights',
         description: 'LED area lights and shoebox fixtures for parking lots, streets, and outdoor commercial spaces.',
         bcCategoryIds: [26, 43], // Area Light + Parking Lighting (merged)
+        image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/113/images/412/Area_Light_OT75W-420W_Black__19697.1770976359.386.513.jpg?c=1',
       },
       {
         id: 'wall-pack',
@@ -126,6 +135,7 @@ export const productCategories: MainCategory[] = [
         name: 'Wall Packs',
         description: 'LED wall pack lights for building perimeters, entrances, and security lighting.',
         bcCategoryIds: [27], // Wall Pack Light
+        image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/130/images/405/QQ20260212-142924__81406.1770878366.386.513.png?c=1',
       },
       {
         id: 'flood',
@@ -133,6 +143,7 @@ export const productCategories: MainCategory[] = [
         name: 'Flood Lights',
         description: 'High-output LED flood lights for sports fields, billboards, and facade lighting.',
         bcCategoryIds: [28], // Flood Light
+        image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/124/images/390/01__25331.1770875986.386.513.jpg?c=1',
       },
       {
         id: 'bollard',
@@ -140,6 +151,7 @@ export const productCategories: MainCategory[] = [
         name: 'Bollard Lights',
         description: 'LED bollard lights for pathways, gardens, and landscape lighting.',
         bcCategoryIds: [45], // Bollard Light
+        image: 'https://images.unsplash.com/photo-1558618047-f4b511ab6e98?w=600&q=80', // Pathway bollard lights
       },
       {
         id: 'post-top',
@@ -147,6 +159,7 @@ export const productCategories: MainCategory[] = [
         name: 'Post Top Lights',
         description: 'Decorative LED post top lights for streets, parks, and commercial areas.',
         bcCategoryIds: [46], // Post Top Light
+        image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/116/images/380/WPS2026021210250920__75892.1770874772.386.513.png?c=1',
       },
       {
         id: 'barn',
@@ -154,6 +167,7 @@ export const productCategories: MainCategory[] = [
         name: 'Barn Lights',
         description: 'LED barn lights and dusk-to-dawn security lights for agricultural and rural applications.',
         bcCategoryIds: [55, 57], // Barn Light + Security Light
+        image: 'https://images.unsplash.com/photo-1500076656116-558758c991c1?w=600&q=80', // Barn with lighting
       },
     ],
   },
@@ -169,6 +183,7 @@ export const productCategories: MainCategory[] = [
         name: 'Solar Area Lights',
         description: 'All-in-one solar LED area lights for off-grid parking and street lighting.',
         bcCategoryIds: [59], // Solar Area Light
+        image: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=600&q=80', // Solar street light
       },
       {
         id: 'solar-wall',
@@ -176,6 +191,7 @@ export const productCategories: MainCategory[] = [
         name: 'Solar Wall Packs',
         description: 'Solar-powered wall pack lights for building perimeters without electrical access.',
         bcCategoryIds: [47], // Solar Wall Pack
+        image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/119/images/562/Solar_Wallpack_Light_AN-SBR6W_-6K-WH__87869.1771053883.386.513.jpg?c=1',
       },
     ],
   },
@@ -191,6 +207,7 @@ export const productCategories: MainCategory[] = [
         name: 'Grow Lights',
         description: 'LED grow lights for indoor farming, greenhouses, and horticulture.',
         bcCategoryIds: [56], // Grow Light
+        image: 'https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=600&q=80', // Indoor grow lights
       },
     ],
   },
