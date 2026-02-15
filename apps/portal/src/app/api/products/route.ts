@@ -7,21 +7,21 @@ export async function GET(request: NextRequest) {
     const page = parseInt(searchParams.get('page') || '1')
     const limit = parseInt(searchParams.get('limit') || '12')
     const category = searchParams.get('category')
-    const keyword = searchParams.get('keyword')
 
-    const [productsResult, categories] = await Promise.all([
+    const [productsResult, categoriesResult] = await Promise.all([
       getProducts({
         page,
         limit,
-        category: category ? parseInt(category) : undefined,
-        keyword: keyword || undefined,
+        'categories:in': category || undefined,
+        include: 'variants,images,custom_fields',
+        is_visible: true,
       }),
-      getCategories(),
+      getCategories({ limit: 100 }),
     ])
 
     return NextResponse.json({
       products: productsResult.data || [],
-      categories: categories || [],
+      categories: categoriesResult.data || [],
       pagination: productsResult.meta?.pagination || { total: 0 },
     })
   } catch (error) {
