@@ -237,7 +237,6 @@ function ProductDetail({ productId }: { productId: string }) {
               <button 
                 onClick={() => {
                   if (!product) return
-                  // Add to cart
                   addToCart({
                     productId: product.id,
                     name: product.name,
@@ -246,8 +245,10 @@ function ProductDetail({ productId }: { productId: string }) {
                     quantity: quantity,
                     image: product.images?.[0]?.thumbnail || product.images?.[0]?.url,
                   })
-                  // Show alert for now (guaranteed to work)
-                  alert(`Added to cart!\n${quantity}x ${product.name}\n$${totalPrice.toFixed(2)}`)
+                  toast({
+                    title: "✓ Added to Cart",
+                    description: `${quantity}x ${product.name}`,
+                  })
                 }}
                 className="flex-1 bg-brand hover:bg-yellow-400 text-black font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors"
               >
