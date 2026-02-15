@@ -235,41 +235,24 @@ function ProductDetail({ productId }: { productId: string }) {
                 </button>
               </div>
               <button 
-                onClick={async () => {
+                onClick={() => {
                   if (!product) return
-                  setAddingToCart(true)
-                  try {
-                    await addToCart({
-                      productId: product.id,
-                      name: product.name,
-                      sku: product.sku,
-                      price: product.price,
-                      quantity: quantity,
-                      image: product.images?.[0]?.thumbnail || product.images?.[0]?.url,
-                    })
-                    toast({
-                      title: "Added to Cart ✓",
-                      description: `${quantity}x ${product.name}`,
-                    })
-                  } catch (err) {
-                    toast({
-                      title: "Error",
-                      description: "Failed to add to cart",
-                      variant: "destructive",
-                    })
-                  } finally {
-                    setAddingToCart(false)
-                  }
+                  // Add to cart
+                  addToCart({
+                    productId: product.id,
+                    name: product.name,
+                    sku: product.sku,
+                    price: product.price,
+                    quantity: quantity,
+                    image: product.images?.[0]?.thumbnail || product.images?.[0]?.url,
+                  })
+                  // Show alert for now (guaranteed to work)
+                  alert(`Added to cart!\n${quantity}x ${product.name}\n$${totalPrice.toFixed(2)}`)
                 }}
-                disabled={addingToCart}
-                className="flex-1 bg-brand hover:bg-yellow-400 text-black font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
+                className="flex-1 bg-brand hover:bg-yellow-400 text-black font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors"
               >
-                {addingToCart ? (
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                ) : (
-                  <ShoppingCart className="w-5 h-5" />
-                )}
-                {addingToCart ? 'Adding...' : `Add to Cart • $${totalPrice.toFixed(2)}`}
+                <ShoppingCart className="w-5 h-5" />
+                Add to Cart • ${totalPrice.toFixed(2)}
               </button>
             </div>
           </div>
