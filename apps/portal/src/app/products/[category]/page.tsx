@@ -8,7 +8,8 @@ import { Footer } from '@/components/layout/footer'
 import { 
   ChevronRight, Filter, Grid, List, Sun, Building2, Lightbulb, Zap,
   Plus, Minus, ShoppingCart, Heart, Share2, CheckCircle2, Phone,
-  Download, FileText, Star, Package, Truck, Shield, Clock
+  Download, FileText, Star, Package, Truck, Shield, Clock, Mail,
+  Info, ChevronDown, Image as ImageIcon, Play, Award, Ruler, Thermometer
 } from 'lucide-react'
 
 // Known categories
@@ -81,79 +82,248 @@ const categoryConfig: Record<string, {
   }
 }
 
-// Mock product data for product detail page
+// Comprehensive product data for PDP
 const mockProducts: Record<string, any> = {
   'HB-UFO-150W': {
-    name: 'UFO High Bay 150W',
+    name: 'UFO High Bay LED Light 150W',
     sku: 'HB-UFO-150W',
-    category: 'Indoor / High Bay',
+    series: 'ProBay Series',
+    category: 'Indoor Lighting',
+    subcategory: 'High Bay Lights',
     price: 89,
     msrp: 129,
     stock: 'In Stock',
     stockQty: 245,
-    description: 'Commercial-grade UFO high bay LED for warehouses and manufacturing facilities.',
-    specs: { wattage: '150W', lumens: '22,500 lm', cct: '5000K', beam: '120°', voltage: '120-277V' },
-    tierPricing: [{ min: 1, price: 89 }, { min: 10, price: 82 }, { min: 25, price: 76 }, { min: 50, price: 69 }],
+    leadTime: 'Ships within 24 hours',
+    warehouse: 'Houston, TX',
+    description: 'Commercial-grade UFO high bay LED light designed for warehouses, manufacturing facilities, gymnasiums, and large retail spaces. Features excellent heat dissipation with die-cast aluminum housing, wide 120° beam angle for uniform coverage, and industry-leading 150 lm/W efficacy.',
+    shortDescription: 'High-efficiency UFO high bay for 20-30ft ceilings',
+    
+    // Variants
+    variants: {
+      wattage: ['100W', '150W', '200W', '240W'],
+      cct: ['4000K', '5000K'],
+      voltage: ['120-277V', '347-480V'],
+    },
+    selectedVariant: { wattage: '150W', cct: '5000K', voltage: '120-277V' },
+    
+    // Technical Specs
+    specs: {
+      electrical: {
+        'Wattage': '150W',
+        'Input Voltage': '100-277V AC',
+        'Power Factor': '> 0.95',
+        'THD': '< 15%',
+        'Frequency': '50/60 Hz',
+      },
+      photometric: {
+        'Lumens': '22,500 lm',
+        'Efficacy': '150 lm/W',
+        'CRI': '> 80',
+        'CCT': '5000K (Daylight)',
+        'Beam Angle': '120°',
+      },
+      physical: {
+        'Dimensions': '∅13.8" x 7.9" H',
+        'Weight': '8.8 lbs',
+        'Housing': 'Die-cast Aluminum',
+        'Lens': 'PC (Polycarbonate)',
+        'Finish': 'Black Powder Coat',
+      },
+      environmental: {
+        'Operating Temp': '-40°F to 122°F',
+        'IP Rating': 'IP65',
+        'Humidity': '10-90% RH',
+        'Rated Life': '100,000 hours (L70)',
+      },
+      controls: {
+        'Dimming': '0-10V Dimmable',
+        'Sensor Ready': 'Yes (Optional)',
+        'Emergency Backup': 'Optional',
+      },
+    },
+    
+    // Quick specs for hero section
+    quickSpecs: [
+      { label: 'Lumens', value: '22,500 lm', icon: Sun },
+      { label: 'Efficacy', value: '150 lm/W', icon: Zap },
+      { label: 'CRI', value: '> 80', icon: Star },
+      { label: 'Beam', value: '120°', icon: Ruler },
+      { label: 'IP Rating', value: 'IP65', icon: Shield },
+      { label: 'Life', value: '100,000 hrs', icon: Clock },
+    ],
+    
+    // Certifications
+    certifications: [
+      { name: 'DLC Premium', number: 'QUQMJWDC', verified: true },
+      { name: 'UL Listed', number: 'E483386', verified: true },
+      { name: 'FCC', number: 'Compliant', verified: true },
+      { name: 'RoHS', number: 'Compliant', verified: true },
+    ],
+    
+    // Downloads
+    downloads: [
+      { name: 'Cut Sheet / Spec Sheet', type: 'PDF', size: '1.2 MB', icon: FileText },
+      { name: 'IES Photometric File', type: 'IES', size: '45 KB', icon: FileText },
+      { name: 'Installation Guide', type: 'PDF', size: '2.8 MB', icon: FileText },
+      { name: 'DLC Certificate', type: 'PDF', size: '156 KB', icon: Award },
+      { name: 'UL Certificate', type: 'PDF', size: '89 KB', icon: Shield },
+      { name: 'Warranty Document', type: 'PDF', size: '124 KB', icon: FileText },
+    ],
+    
+    // Tier pricing
+    tierPricing: [
+      { min: 1, max: 9, price: 89, label: '1-9' },
+      { min: 10, max: 24, price: 82, label: '10-24' },
+      { min: 25, max: 49, price: 76, label: '25-49' },
+      { min: 50, max: 99, price: 69, label: '50-99' },
+      { min: 100, max: null, price: 65, label: '100+' },
+    ],
+    
+    // Applications
+    applications: ['Warehouse', 'Manufacturing', 'Gymnasium', 'Retail', 'Cold Storage'],
+    
+    // Replaces
+    replaces: ['400W Metal Halide', '6-lamp T5HO', '250W HPS'],
+    
+    // Warranty
+    warranty: {
+      years: 5,
+      type: 'Limited Warranty',
+      description: 'Covers defects in materials and workmanship',
+    },
+    
+    // Related products
+    relatedProducts: ['HB-UFO-200W', 'HB-UFO-100W', 'SENS-HB-MS', 'HB-LIN-220W'],
+    
+    // Accessories
+    accessories: [
+      { sku: 'SENS-HB-MS', name: 'Motion Sensor for High Bay', price: 29 },
+      { sku: 'CORD-HB-6FT', name: '6ft Power Cord with Plug', price: 15 },
+      { sku: 'HOOK-HB-ADJ', name: 'Adjustable Hook Mount', price: 12 },
+      { sku: 'EMRG-HB-90', name: '90-min Emergency Backup', price: 89 },
+    ],
   },
   'HB-UFO-200W': {
-    name: 'UFO High Bay 200W',
+    name: 'UFO High Bay LED Light 200W',
     sku: 'HB-UFO-200W',
-    category: 'Indoor / High Bay',
+    series: 'ProBay Series',
+    category: 'Indoor Lighting',
+    subcategory: 'High Bay Lights',
     price: 109,
     msrp: 159,
     stock: 'In Stock',
     stockQty: 189,
-    description: 'High-output UFO high bay LED for large warehouses and industrial facilities.',
-    specs: { wattage: '200W', lumens: '30,000 lm', cct: '5000K', beam: '120°', voltage: '120-277V' },
+    leadTime: 'Ships within 24 hours',
+    warehouse: 'Houston, TX',
+    description: 'High-output UFO high bay LED for large warehouses and industrial facilities with 25-35ft ceiling heights.',
+    shortDescription: 'High-output UFO for 25-35ft ceilings',
+    variants: { wattage: ['150W', '200W', '240W'], cct: ['4000K', '5000K'], voltage: ['120-277V'] },
+    selectedVariant: { wattage: '200W', cct: '5000K', voltage: '120-277V' },
+    specs: {
+      electrical: { 'Wattage': '200W', 'Input Voltage': '100-277V AC', 'Power Factor': '> 0.95' },
+      photometric: { 'Lumens': '30,000 lm', 'Efficacy': '150 lm/W', 'CRI': '> 80', 'Beam Angle': '120°' },
+      physical: { 'Dimensions': '∅15.7" x 8.5" H', 'Weight': '11.2 lbs' },
+      environmental: { 'IP Rating': 'IP65', 'Rated Life': '100,000 hours' },
+    },
+    quickSpecs: [
+      { label: 'Lumens', value: '30,000 lm', icon: Sun },
+      { label: 'Efficacy', value: '150 lm/W', icon: Zap },
+    ],
+    certifications: [{ name: 'DLC Premium', verified: true }, { name: 'UL Listed', verified: true }],
+    downloads: [{ name: 'Cut Sheet', type: 'PDF', size: '1.2 MB', icon: FileText }],
     tierPricing: [{ min: 1, price: 109 }, { min: 10, price: 99 }, { min: 25, price: 92 }, { min: 50, price: 85 }],
+    warranty: { years: 5, type: 'Limited Warranty' },
   },
   'WP-50W-5K': {
-    name: 'Wall Pack 50W',
+    name: 'LED Wall Pack 50W',
     sku: 'WP-50W-5K',
-    category: 'Outdoor / Wall Pack',
+    series: 'Guardian Series',
+    category: 'Outdoor Lighting',
+    subcategory: 'Wall Packs',
     price: 59,
     msrp: 89,
     stock: 'In Stock',
     stockQty: 312,
-    description: 'LED wall pack for building perimeter and security lighting.',
-    specs: { wattage: '50W', lumens: '6,500 lm', cct: '5000K', beam: '110°', voltage: '120-277V' },
-    tierPricing: [{ min: 1, price: 59 }, { min: 10, price: 54 }, { min: 25, price: 49 }, { min: 50, price: 45 }],
+    leadTime: 'Ships within 24 hours',
+    description: 'Full cutoff LED wall pack for building perimeter and security lighting. Dark sky compliant.',
+    shortDescription: 'Full cutoff wall pack for building security',
+    variants: { wattage: ['30W', '50W', '80W', '120W'], cct: ['4000K', '5000K'] },
+    selectedVariant: { wattage: '50W', cct: '5000K' },
+    specs: {
+      electrical: { 'Wattage': '50W', 'Input Voltage': '120-277V AC' },
+      photometric: { 'Lumens': '6,500 lm', 'Efficacy': '130 lm/W', 'Distribution': 'Full Cutoff' },
+      physical: { 'Dimensions': '12" x 10" x 5"', 'Weight': '6.2 lbs' },
+      environmental: { 'IP Rating': 'IP65', 'Rated Life': '100,000 hours' },
+    },
+    quickSpecs: [{ label: 'Lumens', value: '6,500 lm', icon: Sun }],
+    certifications: [{ name: 'DLC Standard', verified: true }, { name: 'UL Listed', verified: true }],
+    tierPricing: [{ min: 1, price: 59 }, { min: 10, price: 54 }, { min: 25, price: 49 }],
+    warranty: { years: 5, type: 'Limited Warranty' },
   },
   'AL-150W-T3': {
-    name: 'Area Light 150W',
+    name: 'LED Area Light 150W Type III',
     sku: 'AL-150W-T3',
-    category: 'Outdoor / Area Light',
+    series: 'Sentinel Series',
+    category: 'Outdoor Lighting',
+    subcategory: 'Area Lights',
     price: 149,
     msrp: 219,
-    stock: 'Ships in 3 days',
+    stock: 'Ships in 3-5 days',
     stockQty: 0,
-    description: 'LED area light with Type III distribution for parking lots.',
-    specs: { wattage: '150W', lumens: '21,000 lm', cct: '5000K', beam: 'Type III', voltage: '120-277V' },
-    tierPricing: [{ min: 1, price: 149 }, { min: 10, price: 139 }, { min: 25, price: 129 }, { min: 50, price: 119 }],
+    leadTime: '3-5 business days',
+    description: 'LED area light with Type III distribution for parking lots and roadways.',
+    shortDescription: 'Type III area light for parking lots',
+    specs: {
+      photometric: { 'Lumens': '21,000 lm', 'Distribution': 'Type III Medium' },
+      environmental: { 'IP Rating': 'IP66' },
+    },
+    quickSpecs: [{ label: 'Lumens', value: '21,000 lm', icon: Sun }],
+    certifications: [{ name: 'DLC Premium', verified: true }],
+    tierPricing: [{ min: 1, price: 149 }, { min: 10, price: 139 }],
+    warranty: { years: 10, type: 'Limited Warranty' },
   },
   'LHB-220W': {
-    name: 'Linear High Bay 220W',
+    name: 'Linear High Bay LED 220W',
     sku: 'LHB-220W',
-    category: 'Indoor / High Bay',
+    series: 'ProLine Series',
+    category: 'Indoor Lighting',
+    subcategory: 'High Bay Lights',
     price: 129,
     msrp: 189,
     stock: 'In Stock',
     stockQty: 156,
+    leadTime: 'Ships within 24 hours',
     description: 'Linear LED high bay for aisle lighting in warehouses and retail.',
-    specs: { wattage: '220W', lumens: '33,000 lm', cct: '5000K', beam: '120°', voltage: '120-277V' },
-    tierPricing: [{ min: 1, price: 129 }, { min: 10, price: 119 }, { min: 25, price: 109 }, { min: 50, price: 99 }],
+    shortDescription: 'Linear high bay for aisle lighting',
+    specs: {
+      photometric: { 'Lumens': '33,000 lm', 'Efficacy': '150 lm/W' },
+    },
+    quickSpecs: [{ label: 'Lumens', value: '33,000 lm', icon: Sun }],
+    certifications: [{ name: 'DLC Premium', verified: true }],
+    tierPricing: [{ min: 1, price: 129 }, { min: 10, price: 119 }],
+    warranty: { years: 5, type: 'Limited Warranty' },
   },
   'T8-4FT-18W': {
     name: '4ft LED Tube T8 18W',
     sku: 'T8-4FT-18W',
-    category: 'Indoor / LED Tubes',
+    series: 'EcoTube Series',
+    category: 'Indoor Lighting',
+    subcategory: 'LED Tubes',
     price: 8,
     msrp: 15,
     stock: 'In Stock',
     stockQty: 2450,
-    description: 'Type A+B LED tube, compatible with or without ballast. Direct replacement for fluorescent T8.',
-    specs: { wattage: '18W', lumens: '2,200 lm', cct: '5000K', beam: '220°', voltage: '120-277V' },
-    tierPricing: [{ min: 1, price: 8 }, { min: 25, price: 7 }, { min: 100, price: 6 }, { min: 500, price: 5 }],
+    leadTime: 'Ships within 24 hours',
+    description: 'Type A+B LED tube, works with or without ballast.',
+    shortDescription: 'Type A+B hybrid LED tube',
+    specs: {
+      photometric: { 'Lumens': '2,200 lm', 'Efficacy': '122 lm/W' },
+    },
+    quickSpecs: [{ label: 'Lumens', value: '2,200 lm', icon: Sun }],
+    certifications: [{ name: 'DLC Standard', verified: true }],
+    tierPricing: [{ min: 1, price: 8 }, { min: 25, price: 7 }, { min: 100, price: 6 }],
+    warranty: { years: 5, type: 'Limited Warranty' },
   },
 }
 
@@ -163,10 +333,8 @@ const sampleProducts = [
   { sku: 'HB-UFO-200W', name: 'UFO High Bay 200W', price: 109, badge: 'DLC' },
   { sku: 'WP-50W-5K', name: 'Wall Pack 50W', price: 59, badge: 'DLC' },
   { sku: 'AL-150W-T3', name: 'Area Light 150W', price: 149, badge: 'New' },
-  { sku: 'SL-100W-AIO', name: 'Solar Street Light 100W', price: 299, badge: 'DLC' },
-  { sku: 'SL-60W-AIO', name: 'Solar Street Light 60W', price: 199, badge: null },
-  { sku: 'FL-200W', name: 'LED Flood Light 200W', price: 129, badge: 'DLC' },
-  { sku: 'CL-100W', name: 'Canopy Light 100W', price: 89, badge: null },
+  { sku: 'LHB-220W', name: 'Linear High Bay 220W', price: 129, badge: 'DLC' },
+  { sku: 'T8-4FT-18W', name: '4ft LED Tube T8', price: 8, badge: null },
 ]
 
 // Category Page Component
@@ -175,7 +343,6 @@ function CategoryPage({ config, category }: { config: any; category: string }) {
 
   return (
     <main>
-      {/* Breadcrumb */}
       <div className="bg-gray-50 border-b">
         <div className="max-w-7xl mx-auto px-4 py-3">
           <nav className="flex items-center gap-2 text-sm">
@@ -188,7 +355,6 @@ function CategoryPage({ config, category }: { config: any; category: string }) {
         </div>
       </div>
 
-      {/* Category Header */}
       <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white py-12">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center gap-4 mb-4">
@@ -201,7 +367,6 @@ function CategoryPage({ config, category }: { config: any; category: string }) {
         </div>
       </div>
 
-      {/* Subcategories Grid */}
       <div className="max-w-7xl mx-auto px-4 py-8">
         <h2 className="text-xl font-semibold mb-6">Browse by Type</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-12">
@@ -220,16 +385,13 @@ function CategoryPage({ config, category }: { config: any; category: string }) {
           ))}
         </div>
 
-        {/* Products Grid */}
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-semibold">All {config.title}</h2>
-          <div className="flex items-center gap-4">
-            <select className="border rounded-lg px-3 py-2 text-sm">
-              <option>Sort: Featured</option>
-              <option>Price: Low to High</option>
-              <option>Price: High to Low</option>
-            </select>
-          </div>
+          <select className="border rounded-lg px-3 py-2 text-sm">
+            <option>Sort: Featured</option>
+            <option>Price: Low to High</option>
+            <option>Price: High to Low</option>
+          </select>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -263,25 +425,33 @@ function CategoryPage({ config, category }: { config: any; category: string }) {
   )
 }
 
-// Product Detail Page Component
+// Enhanced Product Detail Page Component
 function ProductDetailPage({ product }: { product: any }) {
   const [quantity, setQuantity] = useState(1)
   const [activeTab, setActiveTab] = useState('specs')
+  const [activeImage, setActiveImage] = useState(0)
+  const [selectedVariant, setSelectedVariant] = useState(product.selectedVariant || {})
 
   const getCurrentPrice = () => {
-    const tier = product.tierPricing.findLast((t: any) => quantity >= t.min)
+    const tier = product.tierPricing?.findLast((t: any) => quantity >= t.min)
     return tier?.price || product.price
   }
 
+  const totalPrice = getCurrentPrice() * quantity
+
   return (
-    <main>
+    <main className="bg-white">
       {/* Breadcrumb */}
       <div className="bg-gray-50 border-b">
         <div className="max-w-7xl mx-auto px-4 py-3">
-          <nav className="flex items-center gap-2 text-sm">
+          <nav className="flex items-center gap-2 text-sm flex-wrap">
             <Link href="/" className="text-gray-500 hover:text-gray-700">Home</Link>
             <ChevronRight className="w-4 h-4 text-gray-400" />
             <Link href="/products" className="text-gray-500 hover:text-gray-700">Products</Link>
+            <ChevronRight className="w-4 h-4 text-gray-400" />
+            <Link href={`/products/${product.category?.toLowerCase().replace(' ', '-')}`} className="text-gray-500 hover:text-gray-700">
+              {product.category}
+            </Link>
             <ChevronRight className="w-4 h-4 text-gray-400" />
             <span className="text-gray-900 font-medium">{product.name}</span>
           </nav>
@@ -290,140 +460,343 @@ function ProductDetailPage({ product }: { product: any }) {
 
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="grid lg:grid-cols-2 gap-12">
-          {/* Product Image */}
+          {/* Left Column - Images */}
           <div>
-            <div className="aspect-square bg-gray-100 rounded-lg flex items-center justify-center">
-              <Lightbulb className="w-32 h-32 text-gray-300" />
+            {/* Main Image */}
+            <div className="aspect-square bg-gray-100 rounded-xl flex items-center justify-center mb-4 relative">
+              <Lightbulb className="w-40 h-40 text-gray-300" />
+              {/* Image zoom hint */}
+              <div className="absolute bottom-4 right-4 bg-black/50 text-white text-xs px-2 py-1 rounded flex items-center gap-1">
+                <ImageIcon className="w-3 h-3" /> Hover to zoom
+              </div>
+            </div>
+            {/* Thumbnail Gallery */}
+            <div className="grid grid-cols-5 gap-2">
+              {[0, 1, 2, 3, 4].map((i) => (
+                <button
+                  key={i}
+                  onClick={() => setActiveImage(i)}
+                  className={`aspect-square bg-gray-100 rounded-lg flex items-center justify-center ${
+                    activeImage === i ? 'ring-2 ring-brand' : 'hover:ring-1 ring-gray-300'
+                  }`}
+                >
+                  <Lightbulb className="w-8 h-8 text-gray-300" />
+                </button>
+              ))}
             </div>
           </div>
 
-          {/* Product Info */}
+          {/* Right Column - Product Info */}
           <div>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded">DLC Listed</span>
-              <span className="px-2 py-1 bg-gray-100 text-gray-800 text-xs font-medium rounded">UL Listed</span>
+            {/* Certifications Badges */}
+            <div className="flex flex-wrap gap-2 mb-3">
+              {product.certifications?.map((cert: any, i: number) => (
+                <span key={i} className="inline-flex items-center gap-1 px-2 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded">
+                  {cert.verified && <CheckCircle2 className="w-3 h-3" />}
+                  {cert.name}
+                </span>
+              ))}
             </div>
-            
-            <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
-            <p className="text-gray-500 mb-4">SKU: {product.sku} | {product.category}</p>
-            <p className="text-gray-600 mb-6">{product.description}</p>
 
-            {/* Pricing */}
-            <div className="bg-gray-50 rounded-lg p-6 mb-6">
-              <div className="flex items-baseline gap-3 mb-4">
-                <span className="text-4xl font-bold">${getCurrentPrice()}</span>
-                <span className="text-gray-400 line-through text-lg">MSRP ${product.msrp}</span>
-                <span className="text-green-600 font-medium">Save {Math.round((1 - getCurrentPrice()/product.msrp) * 100)}%</span>
+            {/* Title & SKU */}
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">{product.name}</h1>
+            <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
+              <span>SKU: <span className="font-mono text-gray-700">{product.sku}</span></span>
+              {product.series && <span>Series: {product.series}</span>}
+            </div>
+
+            {/* Short Description */}
+            <p className="text-gray-600 mb-6">{product.shortDescription || product.description}</p>
+
+            {/* Quick Specs Grid */}
+            {product.quickSpecs && (
+              <div className="grid grid-cols-3 md:grid-cols-6 gap-3 mb-6 p-4 bg-gray-50 rounded-xl">
+                {product.quickSpecs.map((spec: any, i: number) => {
+                  const Icon = spec.icon || Zap
+                  return (
+                    <div key={i} className="text-center">
+                      <Icon className="w-5 h-5 mx-auto text-brand mb-1" />
+                      <p className="font-semibold text-sm">{spec.value}</p>
+                      <p className="text-xs text-gray-500">{spec.label}</p>
+                    </div>
+                  )
+                })}
               </div>
-              
-              <p className="text-sm text-gray-600 mb-4">Volume Pricing:</p>
-              <div className="grid grid-cols-4 gap-2 text-sm">
-                {product.tierPricing.map((tier: any, i: number) => (
-                  <div key={i} className={`text-center p-2 rounded ${quantity >= tier.min ? 'bg-brand/20 border-brand' : 'bg-white'} border`}>
-                    <p className="font-medium">{tier.min}+</p>
-                    <p className="text-gray-600">${tier.price}</p>
+            )}
+
+            {/* Variant Selectors */}
+            {product.variants && (
+              <div className="space-y-4 mb-6">
+                {Object.entries(product.variants).map(([key, values]: [string, any]) => (
+                  <div key={key}>
+                    <label className="block text-sm font-medium text-gray-700 mb-2 capitalize">{key}</label>
+                    <div className="flex flex-wrap gap-2">
+                      {values.map((value: string) => (
+                        <button
+                          key={value}
+                          onClick={() => setSelectedVariant({ ...selectedVariant, [key]: value })}
+                          className={`px-4 py-2 border rounded-lg text-sm font-medium transition-all ${
+                            selectedVariant[key] === value
+                              ? 'border-brand bg-brand/10 text-brand'
+                              : 'border-gray-300 hover:border-gray-400'
+                          }`}
+                        >
+                          {value}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 ))}
               </div>
-            </div>
+            )}
 
-            {/* Stock Status */}
-            <div className="flex items-center gap-2 mb-6">
-              {product.stockQty > 0 ? (
-                <>
-                  <CheckCircle2 className="w-5 h-5 text-green-500" />
-                  <span className="text-green-600 font-medium">{product.stock}</span>
-                  <span className="text-gray-500">({product.stockQty} units)</span>
-                </>
-              ) : (
-                <>
-                  <Clock className="w-5 h-5 text-orange-500" />
-                  <span className="text-orange-600 font-medium">{product.stock}</span>
-                </>
+            {/* Pricing Box */}
+            <div className="bg-gray-50 rounded-xl p-6 mb-6">
+              <div className="flex items-baseline gap-3 mb-2">
+                <span className="text-4xl font-bold text-gray-900">${getCurrentPrice().toFixed(2)}</span>
+                {product.msrp && getCurrentPrice() < product.msrp && (
+                  <>
+                    <span className="text-lg text-gray-400 line-through">MSRP ${product.msrp}</span>
+                    <span className="text-green-600 font-medium text-sm">
+                      Save {Math.round((1 - getCurrentPrice() / product.msrp) * 100)}%
+                    </span>
+                  </>
+                )}
+              </div>
+              <p className="text-sm text-gray-500 mb-4">Per unit • Volume discounts available</p>
+
+              {/* Volume Pricing Table */}
+              {product.tierPricing && product.tierPricing.length > 1 && (
+                <div className="mb-4">
+                  <p className="text-sm font-medium text-gray-700 mb-2">Volume Pricing:</p>
+                  <div className="grid grid-cols-5 gap-1">
+                    {product.tierPricing.map((tier: any, i: number) => (
+                      <div
+                        key={i}
+                        className={`text-center p-2 rounded-lg text-sm ${
+                          quantity >= tier.min && (tier.max === null || quantity <= tier.max)
+                            ? 'bg-brand text-black font-semibold'
+                            : 'bg-white border'
+                        }`}
+                      >
+                        <p className="font-medium">{tier.label || `${tier.min}+`}</p>
+                        <p>${tier.price}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               )}
-            </div>
 
-            {/* Quantity & Add to Cart */}
-            <div className="flex gap-4 mb-6">
-              <div className="flex items-center border rounded-lg">
-                <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="p-3 hover:bg-gray-100">
-                  <Minus className="w-4 h-4" />
-                </button>
-                <input
-                  type="number"
-                  value={quantity}
-                  onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-                  className="w-16 text-center border-x py-3"
-                />
-                <button onClick={() => setQuantity(quantity + 1)} className="p-3 hover:bg-gray-100">
-                  <Plus className="w-4 h-4" />
+              {/* Stock Status */}
+              <div className="flex items-center gap-2 mb-4">
+                {product.stockQty > 0 ? (
+                  <>
+                    <CheckCircle2 className="w-5 h-5 text-green-500" />
+                    <span className="text-green-600 font-medium">{product.stock}</span>
+                    <span className="text-gray-500">• {product.stockQty} units available</span>
+                  </>
+                ) : (
+                  <>
+                    <Clock className="w-5 h-5 text-orange-500" />
+                    <span className="text-orange-600 font-medium">{product.stock}</span>
+                  </>
+                )}
+              </div>
+              {product.leadTime && (
+                <p className="text-sm text-gray-500 flex items-center gap-1 mb-4">
+                  <Truck className="w-4 h-4" /> {product.leadTime}
+                  {product.warehouse && ` from ${product.warehouse}`}
+                </p>
+              )}
+
+              {/* Quantity & Add to Cart */}
+              <div className="flex gap-3">
+                <div className="flex items-center border rounded-lg bg-white">
+                  <button
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    className="p-3 hover:bg-gray-100 rounded-l-lg"
+                  >
+                    <Minus className="w-4 h-4" />
+                  </button>
+                  <input
+                    type="number"
+                    value={quantity}
+                    onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                    className="w-16 text-center py-3 border-x focus:outline-none"
+                  />
+                  <button
+                    onClick={() => setQuantity(quantity + 1)}
+                    className="p-3 hover:bg-gray-100 rounded-r-lg"
+                  >
+                    <Plus className="w-4 h-4" />
+                  </button>
+                </div>
+                <button className="flex-1 bg-brand hover:bg-yellow-400 text-black font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors">
+                  <ShoppingCart className="w-5 h-5" />
+                  Add to Cart • ${totalPrice.toFixed(2)}
                 </button>
               </div>
-              <button className="flex-1 bg-brand hover:bg-yellow-400 text-black font-medium py-3 px-6 rounded-lg flex items-center justify-center gap-2">
-                <ShoppingCart className="w-5 h-5" />
-                Add to Cart - ${(getCurrentPrice() * quantity).toFixed(2)}
+            </div>
+
+            {/* Secondary Actions */}
+            <div className="flex gap-3 mb-6">
+              <button className="flex-1 border border-gray-300 py-3 px-4 rounded-lg text-sm font-medium hover:bg-gray-50 flex items-center justify-center gap-2">
+                <Mail className="w-4 h-4" />
+                Request Quote
+              </button>
+              <button className="flex-1 border border-gray-300 py-3 px-4 rounded-lg text-sm font-medium hover:bg-gray-50 flex items-center justify-center gap-2">
+                <Heart className="w-4 h-4" />
+                Save to List
+              </button>
+              <button className="border border-gray-300 py-3 px-4 rounded-lg text-sm font-medium hover:bg-gray-50">
+                <Share2 className="w-4 h-4" />
               </button>
             </div>
 
             {/* Trust Badges */}
-            <div className="grid grid-cols-3 gap-4 text-center text-sm border-t pt-6">
-              <div>
+            <div className="grid grid-cols-3 gap-4 p-4 bg-gray-50 rounded-xl">
+              <div className="text-center">
                 <Truck className="w-6 h-6 mx-auto mb-1 text-brand" />
-                <p className="font-medium">Ships in 24h</p>
+                <p className="text-xs font-medium">Free Shipping</p>
+                <p className="text-xs text-gray-500">Orders $500+</p>
               </div>
-              <div>
+              <div className="text-center">
                 <Shield className="w-6 h-6 mx-auto mb-1 text-brand" />
-                <p className="font-medium">5 Year Warranty</p>
+                <p className="text-xs font-medium">{product.warranty?.years || 5} Year Warranty</p>
+                <p className="text-xs text-gray-500">Full Coverage</p>
               </div>
-              <div>
+              <div className="text-center">
                 <Phone className="w-6 h-6 mx-auto mb-1 text-brand" />
-                <p className="font-medium">Expert Support</p>
+                <p className="text-xs font-medium">Expert Support</p>
+                <p className="text-xs text-gray-500">Mon-Fri 8am-6pm</p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Specs & Downloads Tabs */}
+        {/* Tabs Section */}
         <div className="mt-12 border-t pt-8">
-          <div className="flex gap-4 border-b mb-6">
-            {['specs', 'downloads', 'reviews'].map(tab => (
+          <div className="flex gap-1 border-b mb-6 overflow-x-auto">
+            {['specs', 'downloads', 'applications', 'accessories', 'reviews'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`pb-3 px-4 font-medium capitalize ${activeTab === tab ? 'border-b-2 border-brand text-brand' : 'text-gray-500'}`}
+                className={`px-6 py-3 font-medium capitalize whitespace-nowrap border-b-2 transition-colors ${
+                  activeTab === tab
+                    ? 'border-brand text-brand'
+                    : 'border-transparent text-gray-500 hover:text-gray-700'
+                }`}
               >
-                {tab}
+                {tab === 'specs' ? 'Specifications' : tab}
               </button>
             ))}
           </div>
 
-          {activeTab === 'specs' && (
-            <div className="grid md:grid-cols-2 gap-4">
-              {Object.entries(product.specs).map(([key, value]) => (
-                <div key={key} className="flex justify-between py-2 border-b">
-                  <span className="text-gray-600 capitalize">{key}</span>
-                  <span className="font-medium">{value as string}</span>
+          {/* Specifications Tab */}
+          {activeTab === 'specs' && product.specs && (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {Object.entries(product.specs).map(([category, specs]: [string, any]) => (
+                <div key={category}>
+                  <h3 className="font-semibold text-gray-900 mb-4 capitalize">{category}</h3>
+                  <div className="space-y-2">
+                    {Object.entries(specs).map(([key, value]: [string, any]) => (
+                      <div key={key} className="flex justify-between py-2 border-b border-gray-100">
+                        <span className="text-gray-600">{key}</span>
+                        <span className="font-medium text-gray-900">{value}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               ))}
             </div>
           )}
 
+          {/* Downloads Tab */}
           {activeTab === 'downloads' && (
-            <div className="grid md:grid-cols-3 gap-4">
-              {['Cut Sheet', 'IES File', 'Installation Guide'].map(doc => (
-                <button key={doc} className="flex items-center gap-3 p-4 border rounded-lg hover:bg-gray-50">
-                  <FileText className="w-6 h-6 text-gray-400" />
-                  <span>{doc}</span>
-                  <Download className="w-4 h-4 ml-auto" />
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {(product.downloads || [
+                { name: 'Cut Sheet / Spec Sheet', type: 'PDF', size: '1.2 MB' },
+                { name: 'IES Photometric File', type: 'IES', size: '45 KB' },
+                { name: 'Installation Guide', type: 'PDF', size: '2.8 MB' },
+              ]).map((doc: any, i: number) => (
+                <button
+                  key={i}
+                  className="flex items-center gap-4 p-4 border rounded-xl hover:bg-gray-50 transition-colors text-left"
+                >
+                  <div className="w-12 h-12 bg-red-50 rounded-lg flex items-center justify-center">
+                    <FileText className="w-6 h-6 text-red-500" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-medium text-gray-900">{doc.name}</p>
+                    <p className="text-sm text-gray-500">{doc.type} • {doc.size}</p>
+                  </div>
+                  <Download className="w-5 h-5 text-gray-400" />
                 </button>
               ))}
             </div>
           )}
 
+          {/* Applications Tab */}
+          {activeTab === 'applications' && (
+            <div>
+              <p className="text-gray-600 mb-6">This product is ideal for the following applications:</p>
+              <div className="flex flex-wrap gap-3">
+                {(product.applications || ['Warehouse', 'Manufacturing', 'Retail']).map((app: string) => (
+                  <Link
+                    key={app}
+                    href={`/applications/${app.toLowerCase().replace(' ', '-')}`}
+                    className="px-4 py-2 bg-gray-100 hover:bg-brand/10 rounded-lg font-medium transition-colors"
+                  >
+                    {app}
+                  </Link>
+                ))}
+              </div>
+              {product.replaces && (
+                <div className="mt-8">
+                  <h4 className="font-semibold mb-3">Replaces Traditional Fixtures:</h4>
+                  <div className="flex flex-wrap gap-3">
+                    {product.replaces.map((item: string) => (
+                      <span key={item} className="px-3 py-1 bg-orange-50 text-orange-700 rounded-full text-sm">
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Accessories Tab */}
+          {activeTab === 'accessories' && (
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {(product.accessories || [
+                { sku: 'ACC-001', name: 'Motion Sensor', price: 29 },
+                { sku: 'ACC-002', name: 'Power Cord 6ft', price: 15 },
+              ]).map((acc: any) => (
+                <div key={acc.sku} className="border rounded-xl p-4">
+                  <div className="w-full aspect-square bg-gray-100 rounded-lg mb-3 flex items-center justify-center">
+                    <Package className="w-10 h-10 text-gray-300" />
+                  </div>
+                  <p className="text-xs text-gray-500">{acc.sku}</p>
+                  <p className="font-medium">{acc.name}</p>
+                  <p className="text-lg font-bold mt-2">${acc.price}</p>
+                  <button className="w-full mt-3 py-2 border rounded-lg text-sm font-medium hover:bg-gray-50">
+                    Add to Cart
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Reviews Tab */}
           {activeTab === 'reviews' && (
-            <div className="text-center py-8 text-gray-500">
-              <Star className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-              <p>No reviews yet. Be the first to review this product.</p>
+            <div className="text-center py-12">
+              <Star className="w-16 h-16 mx-auto mb-4 text-gray-200" />
+              <h3 className="text-lg font-medium mb-2">No Reviews Yet</h3>
+              <p className="text-gray-500 mb-4">Be the first to review this product.</p>
+              <button className="px-6 py-2 bg-brand text-black rounded-lg font-medium hover:bg-yellow-400">
+                Write a Review
+              </button>
             </div>
           )}
         </div>
@@ -432,19 +805,15 @@ function ProductDetailPage({ product }: { product: any }) {
   )
 }
 
-// Main Page Component - decides between category and product
+// Main Page Component
 export default function DynamicProductPage() {
   const params = useParams()
   const category = params.category as string
-  
-  // Check if it's a known category
+
   const config = categoryConfig[category]
-  
-  // Check if it's a product SKU
   const product = mockProducts[category]
-  
+
   if (config) {
-    // It's a category page
     return (
       <div className="min-h-screen bg-white">
         <Header />
@@ -453,9 +822,8 @@ export default function DynamicProductPage() {
       </div>
     )
   }
-  
+
   if (product) {
-    // It's a product detail page
     return (
       <div className="min-h-screen bg-white">
         <Header />
@@ -464,8 +832,7 @@ export default function DynamicProductPage() {
       </div>
     )
   }
-  
-  // Not found
+
   return (
     <div className="min-h-screen bg-white">
       <Header />
