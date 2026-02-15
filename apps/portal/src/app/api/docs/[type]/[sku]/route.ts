@@ -36,6 +36,14 @@ export async function GET(
     }
   }
 
+  // For warranty, fall back to general warranty file if available
+  if (type === 'warranty') {
+    const defaultWarrantyPath = join(publicDir, 'AOK-5-Year-Warranty.pdf');
+    if (existsSync(defaultWarrantyPath)) {
+      return NextResponse.redirect(new URL('/files/warranty/AOK-5-Year-Warranty.pdf', request.url));
+    }
+  }
+
   // No file found - redirect to placeholder page
   const placeholderUrl = `${config.placeholderPath}/${encodeURIComponent(decodedSku)}`;
   return NextResponse.redirect(new URL(placeholderUrl, request.url));
