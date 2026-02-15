@@ -37,15 +37,14 @@ const bcCategoryToUrl: Record<number, string> = {
   56: '/products/specialty/grow',          // Grow Light
 }
 
-function getProductUrl(categories: number[], productId: number): string {
-  // Find the first matching category URL
+function getCategoryUrl(categories: number[]): string | null {
+  // Find the first matching category URL for breadcrumb/category context
   for (const catId of categories) {
     if (bcCategoryToUrl[catId]) {
       return bcCategoryToUrl[catId]
     }
   }
-  // Fallback to bc-products if no category match
-  return `/bc-products/${productId}`
+  return null
 }
 
 // GET /api/bigcommerce/in-stock - Get products with inventory > 0
@@ -107,7 +106,8 @@ export async function GET(request: NextRequest) {
           thumbnail: primaryImage?.url_thumbnail || null,
           shippingStatus,
           shippingDays,
-          url: getProductUrl(categories, p.id),
+          url: `/bc-products/${p.id}`,  // Link to product detail page
+          categoryUrl: getCategoryUrl(categories),  // Category page for breadcrumb
           categories,
         }
       })
