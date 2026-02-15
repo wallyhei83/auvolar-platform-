@@ -1,17 +1,17 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { Suspense, useState } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { 
-  ChevronRight, Filter, Grid3X3, List, SlidersHorizontal, X,
-  Zap, Shield, Truck, ChevronDown, Search, Plus, Minus, Lightbulb
+  ChevronRight, Filter, Grid3X3, List, Zap, Shield, Truck, 
+  ChevronDown, X, Plus, Minus, Loader2
 } from 'lucide-react'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
-import { products as allProductsData } from '@/lib/product-data'
+import { BCProductGrid } from '@/components/products/bc-product-grid'
 
-// Filter options based on planning document
+// Filter options
 const filterOptions = {
   category: {
     label: 'Category',
@@ -23,7 +23,6 @@ const filterOptions = {
       { value: 'flood', label: 'Flood Lights' },
       { value: 'troffer', label: 'Troffers & Panels' },
       { value: 'tubes', label: 'LED Tubes' },
-      { value: 'vapor-tight', label: 'Vapor Tight' },
       { value: 'canopy', label: 'Canopy Lights' },
     ]
   },
@@ -34,118 +33,17 @@ const filterOptions = {
       { value: '50-100', label: '50W - 100W' },
       { value: '100-150', label: '100W - 150W' },
       { value: '150-200', label: '150W - 200W' },
-      { value: '200-300', label: '200W - 300W' },
-      { value: '300+', label: '300W+' },
+      { value: '200+', label: '200W+' },
     ]
   },
-  cct: {
-    label: 'Color Temperature',
-    options: [
-      { value: '3000', label: '3000K (Warm)' },
-      { value: '4000', label: '4000K (Neutral)' },
-      { value: '5000', label: '5000K (Daylight)' },
-      { value: 'selectable', label: 'CCT Selectable' },
-    ]
-  },
-  voltage: {
-    label: 'Voltage',
-    options: [
-      { value: '120-277', label: '120-277V' },
-      { value: '277-480', label: '277-480V' },
-      { value: '347-480', label: '347-480V' },
-    ]
-  },
-  certification: {
-    label: 'Certification',
-    options: [
-      { value: 'dlc', label: 'DLC Listed' },
-      { value: 'ul', label: 'UL Listed' },
-      { value: 'etl', label: 'ETL Listed' },
-    ]
-  },
-  mounting: {
-    label: 'Mounting',
-    options: [
-      { value: 'hook', label: 'Hook Mount' },
-      { value: 'chain', label: 'Chain Mount' },
-      { value: 'pendant', label: 'Pendant Mount' },
-      { value: 'surface', label: 'Surface Mount' },
-      { value: 'arm', label: 'Arm Mount' },
-    ]
-  },
-  stock: {
-    label: 'Availability',
-    options: [
-      { value: 'in-stock', label: 'In Stock' },
-      { value: 'ships-soon', label: 'Ships in 3-5 days' },
-    ]
-  }
 }
 
-// Sort options
-const sortOptions = [
-  { value: 'relevance', label: 'Relevance' },
-  { value: 'price-low', label: 'Price: Low to High' },
-  { value: 'price-high', label: 'Price: High to Low' },
-  { value: 'newest', label: 'Newest' },
-  { value: 'best-seller', label: 'Best Sellers' },
-  { value: 'wattage', label: 'Wattage' },
-]
-
-// Convert product data to display format
-const mockProducts = Object.values(allProductsData).map((product, index) => {
-  // Extract wattage from specs or name
-  const wattageMatch = product.name.match(/(\d+)W/)
-  const wattage = wattageMatch ? parseInt(wattageMatch[1]) : 0
-  
-  // Extract lumens from quickSpecs or specs
-  const lumensSpec = product.quickSpecs?.find(s => s.label === 'Lumens')
-  const lumens = lumensSpec ? parseInt(lumensSpec.value.replace(/[^0-9]/g, '')) : 0
-  
-  // Extract beam angle
-  const beamSpec = product.quickSpecs?.find(s => s.label === 'Beam')
-  const beam = beamSpec?.value || product.specs?.photometric?.['Beam Angle'] || '120°'
-  
-  // Get CCT
-  const cct = product.selectedVariant?.cct || '5000K'
-  
-  // Get voltage
-  const voltage = product.selectedVariant?.voltage || product.specs?.electrical?.['Input Voltage'] || '120-277V'
-  
-  // Check certifications
-  const dlc = product.certifications?.some(c => c.name.includes('DLC')) || false
-  const ul = product.certifications?.some(c => c.name.includes('UL')) || false
-
-  return {
-    id: String(index + 1),
-    name: product.name,
-    sku: product.sku,
-    category: product.subcategory,
-    wattage,
-    lumens,
-    cct,
-    voltage,
-    price: product.price,
-    msrp: product.msrp,
-    stock: product.stock,
-    stockQty: product.stockQty,
-    dlc,
-    ul,
-    warranty: `${product.warranty.years} Year`,
-    description: product.shortDescription || product.description,
-    beam,
-  }
-})
-
-export default function ProductsPage() {
+function ProductsContent() {
   const searchParams = useSearchParams()
-  const [products, setProducts] = useState(mockProducts)
-  const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({})
-  const [sortBy, setSortBy] = useState('relevance')
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
+  const category = searchParams.get('category')
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
-  const [expandedFilters, setExpandedFilters] = useState<string[]>(['category', 'wattage', 'certification'])
-  const [quantities, setQuantities] = useState<Record<string, number>>({})
+  const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({})
+  const [expandedFilters, setExpandedFilters] = useState<string[]>(['category', 'wattage'])
 
   const toggleFilter = (category: string, value: string) => {
     setSelectedFilters(prev => {
@@ -167,13 +65,6 @@ export default function ProductsPage() {
         ? prev.filter(s => s !== section)
         : [...prev, section]
     )
-  }
-
-  const updateQuantity = (productId: string, delta: number) => {
-    setQuantities(prev => ({
-      ...prev,
-      [productId]: Math.max(1, (prev[productId] || 1) + delta)
-    }))
   }
 
   const activeFilterCount = Object.values(selectedFilters).flat().length
@@ -205,8 +96,8 @@ export default function ProductsPage() {
             </div>
             <div className="hidden items-center gap-4 sm:flex">
               <div className="flex items-center gap-2 rounded-lg bg-green-50 px-3 py-1.5 text-sm text-green-700">
-                <Truck className="h-4 w-4" />
-                In-stock ships in 24h
+                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                Live from BigCommerce
               </div>
             </div>
           </div>
@@ -221,9 +112,10 @@ export default function ProductsPage() {
               <Zap className="h-4 w-4 text-brand" />
               5-10 Year Warranty
             </span>
-            <Link href="/login" className="font-medium text-brand hover:underline">
-              Log in for Contractor Pricing →
-            </Link>
+            <span className="flex items-center gap-1.5 text-gray-600">
+              <Truck className="h-4 w-4 text-brand" />
+              Free Shipping $500+
+            </span>
           </div>
         </div>
       </div>
@@ -247,22 +139,17 @@ export default function ProductsPage() {
                 )}
               </button>
 
-              {/* Results count */}
-              <span className="text-sm text-gray-600">
-                {products.length} products
-              </span>
-
               {/* Active filters */}
               {activeFilterCount > 0 && (
                 <div className="hidden items-center gap-2 lg:flex">
-                  {Object.entries(selectedFilters).flatMap(([category, values]) =>
+                  {Object.entries(selectedFilters).flatMap(([cat, values]) =>
                     values.map(value => (
                       <button
-                        key={`${category}-${value}`}
-                        onClick={() => toggleFilter(category, value)}
+                        key={`${cat}-${value}`}
+                        onClick={() => toggleFilter(cat, value)}
                         className="flex items-center gap-1 rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-gray-200"
                       >
-                        {filterOptions[category as keyof typeof filterOptions]?.options.find(o => o.value === value)?.label}
+                        {filterOptions[cat as keyof typeof filterOptions]?.options.find(o => o.value === value)?.label}
                         <X className="h-3 w-3" />
                       </button>
                     ))
@@ -278,35 +165,12 @@ export default function ProductsPage() {
             </div>
 
             <div className="flex items-center gap-4">
-              {/* Sort */}
-              <div className="flex items-center gap-2">
-                <label className="hidden text-sm text-gray-600 sm:block">Sort by:</label>
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
-                >
-                  {sortOptions.map(option => (
-                    <option key={option.value} value={option.value}>{option.label}</option>
-                  ))}
-                </select>
-              </div>
-
-              {/* View mode */}
-              <div className="hidden items-center gap-1 rounded-lg border border-gray-300 p-1 sm:flex">
-                <button
-                  onClick={() => setViewMode('grid')}
-                  className={`rounded p-1.5 ${viewMode === 'grid' ? 'bg-gray-100' : 'hover:bg-gray-50'}`}
-                >
-                  <Grid3X3 className="h-4 w-4" />
-                </button>
-                <button
-                  onClick={() => setViewMode('list')}
-                  className={`rounded p-1.5 ${viewMode === 'list' ? 'bg-gray-100' : 'hover:bg-gray-50'}`}
-                >
-                  <List className="h-4 w-4" />
-                </button>
-              </div>
+              <select className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand">
+                <option>Sort: Featured</option>
+                <option>Price: Low to High</option>
+                <option>Price: High to Low</option>
+                <option>Newest</option>
+              </select>
             </div>
           </div>
         </div>
@@ -358,121 +222,7 @@ export default function ProductsPage() {
 
           {/* Products Grid */}
           <div className="flex-1">
-            <div className={`grid gap-4 ${viewMode === 'grid' ? 'sm:grid-cols-2 xl:grid-cols-3' : 'grid-cols-1'}`}>
-              {products.map((product) => (
-                <div
-                  key={product.id}
-                  className={`group rounded-xl border border-gray-200 bg-white transition-all hover:border-brand hover:shadow-lg ${
-                    viewMode === 'list' ? 'flex gap-4' : ''
-                  }`}
-                >
-                  {/* Product Image */}
-                  <Link
-                    href={`/products/${product.sku}`}
-                    className={`block ${viewMode === 'list' ? 'w-48 shrink-0' : ''}`}
-                  >
-                    <div className={`relative ${viewMode === 'list' ? 'h-full' : 'aspect-square'} rounded-t-xl bg-gradient-to-br from-gray-100 to-gray-50 ${viewMode === 'list' ? 'rounded-l-xl rounded-tr-none' : ''}`}>
-                      <div className="flex h-full items-center justify-center">
-                        <Lightbulb className="h-16 w-16 text-gray-300" />
-                      </div>
-                      {/* Badges */}
-                      <div className="absolute left-3 top-3 flex flex-col gap-1">
-                        {product.dlc && (
-                          <span className="rounded bg-green-500 px-1.5 py-0.5 text-[10px] font-bold text-white">
-                            DLC
-                          </span>
-                        )}
-                        {product.stock === 'In Stock' && (
-                          <span className="rounded bg-blue-500 px-1.5 py-0.5 text-[10px] font-bold text-white">
-                            IN STOCK
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </Link>
-
-                  {/* Product Info */}
-                  <div className={`flex flex-col p-4 ${viewMode === 'list' ? 'flex-1' : ''}`}>
-                    <Link href={`/products/${product.sku}`}>
-                      <h3 className="font-semibold text-gray-900 group-hover:text-brand">
-                        {product.name} {product.wattage}W
-                      </h3>
-                      <p className="mt-0.5 text-xs text-gray-500">{product.sku}</p>
-                    </Link>
-
-                    {/* Key Specs */}
-                    <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-xs text-gray-600">
-                      <span>{product.lumens.toLocaleString()} lm</span>
-                      <span>{product.cct}</span>
-                      <span>{product.voltage}</span>
-                      <span>{product.beam}</span>
-                    </div>
-
-                    {/* Price & Stock */}
-                    <div className="mt-3 flex items-end justify-between">
-                      <div>
-                        <div className="text-lg font-bold text-gray-900">
-                          ${product.price}
-                        </div>
-                        <div className="text-xs text-gray-500 line-through">
-                          MSRP ${product.msrp}
-                        </div>
-                      </div>
-                      <div className={`text-xs font-medium ${product.stock === 'In Stock' ? 'text-green-600' : 'text-amber-600'}`}>
-                        {product.stock}
-                      </div>
-                    </div>
-
-                    {/* Quick Add */}
-                    <div className="mt-4 flex items-center gap-2">
-                      <div className="flex items-center rounded border border-gray-300">
-                        <button
-                          onClick={() => updateQuantity(product.id, -1)}
-                          className="px-2 py-1.5 text-gray-600 hover:bg-gray-50"
-                        >
-                          <Minus className="h-3 w-3" />
-                        </button>
-                        <span className="w-8 text-center text-sm">
-                          {quantities[product.id] || 1}
-                        </span>
-                        <button
-                          onClick={() => updateQuantity(product.id, 1)}
-                          className="px-2 py-1.5 text-gray-600 hover:bg-gray-50"
-                        >
-                          <Plus className="h-3 w-3" />
-                        </button>
-                      </div>
-                      <button className="flex-1 rounded-lg bg-brand py-2 text-sm font-semibold text-black hover:bg-brand-dark">
-                        Add to Cart
-                      </button>
-                    </div>
-
-                    {/* Secondary Actions */}
-                    <div className="mt-2 flex gap-2 text-xs">
-                      <button className="text-gray-500 hover:text-brand">
-                        + Compare
-                      </button>
-                      <button className="text-gray-500 hover:text-brand">
-                        Request Quote
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Pagination placeholder */}
-            <div className="mt-8 flex items-center justify-center gap-2">
-              <button className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-50">
-                Previous
-              </button>
-              <button className="rounded-lg bg-brand px-4 py-2 text-sm font-bold text-black">1</button>
-              <button className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-50">2</button>
-              <button className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-50">3</button>
-              <button className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium hover:bg-gray-50">
-                Next
-              </button>
-            </div>
+            <BCProductGrid categoryFilter={category || undefined} limit={20} showCategories={true} />
           </div>
         </div>
       </div>
@@ -543,5 +293,17 @@ export default function ProductsPage() {
 
       <Footer />
     </div>
+  )
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-brand" />
+      </div>
+    }>
+      <ProductsContent />
+    </Suspense>
   )
 }

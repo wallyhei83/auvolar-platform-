@@ -7,6 +7,8 @@ import {
   Search, ShoppingCart, User, Menu, X, Phone, Truck, Clock,
   ChevronDown, ChevronRight, Zap, Package, Upload
 } from 'lucide-react'
+import { useCart } from '@/lib/cart-context'
+import { CartDrawer } from '@/components/cart/cart-drawer'
 
 // 产品分类 - 多级菜单结构
 const productCategories = {
@@ -172,10 +174,12 @@ const services = [
 
 export function Header() {
   const { data: session } = useSession()
+  const { itemCount } = useCart()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [activeMenu, setActiveMenu] = useState<string | null>(null)
   const [activeSubMenu, setActiveSubMenu] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
+  const [cartOpen, setCartOpen] = useState(false)
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm">
@@ -261,15 +265,17 @@ export function Header() {
                 <span className="hidden lg:inline">Sign In</span>
               </Link>
             )}
-            <Link
-              href="/cart"
+            <button
+              onClick={() => setCartOpen(true)}
               className="relative flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-brand"
             >
               <ShoppingCart className="h-5 w-5" />
-              <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-brand text-[10px] font-bold text-black">
-                0
-              </span>
-            </Link>
+              {itemCount > 0 && (
+                <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-brand text-[10px] font-bold text-black">
+                  {itemCount > 99 ? '99+' : itemCount}
+                </span>
+              )}
+            </button>
             <Link
               href={session ? "/portal" : "/register"}
               className="hidden rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-black hover:bg-brand-dark sm:block"
@@ -556,6 +562,9 @@ export function Header() {
           </div>
         </div>
       )}
+
+      {/* Cart Drawer */}
+      <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} />
     </header>
   )
 }
