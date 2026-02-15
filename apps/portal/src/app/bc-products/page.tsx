@@ -251,7 +251,7 @@ function ProductDetail({ productId }: { productId: string }) {
             <h3 className="text-sm font-semibold text-gray-900 mb-3">Downloads & Resources</h3>
             <div className="grid grid-cols-2 gap-2">
               <a 
-                href={`/docs/spec-sheets/${product.sku}.pdf`}
+                href={`/docs/spec-sheets/${encodeURIComponent(product.sku)}`}
                 target="_blank"
                 className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm"
               >
