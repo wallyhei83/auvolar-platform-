@@ -12,10 +12,15 @@ import { useCart } from '@/lib/cart-context'
 export default function CartPage() {
   const { items, itemCount, subtotal, loading, updateQuantity, removeItem, clearCart, checkout } = useCart()
 
-  const handleCheckout = () => {
-    // For now, redirect to RFQ (Request for Quote) for B2B checkout
-    alert('For orders, please submit a quote request or contact our sales team.\n\nEmail: sales@auvolar.com\nPhone: 1-888-555-0123')
-    window.location.href = '/tools/rfq'
+  const handleCheckout = async () => {
+    // Use BigCommerce hosted checkout
+    const checkoutUrl = await checkout()
+    if (checkoutUrl) {
+      window.location.href = checkoutUrl
+    } else {
+      // Fallback if checkout creation fails
+      alert('Unable to create checkout. Please try again or contact sales@auvolar.com')
+    }
   }
 
   return (
