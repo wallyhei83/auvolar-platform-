@@ -8,14 +8,21 @@ import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { FeaturedProducts } from '@/components/home/featured-products'
 
-// Product categories - only use matching BC product images, empty string for no BC product
+// Product categories with matching BC product images
 const categories = [
+  { 
+    name: 'High Bay Lights', 
+    description: 'Warehouses, manufacturing, gyms',
+    image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/156/images/452/Highbay_Light_OH60W-240W__96466.1770882596.386.513.jpg?c=1', // BC: UFO High Bay (30)
+    href: '/products/indoor/high-bay',
+    badge: 'Best Seller'
+  },
   { 
     name: 'Wall Packs', 
     description: 'Building perimeter, security',
     image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/123/images/571/Minni_Wallpack_AN-WPA26W_-5KP-BZ_Application_reference__40018.1771055698.386.513.jpg?c=1', // BC: Wall Pack (27)
     href: '/products/outdoor/wall-pack',
-    badge: 'Best Seller'
+    badge: null
   },
   { 
     name: 'Area Lights', 
@@ -25,31 +32,24 @@ const categories = [
     badge: null
   },
   { 
-    name: 'Flood Lights', 
-    description: 'Sports fields, billboards, facades',
-    image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/124/images/390/01__25331.1770875986.386.513.jpg?c=1', // BC: Flood Light (28)
-    href: '/products/outdoor/flood',
+    name: 'Troffers & Panels', 
+    description: 'Office, retail, education',
+    image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/178/images/484/image__12842.1770886820.386.513.png?c=1', // BC: Panel Light (33)
+    href: '/products/indoor/troffer',
     badge: null
   },
   { 
     name: 'Solar Lights', 
     description: 'Off-grid street & area lights',
-    image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/119/images/562/Solar_Wallpack_Light_AN-SBR6W_-6K-WH__87869.1771053883.386.513.jpg?c=1', // BC: Solar Wall Pack (47)
+    image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/197/images/535/04BB1E37-4E58-4b31-8B76-2EFFD4AE7AE6__86041.1770891195.386.513.png?c=1', // BC: Solar Area (59)
     href: '/products/solar',
     badge: 'New'
   },
   { 
-    name: 'Canopy & Garage', 
-    description: 'Parking garages, covered areas',
-    image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/136/images/544/Garage_Canopy_Light_AN-CN40-60-70W_-345K-WH__69331.1770891718.386.513.jpg?c=1', // BC: Canopy (53)
-    href: '/products/indoor/canopy',
-    badge: null
-  },
-  { 
-    name: 'Exit Signs', 
-    description: 'Emergency lighting fixtures',
-    image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/122/images/388/exit_01__21416.1770875723.386.513.png?c=1', // BC: Exit Light (48)
-    href: '/products/indoor/exit',
+    name: 'LED Tubes', 
+    description: 'T8/T5 retrofit replacements',
+    image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/138/images/421/WPS20260212144030__14594.1770879720.386.513.png?c=1', // BC: LED Tube (36)
+    href: '/products/indoor/led-tube',
     badge: null
   },
 ]
