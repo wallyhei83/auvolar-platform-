@@ -171,7 +171,7 @@ export function BCCategoryProducts({
 function ProductCard({ product }: { product: BCProduct }) {
   return (
     <Link
-      href={`/bc-products/${product.id}`}
+      href={`/bc-products?id=${product.id}`}
       className="group border rounded-lg overflow-hidden hover:shadow-lg transition-shadow bg-white"
     >
       {/* Image */}
@@ -247,7 +247,7 @@ function ProductCard({ product }: { product: BCProduct }) {
 function ProductListItem({ product }: { product: BCProduct }) {
   return (
     <Link
-      href={`/bc-products/${product.id}`}
+      href={`/bc-products?id=${product.id}`}
       className="group flex border rounded-lg overflow-hidden hover:shadow-lg transition-shadow bg-white"
     >
       {/* Image */}

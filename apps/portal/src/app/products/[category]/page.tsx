@@ -173,7 +173,7 @@ function ProductCard({ product }: { product: BCProduct }) {
   
   return (
     <Link
-      href={`/bc-products/${product.id}`}
+      href={`/bc-products?id=${product.id}`}
       className="group bg-white border rounded-xl overflow-hidden hover:shadow-lg transition-all"
     >
       <div className="aspect-square bg-gray-100 relative">
