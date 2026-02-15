@@ -13,14 +13,21 @@ export default function CartPage() {
   const { items, itemCount, subtotal, loading, updateQuantity, removeItem, clearCart, checkout } = useCart()
 
   const handleCheckout = async () => {
-    // Use BigCommerce hosted checkout
-    const checkoutUrl = await checkout()
-    if (checkoutUrl) {
-      window.location.href = checkoutUrl
-    } else {
-      // Fallback if checkout creation fails
-      alert('Unable to create checkout. Please try again or contact sales@auvolar.com')
+    // Try BigCommerce hosted checkout first
+    try {
+      const checkoutUrl = await checkout()
+      if (checkoutUrl) {
+        window.location.href = checkoutUrl
+        return
+      }
+    } catch (err) {
+      console.log('BC checkout failed, using RFQ flow')
     }
+    
+    // Fallback to RFQ flow with cart items pre-filled
+    const cartSummary = items.map(item => `${item.quantity}x ${item.name} (${item.sku})`).join('\n')
+    const rfqUrl = `/tools/rfq?items=${encodeURIComponent(cartSummary)}&total=${subtotal.toFixed(2)}`
+    window.location.href = rfqUrl
   }
 
   return (
