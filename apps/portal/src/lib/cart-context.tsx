@@ -150,11 +150,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const syncWithBigCommerce = async (cartItems: CartItem[]) => {
     try {
-      const response = await fetch('/api/cart/sync', {
+      // Use smart-sync API that automatically handles product modifiers
+      const response = await fetch('/api/cart/smart-sync', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          cartId,
           items: cartItems.map(item => ({
             product_id: item.productId,
             variant_id: item.variantId,
