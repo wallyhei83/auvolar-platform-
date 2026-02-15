@@ -53,7 +53,7 @@ export default function BCProductDetailPage() {
     async function fetchProduct() {
       try {
         setLoading(true)
-        const res = await fetch(`/api/bigcommerce/products/${productId}`)
+        const res = await fetch(`/api/bigcommerce/products?id=${productId}`)
         const data = await res.json()
         
         if (data.error) {
