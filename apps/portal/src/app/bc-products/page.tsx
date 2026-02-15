@@ -259,7 +259,7 @@ function ProductDetail({ productId }: { productId: string }) {
                 <span>Spec Sheet</span>
               </a>
               <a 
-                href={`/docs/ies/${product.sku}.ies`}
+                href={`/docs/ies/${encodeURIComponent(product.sku)}`}
                 target="_blank"
                 className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm"
               >
@@ -267,7 +267,7 @@ function ProductDetail({ productId }: { productId: string }) {
                 <span>IES File</span>
               </a>
               <a 
-                href={`/docs/instructions/${product.sku}.pdf`}
+                href={`/docs/instructions/${encodeURIComponent(product.sku)}`}
                 target="_blank"
                 className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm"
               >
@@ -275,7 +275,7 @@ function ProductDetail({ productId }: { productId: string }) {
                 <span>Install Guide</span>
               </a>
               <a 
-                href={`/docs/warranty/${product.sku}.pdf`}
+                href={`/docs/warranty/${encodeURIComponent(product.sku)}`}
                 target="_blank"
                 className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm"
               >
