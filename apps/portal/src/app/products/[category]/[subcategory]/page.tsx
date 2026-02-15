@@ -1,443 +1,337 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { useState } from 'react'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { 
-  ChevronRight, ChevronDown, Filter, Grid, List, X,
-  Lightbulb, Check, ShoppingCart
+  ChevronRight, Sun, Building2, Lightbulb, Leaf, Zap,
+  Loader2, ShoppingCart, Plus, Minus, Check, CheckCircle2, Clock,
+  Grid, List, Filter
 } from 'lucide-react'
+import { getMainCategory, getSubcategory, type ProductCategory } from '@/lib/product-categories'
 
-// Subcategory configuration
-const subcategoryConfig: Record<string, Record<string, {
-  title: string
-  description: string
-  types?: { name: string; slug: string; count: number }[]
-}>> = {
-  solar: {
-    street: {
-      title: 'Solar Street Lights',
-      description: 'All-in-one and split-type solar street lights for roadways, pathways, and parking areas.',
-      types: [
-        { name: 'All-in-One Solar', slug: 'all-in-one', count: 8 },
-        { name: 'Split Type Solar', slug: 'split', count: 6 },
-      ]
-    },
-    flood: {
-      title: 'Solar Flood Lights',
-      description: 'Solar-powered flood lights for security, landscape, and area lighting.',
-    },
-    garden: {
-      title: 'Solar Garden Lights',
-      description: 'Decorative solar lights for gardens, pathways, and landscape features.',
-    },
-    wall: {
-      title: 'Solar Wall Lights',
-      description: 'Solar wall-mounted lights for building perimeters and entrances.',
-    },
-  },
-  outdoor: {
-    'area-light': {
-      title: 'Area Lights',
-      description: 'LED area lights for parking lots, streets, and commercial properties.',
-      types: [
-        { name: 'Parking Lot Lights', slug: 'parking-lot', count: 12 },
-        { name: 'Street Lights', slug: 'street', count: 8 },
-        { name: 'Shoe Box Lights', slug: 'shoe-box', count: 6 },
-      ]
-    },
-    flood: {
-      title: 'Flood Lights',
-      description: 'High-power LED flood lights for sports, security, and landscape.',
-      types: [
-        { name: 'Sports Flood Lights', slug: 'sports', count: 10 },
-        { name: 'Security Flood Lights', slug: 'security', count: 8 },
-      ]
-    },
-    'wall-pack': {
-      title: 'Wall Pack Lights',
-      description: 'LED wall packs for building perimeter and security lighting.',
-      types: [
-        { name: 'Full Cutoff', slug: 'full-cutoff', count: 14 },
-        { name: 'Semi Cutoff', slug: 'semi-cutoff', count: 10 },
-      ]
-    },
-    canopy: {
-      title: 'Canopy Lights',
-      description: 'LED canopy lights for gas stations, parking garages, and covered areas.',
-      types: [
-        { name: 'Gas Station Canopy', slug: 'gas-station', count: 8 },
-        { name: 'Parking Garage', slug: 'parking-garage', count: 6 },
-      ]
-    },
-    bollard: {
-      title: 'Bollard Lights',
-      description: 'LED bollard lights for pathways, landscaping, and architectural accent.',
-    },
-    'post-top': {
-      title: 'Post Top Lights',
-      description: 'Decorative LED post top lights for streets, parks, and campuses.',
-    },
-  },
-  indoor: {
-    'high-bay': {
-      title: 'High Bay Lights',
-      description: 'LED high bay lights for warehouses, manufacturing, and gyms.',
-      types: [
-        { name: 'UFO High Bay', slug: 'ufo', count: 16 },
-        { name: 'Linear High Bay', slug: 'linear', count: 12 },
-      ]
-    },
-    troffer: {
-      title: 'Troffers & Panels',
-      description: 'LED troffers and flat panels for offices, retail, and healthcare.',
-      types: [
-        { name: '2x2 Troffers', slug: '2x2', count: 10 },
-        { name: '2x4 Troffers', slug: '2x4', count: 12 },
-        { name: 'Edge-Lit Panels', slug: 'edge-lit', count: 8 },
-      ]
-    },
-    strip: {
-      title: 'Strip Lights',
-      description: 'LED strip fixtures for industrial and commercial applications.',
-    },
-    wrap: {
-      title: 'Wrap Fixtures',
-      description: 'LED wrap-around fixtures for offices, schools, and healthcare.',
-    },
-    'vapor-tight': {
-      title: 'Vapor Tight Lights',
-      description: 'Sealed LED fixtures for wet and harsh environments.',
-    },
-  },
-  retrofit: {
-    tubes: {
-      title: 'LED Tubes',
-      description: 'T8 and T5 LED tubes to replace fluorescent lamps.',
-      types: [
-        { name: 'Type A (Ballast Compatible)', slug: 'type-a', count: 8 },
-        { name: 'Type B (Direct Wire)', slug: 'type-b', count: 10 },
-        { name: 'Type A+B (Hybrid)', slug: 'type-ab', count: 6 },
-      ]
-    },
-    kits: {
-      title: 'Retrofit Kits',
-      description: 'LED retrofit kits to upgrade existing fixtures.',
-    },
-    'corn-bulb': {
-      title: 'Corn Bulbs',
-      description: 'LED corn bulbs for HID fixture replacement.',
-    },
-    'pl-lamp': {
-      title: 'PL Lamps',
-      description: 'LED PL lamps for CFL replacement.',
-    },
-  },
-  controls: {
-    occupancy: {
-      title: 'Occupancy Sensors',
-      description: 'Motion and occupancy sensors for automatic lighting control.',
-    },
-    photocell: {
-      title: 'Photocells',
-      description: 'Dusk-to-dawn photocells for outdoor lighting.',
-    },
-    dimmer: {
-      title: 'Dimmers',
-      description: '0-10V and TRIAC dimmers for LED lighting.',
-    },
-    smart: {
-      title: 'Smart Controls',
-      description: 'IoT and smart building lighting controls.',
-    },
-  },
+// Category icons
+const categoryIcons: Record<string, any> = {
+  indoor: Building2,
+  outdoor: Sun,
+  solar: Leaf,
+  specialty: Zap,
 }
 
-// Sample products
-const sampleProducts = [
-  { sku: 'SL-100W-AIO', name: 'Solar Street Light 100W All-in-One', price: 299, wattage: '100W', lumens: '12000lm', cct: '5000K', badge: 'Best Seller', inStock: true },
-  { sku: 'SL-80W-AIO', name: 'Solar Street Light 80W All-in-One', price: 249, wattage: '80W', lumens: '9600lm', cct: '5000K', badge: 'DLC', inStock: true },
-  { sku: 'SL-60W-AIO', name: 'Solar Street Light 60W All-in-One', price: 199, wattage: '60W', lumens: '7200lm', cct: '4000K', badge: null, inStock: true },
-  { sku: 'SL-40W-AIO', name: 'Solar Street Light 40W All-in-One', price: 159, wattage: '40W', lumens: '4800lm', cct: '4000K', badge: 'New', inStock: true },
-  { sku: 'SL-120W-SP', name: 'Solar Street Light 120W Split', price: 349, wattage: '120W', lumens: '14400lm', cct: '5000K', badge: 'DLC', inStock: false },
-  { sku: 'SL-80W-SP', name: 'Solar Street Light 80W Split', price: 279, wattage: '80W', lumens: '9600lm', cct: '5000K', badge: null, inStock: true },
-]
-
-// Filter options
-const filterOptions = {
-  wattage: ['20W', '40W', '60W', '80W', '100W', '120W', '150W', '200W'],
-  cct: ['3000K', '4000K', '5000K'],
-  mounting: ['Pole Mount', 'Wall Mount', 'Ground Mount'],
-  certification: ['DLC', 'UL', 'ETL', 'Energy Star'],
+interface BCProduct {
+  id: number
+  name: string
+  sku: string
+  price: number
+  salePrice?: number
+  msrp?: number
+  inventory: number
+  inStock: boolean
+  images: { url: string; thumbnail: string; isPrimary: boolean }[]
+  variants?: { id: number; sku: string; options: { name: string; value: string }[] }[]
 }
 
 export default function SubcategoryPage() {
   const params = useParams()
-  const category = params.category as string
-  const subcategory = params.subcategory as string
+  const categorySlug = params.category as string
+  const subcategorySlug = params.subcategory as string
   
-  const [showFilters, setShowFilters] = useState(false)
-  const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({})
+  const mainCategory = getMainCategory(categorySlug)
+  const subcategory = getSubcategory(categorySlug, subcategorySlug)
   
-  const categoryTitle = category.charAt(0).toUpperCase() + category.slice(1)
-  const config = subcategoryConfig[category]?.[subcategory]
-
-  if (!config) {
+  const [products, setProducts] = useState<BCProduct[]>([])
+  const [loading, setLoading] = useState(true)
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
+  const [sortBy, setSortBy] = useState('featured')
+  
+  useEffect(() => {
+    async function fetchProducts() {
+      if (!subcategory) {
+        setLoading(false)
+        return
+      }
+      
+      try {
+        const bcIds = subcategory.bcCategoryIds.join(',')
+        const res = await fetch(`/api/bigcommerce/products?category=${bcIds}&limit=50`)
+        const data = await res.json()
+        setProducts(data.products || [])
+      } catch (err) {
+        console.error('Failed to fetch products:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchProducts()
+  }, [categorySlug, subcategorySlug])
+  
+  // Not found
+  if (!mainCategory || !subcategory) {
     return (
       <div className="min-h-screen bg-white">
         <Header />
         <main className="max-w-7xl mx-auto px-4 py-16 text-center">
+          <Lightbulb className="w-16 h-16 mx-auto mb-4 text-gray-300" />
           <h1 className="text-2xl font-bold mb-4">Subcategory Not Found</h1>
-          <p className="text-gray-600 mb-8">The subcategory "{subcategory}" does not exist in {categoryTitle}.</p>
-          <Link href={`/products/${category}`} className="text-brand hover:underline">
-            ← Back to {categoryTitle}
+          <p className="text-gray-600 mb-8">The subcategory "{subcategorySlug}" does not exist in {categorySlug}.</p>
+          <Link href={`/products/${categorySlug}`} className="text-brand hover:underline">
+            ← Back to {mainCategory?.name || 'Products'}
           </Link>
         </main>
         <Footer />
       </div>
     )
   }
-
-  const toggleFilter = (group: string, value: string) => {
-    setSelectedFilters(prev => {
-      const current = prev[group] || []
-      if (current.includes(value)) {
-        return { ...prev, [group]: current.filter(v => v !== value) }
-      }
-      return { ...prev, [group]: [...current, value] }
-    })
-  }
-
+  
+  const Icon = categoryIcons[categorySlug] || Lightbulb
+  
+  // Sort products
+  const sortedProducts = [...products].sort((a, b) => {
+    switch (sortBy) {
+      case 'price-low': return a.price - b.price
+      case 'price-high': return b.price - a.price
+      case 'name': return a.name.localeCompare(b.name)
+      default: return 0
+    }
+  })
+  
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-50">
       <Header />
       
-      <main>
-        {/* Breadcrumb */}
-        <div className="bg-gray-50 border-b">
-          <div className="max-w-7xl mx-auto px-4 py-3">
-            <nav className="flex items-center gap-2 text-sm flex-wrap">
-              <Link href="/" className="text-gray-500 hover:text-gray-700">Home</Link>
-              <ChevronRight className="w-4 h-4 text-gray-400" />
-              <Link href="/products" className="text-gray-500 hover:text-gray-700">Products</Link>
-              <ChevronRight className="w-4 h-4 text-gray-400" />
-              <Link href={`/products/${category}`} className="text-gray-500 hover:text-gray-700">{categoryTitle}</Link>
-              <ChevronRight className="w-4 h-4 text-gray-400" />
-              <span className="text-gray-900 font-medium">{config.title}</span>
-            </nav>
-          </div>
+      {/* Breadcrumb */}
+      <div className="bg-white border-b">
+        <div className="max-w-7xl mx-auto px-4 py-3">
+          <nav className="flex items-center gap-2 text-sm text-gray-500">
+            <Link href="/" className="hover:text-gray-700">Home</Link>
+            <ChevronRight className="w-4 h-4" />
+            <Link href="/products" className="hover:text-gray-700">Products</Link>
+            <ChevronRight className="w-4 h-4" />
+            <Link href={`/products/${categorySlug}`} className="hover:text-gray-700">{mainCategory.name}</Link>
+            <ChevronRight className="w-4 h-4" />
+            <span className="font-medium text-gray-900">{subcategory.name}</span>
+          </nav>
         </div>
-
-        {/* Category Header */}
-        <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white py-10">
-          <div className="max-w-7xl mx-auto px-4">
-            <h1 className="text-2xl md:text-3xl font-bold mb-2">{config.title}</h1>
-            <p className="text-gray-300">{config.description}</p>
+      </div>
+      
+      {/* Hero */}
+      <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white py-10">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="p-2 bg-brand/20 rounded-lg">
+              <Icon className="w-6 h-6 text-brand" />
+            </div>
+            <h1 className="text-2xl font-bold">{subcategory.name}</h1>
           </div>
+          <p className="text-gray-300 max-w-2xl">{subcategory.description}</p>
         </div>
-
-        {/* Types Grid (if available) */}
-        {config.types && config.types.length > 0 && (
-          <div className="max-w-7xl mx-auto px-4 py-6 border-b">
-            <div className="flex gap-3 overflow-x-auto pb-2">
-              <Link
-                href={`/products/${category}/${subcategory}`}
-                className="px-4 py-2 bg-brand text-black rounded-full text-sm font-medium whitespace-nowrap"
-              >
-                All ({config.types.reduce((a, b) => a + b.count, 0)})
-              </Link>
-              {config.types.map((type) => (
-                <Link
-                  key={type.slug}
-                  href={`/products/${category}/${subcategory}/${type.slug}`}
-                  className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-full text-sm font-medium whitespace-nowrap transition-colors"
-                >
-                  {type.name} ({type.count})
-                </Link>
-              ))}
+      </div>
+      
+      <div className="max-w-7xl mx-auto px-4 py-6">
+        {/* Toolbar */}
+        <div className="bg-white rounded-lg p-4 mb-6 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <p className="text-gray-600">
+              <span className="font-semibold">{products.length}</span> products
+            </p>
+            <div className="flex items-center gap-2 text-sm text-green-600">
+              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+              Live from BigCommerce
             </div>
           </div>
-        )}
-
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          <div className="flex gap-8">
-            {/* Filters Sidebar - Desktop */}
-            <aside className="hidden lg:block w-64 flex-shrink-0">
-              <div className="sticky top-4 space-y-6">
-                <div className="flex items-center justify-between">
-                  <h2 className="font-semibold">Filters</h2>
-                  {Object.keys(selectedFilters).length > 0 && (
-                    <button 
-                      onClick={() => setSelectedFilters({})}
-                      className="text-sm text-brand hover:underline"
-                    >
-                      Clear all
-                    </button>
-                  )}
-                </div>
-
-                {Object.entries(filterOptions).map(([group, options]) => (
-                  <div key={group} className="border-t pt-4">
-                    <h3 className="font-medium mb-3 capitalize">{group}</h3>
-                    <div className="space-y-2">
-                      {options.map((option) => (
-                        <label key={option} className="flex items-center gap-2 cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={selectedFilters[group]?.includes(option) || false}
-                            onChange={() => toggleFilter(group, option)}
-                            className="w-4 h-4 rounded border-gray-300 text-brand focus:ring-brand"
-                          />
-                          <span className="text-sm">{option}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </aside>
-
-            {/* Products Grid */}
-            <div className="flex-1">
-              {/* Toolbar */}
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-4">
-                  <button
-                    onClick={() => setShowFilters(true)}
-                    className="lg:hidden flex items-center gap-2 px-4 py-2 border rounded-lg"
-                  >
-                    <Filter className="w-4 h-4" />
-                    Filters
-                  </button>
-                  <p className="text-sm text-gray-600">{sampleProducts.length} products</p>
-                </div>
-                <div className="flex items-center gap-4">
-                  <select className="border rounded-lg px-3 py-2 text-sm">
-                    <option>Sort: Featured</option>
-                    <option>Price: Low to High</option>
-                    <option>Price: High to Low</option>
-                    <option>Newest</option>
-                    <option>Best Selling</option>
-                  </select>
-                  <div className="hidden md:flex border rounded-lg overflow-hidden">
-                    <button className="p-2 bg-gray-100">
-                      <Grid className="w-4 h-4" />
-                    </button>
-                    <button className="p-2 hover:bg-gray-50">
-                      <List className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Products */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {sampleProducts.map((product) => (
-                  <div key={product.sku} className="group border rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
-                    <Link href={`/products/${product.sku}`}>
-                      <div className="aspect-square bg-gray-100 relative">
-                        {product.badge && (
-                          <span className={`absolute top-2 left-2 px-2 py-1 text-xs font-medium rounded ${
-                            product.badge === 'Best Seller' ? 'bg-brand text-black' :
-                            product.badge === 'New' ? 'bg-green-500 text-white' :
-                            'bg-blue-500 text-white'
-                          }`}>
-                            {product.badge}
-                          </span>
-                        )}
-                        <div className="w-full h-full flex items-center justify-center">
-                          <Lightbulb className="w-20 h-20 text-gray-300" />
-                        </div>
-                      </div>
-                    </Link>
-                    <div className="p-4">
-                      <p className="text-xs text-gray-500 mb-1">{product.sku}</p>
-                      <Link href={`/products/${product.sku}`}>
-                        <h3 className="font-medium group-hover:text-brand transition-colors line-clamp-2">{product.name}</h3>
-                      </Link>
-                      
-                      <div className="flex flex-wrap gap-2 mt-2 text-xs text-gray-600">
-                        <span className="bg-gray-100 px-2 py-0.5 rounded">{product.wattage}</span>
-                        <span className="bg-gray-100 px-2 py-0.5 rounded">{product.lumens}</span>
-                        <span className="bg-gray-100 px-2 py-0.5 rounded">{product.cct}</span>
-                      </div>
-
-                      <div className="flex items-center justify-between mt-3">
-                        <div>
-                          <p className="text-xl font-bold">${product.price}</p>
-                          <p className={`text-xs ${product.inStock ? 'text-green-600' : 'text-orange-600'}`}>
-                            {product.inStock ? '✓ In Stock' : 'Ships in 3-5 days'}
-                          </p>
-                        </div>
-                        <button className="p-2 bg-gray-900 hover:bg-brand text-white hover:text-black rounded-lg transition-colors">
-                          <ShoppingCart className="w-5 h-5" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile Filter Drawer */}
-        {showFilters && (
-          <div className="fixed inset-0 bg-black/50 z-50 lg:hidden" onClick={() => setShowFilters(false)}>
-            <div 
-              className="absolute right-0 top-0 h-full w-80 bg-white p-6 overflow-y-auto"
-              onClick={e => e.stopPropagation()}
+          
+          <div className="flex items-center gap-4">
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
             >
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="font-semibold text-lg">Filters</h2>
-                <button onClick={() => setShowFilters(false)}>
-                  <X className="w-6 h-6" />
-                </button>
-              </div>
-
-              <div className="space-y-6">
-                {Object.entries(filterOptions).map(([group, options]) => (
-                  <div key={group} className="border-t pt-4">
-                    <h3 className="font-medium mb-3 capitalize">{group}</h3>
-                    <div className="space-y-2">
-                      {options.map((option) => (
-                        <label key={option} className="flex items-center gap-2 cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={selectedFilters[group]?.includes(option) || false}
-                            onChange={() => toggleFilter(group, option)}
-                            className="w-4 h-4 rounded border-gray-300 text-brand focus:ring-brand"
-                          />
-                          <span className="text-sm">{option}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
+              <option value="featured">Sort: Featured</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="name">Name: A-Z</option>
+            </select>
+            
+            <div className="flex border rounded-lg overflow-hidden">
+              <button
+                onClick={() => setViewMode('grid')}
+                className={`p-2 ${viewMode === 'grid' ? 'bg-brand text-black' : 'bg-white text-gray-500 hover:bg-gray-50'}`}
+              >
+                <Grid className="w-5 h-5" />
+              </button>
+              <button
+                onClick={() => setViewMode('list')}
+                className={`p-2 ${viewMode === 'list' ? 'bg-brand text-black' : 'bg-white text-gray-500 hover:bg-gray-50'}`}
+              >
+                <List className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        {/* Products */}
+        {loading ? (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="w-8 h-8 animate-spin text-brand" />
+            <span className="ml-2 text-gray-600">Loading products...</span>
+          </div>
+        ) : products.length === 0 ? (
+          <div className="text-center py-12 bg-white rounded-lg">
+            <Lightbulb className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+            <h2 className="text-lg font-medium text-gray-900 mb-2">No Products Found</h2>
+            <p className="text-gray-500 mb-4">We're adding more products to this category soon.</p>
+            <Link href={`/products/${categorySlug}`} className="text-brand hover:underline">
+              ← Back to {mainCategory.name}
+            </Link>
+          </div>
+        ) : viewMode === 'grid' ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {sortedProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {sortedProducts.map((product) => (
+              <ProductListItem key={product.id} product={product} />
+            ))}
+          </div>
+        )}
+        
+        {/* Related Categories */}
+        {mainCategory.subcategories.length > 1 && (
+          <div className="mt-12 pt-8 border-t">
+            <h2 className="text-lg font-semibold mb-4">Related Categories</h2>
+            <div className="flex flex-wrap gap-3">
+              {mainCategory.subcategories
+                .filter(s => s.slug !== subcategorySlug)
+                .slice(0, 5)
+                .map((sub) => (
+                  <Link
+                    key={sub.id}
+                    href={`/products/${categorySlug}/${sub.slug}`}
+                    className="px-4 py-2 bg-white border rounded-lg hover:border-brand hover:text-brand transition-colors"
+                  >
+                    {sub.name}
+                  </Link>
                 ))}
-              </div>
-
-              <div className="mt-8 space-y-3">
-                <button 
-                  onClick={() => setShowFilters(false)}
-                  className="w-full py-3 bg-brand text-black font-medium rounded-lg"
-                >
-                  Apply Filters
-                </button>
-                <button 
-                  onClick={() => setSelectedFilters({})}
-                  className="w-full py-3 border rounded-lg"
-                >
-                  Clear All
-                </button>
-              </div>
             </div>
           </div>
         )}
-      </main>
-
+      </div>
+      
       <Footer />
     </div>
+  )
+}
+
+// Product Card Component
+function ProductCard({ product }: { product: BCProduct }) {
+  const primaryImage = product.images.find(img => img.isPrimary)?.url || product.images[0]?.url
+  const hasVariants = product.variants && product.variants.length > 1
+  
+  return (
+    <Link
+      href={`/bc-products/${product.id}`}
+      className="group bg-white border rounded-xl overflow-hidden hover:shadow-lg transition-all"
+    >
+      <div className="aspect-square bg-gray-100 relative">
+        {primaryImage ? (
+          <img src={primaryImage} alt={product.name} className="w-full h-full object-contain p-4" />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <Lightbulb className="w-16 h-16 text-gray-300" />
+          </div>
+        )}
+        <div className="absolute top-2 left-2">
+          {product.inStock ? (
+            <span className="px-2 py-1 bg-green-500 text-white text-xs font-medium rounded">IN STOCK</span>
+          ) : (
+            <span className="px-2 py-1 bg-orange-500 text-white text-xs font-medium rounded">PRE-ORDER</span>
+          )}
+        </div>
+      </div>
+      <div className="p-4">
+        <p className="text-xs text-gray-500 mb-1 font-mono">{product.sku}</p>
+        <h3 className="font-semibold text-gray-900 group-hover:text-brand transition-colors line-clamp-2 min-h-[2.5rem]">
+          {product.name}
+        </h3>
+        {hasVariants && (
+          <p className="text-xs text-gray-500 mt-1">{product.variants!.length} options available</p>
+        )}
+        <div className="mt-3 flex items-baseline gap-2">
+          <span className="text-lg font-bold">${product.price.toFixed(2)}</span>
+          {product.msrp && product.msrp > product.price && (
+            <span className="text-sm text-gray-400 line-through">${product.msrp.toFixed(2)}</span>
+          )}
+        </div>
+        <div className="mt-2 flex items-center gap-1 text-xs">
+          {product.inStock ? (
+            <>
+              <CheckCircle2 className="w-3 h-3 text-green-500" />
+              <span className="text-green-600">
+                {product.inventory > 0 ? `${product.inventory} in stock` : 'In Stock'}
+              </span>
+            </>
+          ) : (
+            <>
+              <Clock className="w-3 h-3 text-orange-500" />
+              <span className="text-orange-600">Ships in 5-7 days</span>
+            </>
+          )}
+        </div>
+      </div>
+    </Link>
+  )
+}
+
+// Product List Item Component
+function ProductListItem({ product }: { product: BCProduct }) {
+  const primaryImage = product.images.find(img => img.isPrimary)?.url || product.images[0]?.url
+  
+  return (
+    <Link
+      href={`/bc-products/${product.id}`}
+      className="group flex bg-white border rounded-xl overflow-hidden hover:shadow-lg transition-all"
+    >
+      <div className="w-48 h-48 bg-gray-100 flex-shrink-0 relative">
+        {primaryImage ? (
+          <img src={primaryImage} alt={product.name} className="w-full h-full object-contain p-4" />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <Lightbulb className="w-12 h-12 text-gray-300" />
+          </div>
+        )}
+      </div>
+      <div className="flex-1 p-4 flex flex-col">
+        <p className="text-xs text-gray-500 font-mono">{product.sku}</p>
+        <h3 className="font-semibold text-gray-900 group-hover:text-brand transition-colors text-lg">
+          {product.name}
+        </h3>
+        <div className="mt-auto pt-4 flex items-center justify-between">
+          <div className="flex items-baseline gap-2">
+            <span className="text-xl font-bold">${product.price.toFixed(2)}</span>
+            {product.msrp && product.msrp > product.price && (
+              <span className="text-sm text-gray-400 line-through">${product.msrp.toFixed(2)}</span>
+            )}
+          </div>
+          <div className="flex items-center gap-1 text-sm">
+            {product.inStock ? (
+              <>
+                <CheckCircle2 className="w-4 h-4 text-green-500" />
+                <span className="text-green-600">In Stock</span>
+              </>
+            ) : (
+              <>
+                <Clock className="w-4 h-4 text-orange-500" />
+                <span className="text-orange-600">5-7 day lead</span>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+    </Link>
   )
 }
