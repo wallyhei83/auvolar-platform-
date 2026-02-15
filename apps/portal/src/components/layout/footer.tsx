@@ -41,11 +41,11 @@ const footerLinks = {
     title: 'Company',
     links: [
       { name: 'About Us', href: '/about' },
+      { name: 'Case Studies', href: '/projects' },
       { name: 'Applications', href: '/applications' },
       { name: 'Services', href: '/services' },
       { name: 'Contact', href: '/contact' },
       { name: 'Portal Login', href: '/login' },
-      { name: 'Register', href: '/register' },
     ]
   }
 }
