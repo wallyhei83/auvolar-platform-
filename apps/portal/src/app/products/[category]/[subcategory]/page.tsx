@@ -234,7 +234,7 @@ function ProductCard({ product }: { product: BCProduct }) {
   
   return (
     <Link
-      href={`/bc-products/${product.id}`}
+      href={`/bc-products?id=${product.id}`}
       className="group bg-white border rounded-xl overflow-hidden hover:shadow-lg transition-all"
     >
       <div className="aspect-square bg-gray-100 relative">
@@ -293,7 +293,7 @@ function ProductListItem({ product }: { product: BCProduct }) {
   
   return (
     <Link
-      href={`/bc-products/${product.id}`}
+      href={`/bc-products?id=${product.id}`}
       className="group flex bg-white border rounded-xl overflow-hidden hover:shadow-lg transition-all"
     >
       <div className="w-48 h-48 bg-gray-100 flex-shrink-0 relative">
