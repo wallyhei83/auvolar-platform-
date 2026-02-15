@@ -115,17 +115,29 @@ export default function ProductsPage() {
                     <Link
                       key={sub.id}
                       href={`/products/${mainCat.slug}/${sub.slug}`}
-                      className="group bg-gray-50 hover:bg-brand/5 border hover:border-brand rounded-lg p-5 transition-all"
+                      className="group bg-white border hover:border-brand rounded-xl overflow-hidden transition-all hover:shadow-lg"
                     >
-                      <div className="w-12 h-12 bg-gray-200 rounded-lg mb-3 flex items-center justify-center group-hover:bg-brand/20 transition-colors">
-                        <Lightbulb className="w-6 h-6 text-gray-400 group-hover:text-brand transition-colors" />
+                      <div className="aspect-[4/3] bg-gray-100 relative overflow-hidden">
+                        {sub.image ? (
+                          <img 
+                            src={sub.image} 
+                            alt={sub.name}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <Lightbulb className="w-12 h-12 text-gray-300" />
+                          </div>
+                        )}
                       </div>
-                      <h3 className="font-semibold text-gray-900 group-hover:text-brand transition-colors">
-                        {sub.name}
-                      </h3>
-                      <p className="text-sm text-gray-500 mt-1 line-clamp-2">
-                        {sub.description}
-                      </p>
+                      <div className="p-4">
+                        <h3 className="font-semibold text-gray-900 group-hover:text-brand transition-colors">
+                          {sub.name}
+                        </h3>
+                        <p className="text-sm text-gray-500 mt-1 line-clamp-2">
+                          {sub.description}
+                        </p>
+                      </div>
                     </Link>
                   ))}
                 </div>
