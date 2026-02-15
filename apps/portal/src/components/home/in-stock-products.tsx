@@ -1,8 +1,8 @@
-'use client';
-
-import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+
+const BC_STORE_HASH = process.env.BIGCOMMERCE_STORE_HASH || 'hhcdvxqxzq';
+const BC_ACCESS_TOKEN = process.env.BIGCOMMERCE_ACCESS_TOKEN || 'taw41x7qx3rqu1hjmt04s20b665pse6';
 
 interface InStockProduct {
   id: number;
@@ -19,49 +19,72 @@ interface InStockProduct {
   categories: number[];
 }
 
-export default function InStockProducts() {
-  const [products, setProducts] = useState<InStockProduct[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchInStockProducts() {
-      try {
-        const response = await fetch('/api/bigcommerce/in-stock?limit=8');
-        const data = await response.json();
-        if (data.products) {
-          setProducts(data.products);
-        }
-      } catch (error) {
-        console.error('Error fetching in-stock products:', error);
-      } finally {
-        setLoading(false);
-      }
+async function getInStockProducts(): Promise<InStockProduct[]> {
+  try {
+    const url = `https://api.bigcommerce.com/stores/${BC_STORE_HASH}/v3/catalog/products?include=images&is_visible=true&limit=100`;
+    
+    const response = await fetch(url, {
+      headers: {
+        'X-Auth-Token': BC_ACCESS_TOKEN,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      next: { revalidate: 300 }, // Cache for 5 minutes
+    });
+    
+    if (!response.ok) {
+      console.error('Failed to fetch products:', response.status);
+      return [];
     }
-
-    fetchInStockProducts();
-  }, []);
-
-  if (loading) {
-    return (
-      <section className="py-12 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="animate-pulse">
-            <div className="h-8 bg-gray-200 rounded w-64 mb-2"></div>
-            <div className="h-4 bg-gray-200 rounded w-48 mb-8"></div>
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-              {[...Array(6)].map((_, i) => (
-                <div key={i} className="bg-gray-100 rounded-lg p-4">
-                  <div className="bg-gray-200 aspect-square rounded mb-4"></div>
-                  <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                  <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-    );
+    
+    const data = await response.json();
+    
+    // Filter products with actual inventory, sort by inventory descending
+    const inStockProducts = data.data
+      .filter((p: any) => p.inventory_level > 0)
+      .sort((a: any, b: any) => b.inventory_level - a.inventory_level)
+      .slice(0, 8)
+      .map((p: any) => {
+        const primaryImage = p.images?.find((img: any) => img.is_thumbnail) || p.images?.[0];
+        
+        // Determine shipping status based on inventory
+        let shippingStatus = 'In Stock';
+        let shippingDays = 0;
+        if (p.inventory_level >= 50) {
+          shippingStatus = 'In Stock';
+        } else if (p.inventory_level >= 10) {
+          shippingStatus = 'Ships in 2-3 days';
+          shippingDays = 3;
+        } else {
+          shippingStatus = 'Ships in 3-5 days';
+          shippingDays = 5;
+        }
+        
+        return {
+          id: p.id,
+          name: p.name,
+          sku: p.sku,
+          price: p.price,
+          salePrice: p.sale_price || 0,
+          inventory: p.inventory_level,
+          image: primaryImage?.url_standard || primaryImage?.url_thumbnail || null,
+          thumbnail: primaryImage?.url_thumbnail || null,
+          shippingStatus,
+          shippingDays,
+          url: `/bc-products/${p.id}`,
+          categories: p.categories || [],
+        };
+      });
+    
+    return inStockProducts;
+  } catch (error) {
+    console.error('Error fetching in-stock products:', error);
+    return [];
   }
+}
+
+export default async function InStockProducts() {
+  const products = await getInStockProducts();
 
   if (products.length === 0) {
     return null;
