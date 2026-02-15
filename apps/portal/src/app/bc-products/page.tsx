@@ -39,7 +39,7 @@ function ProductDetail({ productId }: { productId: string }) {
     async function fetchProduct() {
       try {
         setLoading(true)
-        const res = await fetch(`/api/bigcommerce/products?id=${productId}`)
+        const res = await fetch(`/api/bigcommerce/single?id=${productId}`)
         const data = await res.json()
         
         if (data.error) {
