@@ -168,7 +168,7 @@ export function BCProductGrid({ categoryFilter, limit = 20, showCategories = tru
               className="group border rounded-xl overflow-hidden hover:shadow-lg transition-all bg-white"
             >
               {/* Product Image */}
-              <Link href={`/products/bc/${product.id}`}>
+              <Link href={`/bc-products/${product.id}`}>
                 <div className="aspect-square bg-gray-100 relative">
                   {getPrimaryImage(product) ? (
                     <img
@@ -206,7 +206,7 @@ export function BCProductGrid({ categoryFilter, limit = 20, showCategories = tru
 
               {/* Product Info */}
               <div className="p-4">
-                <Link href={`/products/bc/${product.id}`}>
+                <Link href={`/bc-products/${product.id}`}>
                   <p className="text-xs text-gray-500 mb-1">{product.sku}</p>
                   <h3 className="font-semibold text-gray-900 group-hover:text-brand transition-colors line-clamp-2">
                     {product.name}
