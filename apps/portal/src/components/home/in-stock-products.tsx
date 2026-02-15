@@ -29,7 +29,7 @@ async function getInStockProducts(): Promise<InStockProduct[]> {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       },
-      next: { revalidate: 300 }, // Cache for 5 minutes
+      cache: 'no-store', // Disable cache to ensure fresh data
     });
     
     if (!response.ok) {
