@@ -59,7 +59,7 @@ export default async function AdminCasesPage() {
   }
 
   // Group stats
-  const statsByStatus = cases.reduce((acc, c) => {
+  const statsByStatus = cases.reduce((acc: Record<string, number>, c) => {
     acc[c.status] = (acc[c.status] || 0) + 1
     return acc
   }, {} as Record<string, number>)
