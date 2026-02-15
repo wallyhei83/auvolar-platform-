@@ -1,4 +1,4 @@
-// BigCommerce API Client for LumilinkAI
+// BigCommerce API Client for Auvolar
 // Headless commerce integration
 
 const STORE_HASH = process.env.BIGCOMMERCE_STORE_HASH || process.env.BC_STORE_HASH

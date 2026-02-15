@@ -57,7 +57,7 @@ export default function PrivacyPage() {
             <p className="text-gray-600 mb-4">
               You have the right to access, correct, or delete your personal information. You may also 
               opt out of marketing communications at any time. To exercise these rights, please contact 
-              us at privacy@lumilinkai.com.
+              us at privacy@auvolar.com.
             </p>
 
             <h2 className="text-xl font-semibold mt-8 mb-4">6. Contact Us</h2>
@@ -65,8 +65,8 @@ export default function PrivacyPage() {
               If you have any questions about this Privacy Policy, please contact us at:
             </p>
             <p className="text-gray-600">
-              LumilinkAI<br />
-              Email: privacy@lumilinkai.com<br />
+              Auvolar<br />
+              Email: privacy@auvolar.com<br />
               Phone: 1-888-555-0123
             </p>
           </div>

@@ -136,7 +136,7 @@ export default function SpecSheetPage() {
           <div>
             <div className="flex items-center gap-2 mb-2">
               <span className="text-2xl">💡</span>
-              <span className="text-2xl font-bold">LumilinkAI</span>
+              <span className="text-2xl font-bold">Auvolar</span>
             </div>
             <p className="text-gray-500">Light Done Right™</p>
           </div>
@@ -262,13 +262,13 @@ export default function SpecSheetPage() {
         <div className="border-t pt-6 mt-8">
           <div className="flex justify-between items-end text-sm text-gray-500">
             <div>
-              <p className="font-medium text-gray-700">LumilinkAI</p>
-              <p>www.lumilinkai.com</p>
+              <p className="font-medium text-gray-700">Auvolar</p>
+              <p>www.auvolar.com</p>
               <p>1-888-555-0123</p>
             </div>
             <div className="text-right">
               <p>Specifications subject to change without notice.</p>
-              <p>© 2026 LumilinkAI. All rights reserved.</p>
+              <p>© 2026 Auvolar. All rights reserved.</p>
             </div>
           </div>
         </div>

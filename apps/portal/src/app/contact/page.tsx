@@ -79,8 +79,8 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900">Email</h3>
-                  <a href="mailto:sales@lumilinkai.com" className="text-brand hover:underline">
-                    sales@lumilinkai.com
+                  <a href="mailto:sales@auvolar.com" className="text-brand hover:underline">
+                    sales@auvolar.com
                   </a>
                 </div>
               </div>

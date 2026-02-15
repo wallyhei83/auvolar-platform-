@@ -86,7 +86,7 @@ export default function ProjectsPage() {
           <div className="max-w-7xl mx-auto px-4 text-center">
             <h1 className="text-3xl md:text-4xl font-bold mb-4">Project Case Studies</h1>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              See how businesses are saving energy and money with LumilinkAI LED lighting solutions.
+              See how businesses are saving energy and money with Auvolar LED lighting solutions.
             </p>
           </div>
         </div>

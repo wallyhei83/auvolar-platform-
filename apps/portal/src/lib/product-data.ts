@@ -1,4 +1,4 @@
-// Comprehensive Product Data for LumilinkAI
+// Comprehensive Product Data for Auvolar
 // This file contains all product information for the PDP
 
 import { Sun, Zap, Star, Ruler, Shield, Clock, Thermometer } from 'lucide-react'

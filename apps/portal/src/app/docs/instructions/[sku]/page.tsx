@@ -75,7 +75,7 @@ export default function InstallGuidePage() {
           <p className="text-gray-600 text-sm">
             For technical assistance, please contact our support team at{' '}
             <a href="tel:1-888-555-0123" className="text-yellow-600 font-medium">1-888-555-0123</a> or 
-            email <a href="mailto:support@lumilinkai.com" className="text-yellow-600 font-medium">support@lumilinkai.com</a>
+            email <a href="mailto:support@auvolar.com" className="text-yellow-600 font-medium">support@auvolar.com</a>
           </p>
         </div>
 

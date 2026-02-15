@@ -28,7 +28,7 @@ export default function TermsPage() {
           <div className="prose prose-gray max-w-none">
             <h2 className="text-xl font-semibold mt-8 mb-4">1. Acceptance of Terms</h2>
             <p className="text-gray-600 mb-4">
-              By accessing and using the LumilinkAI website and services, you agree to be bound by these 
+              By accessing and using the Auvolar website and services, you agree to be bound by these 
               Terms of Service. If you do not agree to these terms, please do not use our services.
             </p>
 
@@ -61,7 +61,7 @@ export default function TermsPage() {
 
             <h2 className="text-xl font-semibold mt-8 mb-4">6. Limitation of Liability</h2>
             <p className="text-gray-600 mb-4">
-              LumilinkAI shall not be liable for any indirect, incidental, special, or consequential damages 
+              Auvolar shall not be liable for any indirect, incidental, special, or consequential damages 
               arising from the use of our products or services. Our liability is limited to the purchase price 
               of the products in question.
             </p>
@@ -71,8 +71,8 @@ export default function TermsPage() {
               If you have any questions about these Terms of Service, please contact us at:
             </p>
             <p className="text-gray-600">
-              LumilinkAI<br />
-              Email: legal@lumilinkai.com<br />
+              Auvolar<br />
+              Email: legal@auvolar.com<br />
               Phone: 1-888-555-0123
             </p>
           </div>

@@ -193,7 +193,7 @@ export function Header() {
               <Zap className="h-5 w-5 text-black" />
             </div>
             <div className="hidden sm:block">
-              <span className="text-xl font-bold tracking-tight">LumilinkAI</span>
+              <span className="text-xl font-bold tracking-tight">Auvolar</span>
               <span className="ml-2 text-xs text-gray-500">Light Done Right</span>
             </div>
           </Link>
