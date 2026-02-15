@@ -6,6 +6,7 @@ const BC_ACCESS_TOKEN = process.env.BIGCOMMERCE_ACCESS_TOKEN || 'taw41x7qx3rqu1h
 
 // GET /api/bigcommerce/products - List products from BigCommerce
 // Supports: ?id=123 for single product, ?sku=ABC for by SKU, or list with ?category=26,43
+// v2: Fixed single product fetch
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
@@ -15,8 +16,11 @@ export async function GET(request: NextRequest) {
     const sku = searchParams.get('sku')
     const productId = searchParams.get('id')
 
+    console.log('BC Products API - params:', { productId, sku, category, page, limit })
+    
     // If ID is provided, get single product by ID
     if (productId) {
+      console.log('Fetching single product by ID:', productId)
       const url = `https://api.bigcommerce.com/stores/${BC_STORE_HASH}/v3/catalog/products/${productId}?include=images,variants`
       const response = await fetch(url, {
         headers: {
