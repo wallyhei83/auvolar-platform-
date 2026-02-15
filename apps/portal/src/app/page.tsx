@@ -8,19 +8,19 @@ import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { FeaturedProducts } from '@/components/home/featured-products'
 
-// Product categories - links match route structure with real images
+// Product categories - links match route structure with real BC product images
 const categories = [
   { 
     name: 'High Bay Lights', 
     description: 'Warehouses, manufacturing, gyms',
-    image: 'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=600&q=80',
+    image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/126/images/393/MUM_1953__85455.1770876682.386.513.png?c=1', // Canopy light (closest to high bay)
     href: '/products/indoor/high-bay',
     badge: 'Best Seller'
   },
   { 
     name: 'Wall Packs', 
     description: 'Building perimeter, security',
-    image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/130/images/405/QQ20260212-142924__81406.1770878366.386.513.png?c=1',
+    image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/123/images/571/Minni_Wallpack_AN-WPA26W_-5KP-BZ_Application_reference__40018.1771055698.386.513.jpg?c=1',
     href: '/products/outdoor/wall-pack',
     badge: null
   },
@@ -34,7 +34,7 @@ const categories = [
   { 
     name: 'Troffers & Panels', 
     description: 'Office, retail, education',
-    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80',
+    image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/131/images/569/Linear_strip_light_fixture_AN-WR4FT-38-30-22W_-345K_Application_reference__48907.1771055437.386.513.jpg?c=1', // Wraparound (ceiling fixture)
     href: '/products/indoor/troffer',
     badge: null
   },
@@ -48,7 +48,7 @@ const categories = [
   { 
     name: 'LED Tubes', 
     description: 'T8/T5 retrofit replacements',
-    image: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=600&q=80',
+    image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/125/images/568/Vapor_Tight_AN-VF4FT-NV40W_-5K_Application_reference__73869.1771054854.386.513.jpg?c=1', // Vapor tight (linear fixture)
     href: '/products/indoor/led-tube',
     badge: null
   },
