@@ -5,12 +5,12 @@ const footerLinks = {
   products: {
     title: 'Products',
     links: [
-      { name: 'High Bay Lights', href: '/products/high-bay' },
-      { name: 'Linear High Bay', href: '/products/linear-high-bay' },
-      { name: 'Wall Packs', href: '/products/wall-pack' },
-      { name: 'Area Lights', href: '/products/area-light' },
-      { name: 'Troffers & Panels', href: '/products/troffer' },
-      { name: 'LED Tubes', href: '/products/tubes' },
+      { name: 'High Bay Lights', href: '/products/indoor/high-bay' },
+      { name: 'Wall Packs', href: '/products/outdoor/wall-pack' },
+      { name: 'Area Lights', href: '/products/outdoor/area-light' },
+      { name: 'Troffers & Panels', href: '/products/indoor/troffer' },
+      { name: 'Solar Lights', href: '/products/solar' },
+      { name: 'LED Tubes', href: '/products/indoor/tubes' },
       { name: 'All Products', href: '/products' },
     ]
   },
@@ -21,33 +21,31 @@ const footerLinks = {
       { name: 'Upload BOM', href: '/tools/bom-upload' },
       { name: 'Replacement Finder', href: '/tools/replacement' },
       { name: 'ROI Calculator', href: '/tools/roi-calculator' },
-      { name: 'Rebate Finder', href: '/tools/rebate' },
-      { name: 'IES Library', href: '/resources/ies' },
-      { name: 'Cut Sheets', href: '/resources/cut-sheets' },
+      { name: 'Rebate Finder', href: '/tools/rebate-finder' },
+      { name: 'Request Quote', href: '/tools/rfq' },
+      { name: 'All Tools', href: '/tools' },
     ]
   },
   support: {
     title: 'Support',
     links: [
       { name: 'Help Center', href: '/support' },
-      { name: 'Installation Guides', href: '/support/installation' },
-      { name: 'Warranty Info', href: '/support/warranty' },
-      { name: 'Start RMA', href: '/support/rma' },
       { name: 'Track Order', href: '/track-order' },
       { name: 'Contact Us', href: '/contact' },
-      { name: 'FAQ', href: '/support/faq' },
+      { name: 'Applications', href: '/applications' },
+      { name: 'Services', href: '/services' },
+      { name: 'About Us', href: '/about' },
     ]
   },
   company: {
     title: 'Company',
     links: [
       { name: 'About Us', href: '/about' },
-      { name: 'Compliance Center', href: '/compliance' },
-      { name: 'Vendor Packet', href: '/vendor-packet' },
-      { name: 'Partner Program', href: '/partners' },
-      { name: 'Case Studies', href: '/projects' },
-      { name: 'Blog', href: '/blog' },
-      { name: 'Careers', href: '/careers' },
+      { name: 'Applications', href: '/applications' },
+      { name: 'Services', href: '/services' },
+      { name: 'Contact', href: '/contact' },
+      { name: 'Portal Login', href: '/login' },
+      { name: 'Register', href: '/register' },
     ]
   }
 }
@@ -101,40 +99,32 @@ export function Footer() {
               </div>
             </Link>
             <p className="mt-4 text-sm text-gray-400">
-              Commercial & industrial LED lighting solutions for contractors, electricians, and facility managers. 
+              Commercial LED lighting for contractors, electricians, and facility managers. 
               Quality products, competitive pricing, expert support.
             </p>
             
             {/* Contact Info */}
-            <div className="mt-6 space-y-3">
-              <a href="tel:1-888-555-0123" className="flex items-center gap-2 text-sm hover:text-brand">
-                <Phone className="h-4 w-4" />
+            <div className="mt-6 space-y-2 text-sm">
+              <a href="tel:1-888-555-0123" className="flex items-center gap-2 hover:text-white">
+                <Phone className="h-4 w-4 text-brand" />
                 1-888-555-0123
               </a>
-              <a href="mailto:sales@lumilinkai.com" className="flex items-center gap-2 text-sm hover:text-brand">
-                <Mail className="h-4 w-4" />
+              <a href="mailto:sales@lumilinkai.com" className="flex items-center gap-2 hover:text-white">
+                <Mail className="h-4 w-4 text-brand" />
                 sales@lumilinkai.com
               </a>
-              <div className="flex items-start gap-2 text-sm">
-                <MapPin className="mt-0.5 h-4 w-4 shrink-0" />
-                <span>123 Industrial Blvd, Suite 100<br />Houston, TX 77001</span>
+              <div className="flex items-start gap-2">
+                <MapPin className="h-4 w-4 text-brand mt-0.5" />
+                <span>Houston, TX 77001</span>
               </div>
             </div>
 
             {/* Social Links */}
             <div className="mt-6 flex gap-4">
-              <a href="#" className="text-gray-400 hover:text-brand">
-                <Linkedin className="h-5 w-5" />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-brand">
-                <Facebook className="h-5 w-5" />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-brand">
-                <Youtube className="h-5 w-5" />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-brand">
-                <Twitter className="h-5 w-5" />
-              </a>
+              <a href="#" className="text-gray-400 hover:text-white"><Facebook className="h-5 w-5" /></a>
+              <a href="#" className="text-gray-400 hover:text-white"><Linkedin className="h-5 w-5" /></a>
+              <a href="#" className="text-gray-400 hover:text-white"><Youtube className="h-5 w-5" /></a>
+              <a href="#" className="text-gray-400 hover:text-white"><Twitter className="h-5 w-5" /></a>
             </div>
           </div>
 
@@ -147,10 +137,7 @@ export function Footer() {
               <ul className="mt-4 space-y-2">
                 {section.links.map((link) => (
                   <li key={link.name}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-gray-400 hover:text-brand"
-                    >
+                    <Link href={link.href} className="text-sm text-gray-400 hover:text-white">
                       {link.name}
                     </Link>
                   </li>
@@ -162,38 +149,28 @@ export function Footer() {
 
         {/* Certifications */}
         <div className="mt-12 border-t border-gray-800 pt-8">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div className="flex flex-wrap items-center gap-6">
-              {certifications.map((cert) => (
-                <div
-                  key={cert.name}
-                  className="flex items-center gap-2 rounded border border-gray-700 px-3 py-1.5"
-                >
-                  <span className="text-sm font-bold text-white">{cert.name}</span>
-                  <span className="text-xs text-gray-500">{cert.description}</span>
+          <div className="flex flex-wrap items-center justify-center gap-8">
+            {certifications.map((cert) => (
+              <div key={cert.name} className="text-center">
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gray-800 mx-auto">
+                  <span className="text-xs font-bold text-brand">{cert.name}</span>
                 </div>
-              ))}
-            </div>
-            <Link
-              href="/vendor-packet"
-              className="text-sm font-medium text-brand hover:underline"
-            >
-              Download Vendor Packet →
-            </Link>
+                <span className="mt-1 block text-xs text-gray-500">{cert.description}</span>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t border-gray-800 pt-8 text-xs text-gray-500 sm:flex-row">
-          <div className="flex flex-wrap items-center gap-4">
-            <span>© {new Date().getFullYear()} LumilinkAI. All rights reserved.</span>
-            <Link href="/privacy" className="hover:text-gray-300">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-gray-300">Terms of Service</Link>
-            <Link href="/accessibility" className="hover:text-gray-300">Accessibility</Link>
-          </div>
-          <div className="flex items-center gap-2">
-            <span>Accepted Payments:</span>
-            <span className="font-medium text-gray-400">Visa • Mastercard • AMEX • ACH • PO</span>
+        {/* Copyright */}
+        <div className="mt-8 border-t border-gray-800 pt-8">
+          <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+            <p className="text-sm text-gray-500">
+              © {new Date().getFullYear()} LumilinkAI. All rights reserved.
+            </p>
+            <div className="flex gap-6 text-sm text-gray-500">
+              <Link href="/privacy" className="hover:text-white">Privacy Policy</Link>
+              <Link href="/terms" className="hover:text-white">Terms of Service</Link>
+            </div>
           </div>
         </div>
       </div>
