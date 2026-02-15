@@ -251,7 +251,7 @@ function ProductDetail({ productId }: { productId: string }) {
             <h3 className="text-sm font-semibold text-gray-900 mb-3">Downloads & Resources</h3>
             <div className="grid grid-cols-2 gap-2">
               <a 
-                href={`/docs/spec-sheets/${encodeURIComponent(product.sku)}`}
+                href={`/api/docs/spec-sheets/${encodeURIComponent(product.sku)}`}
                 target="_blank"
                 className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm"
               >
@@ -259,7 +259,7 @@ function ProductDetail({ productId }: { productId: string }) {
                 <span>Spec Sheet</span>
               </a>
               <a 
-                href={`/docs/ies/${encodeURIComponent(product.sku)}`}
+                href={`/api/docs/ies/${encodeURIComponent(product.sku)}`}
                 target="_blank"
                 className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm"
               >
@@ -267,7 +267,7 @@ function ProductDetail({ productId }: { productId: string }) {
                 <span>IES File</span>
               </a>
               <a 
-                href={`/docs/instructions/${encodeURIComponent(product.sku)}`}
+                href={`/api/docs/instructions/${encodeURIComponent(product.sku)}`}
                 target="_blank"
                 className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm"
               >
@@ -275,7 +275,7 @@ function ProductDetail({ productId }: { productId: string }) {
                 <span>Install Guide</span>
               </a>
               <a 
-                href={`/docs/warranty/${encodeURIComponent(product.sku)}`}
+                href={`/api/docs/warranty/${encodeURIComponent(product.sku)}`}
                 target="_blank"
                 className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm"
               >
