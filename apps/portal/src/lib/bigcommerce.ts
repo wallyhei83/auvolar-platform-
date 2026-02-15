@@ -486,7 +486,7 @@ export async function createCustomerGroup(name: string, discountRules?: any[]): 
 // Get inventory for a product
 export async function getInventory(productId: number): Promise<{ data: { inventory_level: number } }> {
   const product = await getProduct(productId)
-  return { data: { inventory_level: product.data.inventory_level } }
+  return { data: { inventory_level: product.data.inventory_level ?? 0 } }
 }
 
 // Update inventory
