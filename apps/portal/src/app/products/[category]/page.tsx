@@ -131,6 +131,30 @@ const mockProducts: Record<string, any> = {
     specs: { wattage: '150W', lumens: '21,000 lm', cct: '5000K', beam: 'Type III', voltage: '120-277V' },
     tierPricing: [{ min: 1, price: 149 }, { min: 10, price: 139 }, { min: 25, price: 129 }, { min: 50, price: 119 }],
   },
+  'LHB-220W': {
+    name: 'Linear High Bay 220W',
+    sku: 'LHB-220W',
+    category: 'Indoor / High Bay',
+    price: 129,
+    msrp: 189,
+    stock: 'In Stock',
+    stockQty: 156,
+    description: 'Linear LED high bay for aisle lighting in warehouses and retail.',
+    specs: { wattage: '220W', lumens: '33,000 lm', cct: '5000K', beam: '120°', voltage: '120-277V' },
+    tierPricing: [{ min: 1, price: 129 }, { min: 10, price: 119 }, { min: 25, price: 109 }, { min: 50, price: 99 }],
+  },
+  'T8-4FT-18W': {
+    name: '4ft LED Tube T8 18W',
+    sku: 'T8-4FT-18W',
+    category: 'Indoor / LED Tubes',
+    price: 8,
+    msrp: 15,
+    stock: 'In Stock',
+    stockQty: 2450,
+    description: 'Type A+B LED tube, compatible with or without ballast. Direct replacement for fluorescent T8.',
+    specs: { wattage: '18W', lumens: '2,200 lm', cct: '5000K', beam: '220°', voltage: '120-277V' },
+    tierPricing: [{ min: 1, price: 8 }, { min: 25, price: 7 }, { min: 100, price: 6 }, { min: 500, price: 5 }],
+  },
 }
 
 // Sample products for category listings

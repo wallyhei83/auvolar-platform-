@@ -362,8 +362,9 @@ export default function HomePage() {
           
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
             {featuredProducts.map((product) => (
-              <div
+              <Link
                 key={product.sku}
+                href={`/products/${product.sku}`}
                 className="group rounded-xl border border-gray-200 bg-white p-4 transition-all hover:border-brand hover:shadow-md"
               >
                 <div className="aspect-square rounded-lg bg-gray-100">
@@ -388,7 +389,7 @@ export default function HomePage() {
                     </span>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
