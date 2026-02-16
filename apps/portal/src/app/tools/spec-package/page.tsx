@@ -72,13 +72,30 @@ export default function SpecPackagePage() {
     }
   }
 
+  const [error, setError] = useState('')
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    setIsSubmitting(false)
-    setSubmitted(true)
+    setError('')
+
+    try {
+      const response = await fetch('/api/email/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'spec-package',
+          data: { email, projectName, products: selectedProducts, documents: selectedDocs },
+        }),
+      })
+
+      if (!response.ok) throw new Error('Failed to send')
+      setSubmitted(true)
+    } catch {
+      setError('Failed to submit. Please try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   if (submitted) {
