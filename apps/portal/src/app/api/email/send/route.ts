@@ -51,8 +51,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Send to sales team
+    // Note: Using Resend's test domain until auvolar.com is verified
     const { error: salesError } = await resend.emails.send({
-      from: 'Auvolar <noreply@auvolar.com>',
+      from: 'Auvolar <onboarding@resend.dev>',
       to: [CONTACT_EMAIL],
       subject: subject,
       html: htmlContent,
@@ -68,7 +69,7 @@ export async function POST(request: NextRequest) {
     if (customerEmail) {
       const confirmationHtml = buildConfirmationEmail(type, customerName, body)
       await resend.emails.send({
-        from: 'Auvolar <noreply@auvolar.com>',
+        from: 'Auvolar <onboarding@resend.dev>',
         to: [customerEmail],
         subject: `We received your ${getTypeLabel(type)} - Auvolar`,
         html: confirmationHtml,
