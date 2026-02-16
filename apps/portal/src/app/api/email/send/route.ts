@@ -48,6 +48,18 @@ export async function POST(request: NextRequest) {
         htmlContent = buildBOMEmail(body)
         break
 
+      case 'chat-lead':
+        subject = `🔥 New Sales Lead from AI Chat${body.company ? `: ${body.company}` : ''}`
+        htmlContent = buildChatLeadEmail(body)
+        customerEmail = body.email
+        customerName = body.name
+        break
+
+      case 'chat-escalation':
+        subject = `⚠️ Chat Escalation - Human Needed: ${body.reason || 'Customer Request'}`
+        htmlContent = buildChatEscalationEmail(body)
+        break
+
       default:
         return NextResponse.json({ error: 'Invalid email type' }, { status: 400 })
     }
@@ -281,6 +293,156 @@ function buildConfirmationEmail(type: string, name: string, body: Record<string,
         <div class="footer">
           <p>Auvolar - Light Done Right</p>
           <p>1-888-555-0123 | sales@auvolar.com</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `
+}
+
+interface ConversationMessage {
+  role: string
+  content: string
+  time: string
+}
+
+function buildChatLeadEmail(body: {
+  name?: string
+  email?: string
+  phone?: string
+  company?: string
+  products?: string
+  quantity?: string
+  notes?: string
+  conversation?: ConversationMessage[]
+  sessionId?: string
+}): string {
+  const conversationHtml = body.conversation?.map(msg => `
+    <div style="margin-bottom: 12px; ${msg.role === 'user' ? 'text-align: right;' : ''}">
+      <span style="
+        display: inline-block;
+        padding: 10px 14px;
+        border-radius: 12px;
+        max-width: 80%;
+        ${msg.role === 'user' 
+          ? 'background: #FFD60A; color: #000;' 
+          : 'background: #f0f0f0; color: #333;'}
+      ">
+        ${msg.content}
+      </span>
+      <div style="font-size: 10px; color: #999; margin-top: 2px;">
+        ${msg.role === 'user' ? 'Customer' : 'Alex (AI)'} • ${new Date(msg.time).toLocaleTimeString()}
+      </div>
+    </div>
+  `).join('') || '<p>No conversation recorded</p>'
+
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; }
+      </style>
+    </head>
+    <body>
+      <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+        <div style="background: #FFD60A; padding: 20px; text-align: center; border-radius: 8px 8px 0 0;">
+          <h1 style="margin: 0; color: #000;">🔥 New Sales Lead</h1>
+          <p style="margin: 5px 0 0; color: #333;">From AI Chat Assistant</p>
+        </div>
+        
+        <div style="background: #fff; padding: 24px; border: 1px solid #e0e0e0; border-top: none;">
+          <h2 style="margin-top: 0; color: #333;">Lead Information</h2>
+          <table style="width: 100%; border-collapse: collapse;">
+            ${body.name ? `<tr><td style="padding: 8px 0; border-bottom: 1px solid #eee; font-weight: bold;">Name:</td><td style="padding: 8px 0; border-bottom: 1px solid #eee;">${body.name}</td></tr>` : ''}
+            ${body.email ? `<tr><td style="padding: 8px 0; border-bottom: 1px solid #eee; font-weight: bold;">Email:</td><td style="padding: 8px 0; border-bottom: 1px solid #eee;"><a href="mailto:${body.email}">${body.email}</a></td></tr>` : ''}
+            ${body.phone ? `<tr><td style="padding: 8px 0; border-bottom: 1px solid #eee; font-weight: bold;">Phone:</td><td style="padding: 8px 0; border-bottom: 1px solid #eee;"><a href="tel:${body.phone}">${body.phone}</a></td></tr>` : ''}
+            ${body.company ? `<tr><td style="padding: 8px 0; border-bottom: 1px solid #eee; font-weight: bold;">Company:</td><td style="padding: 8px 0; border-bottom: 1px solid #eee;">${body.company}</td></tr>` : ''}
+            ${body.products ? `<tr><td style="padding: 8px 0; border-bottom: 1px solid #eee; font-weight: bold;">Products:</td><td style="padding: 8px 0; border-bottom: 1px solid #eee;">${body.products}</td></tr>` : ''}
+            ${body.quantity ? `<tr><td style="padding: 8px 0; border-bottom: 1px solid #eee; font-weight: bold;">Quantity:</td><td style="padding: 8px 0; border-bottom: 1px solid #eee;">${body.quantity}</td></tr>` : ''}
+            ${body.notes ? `<tr><td style="padding: 8px 0; border-bottom: 1px solid #eee; font-weight: bold;">Notes:</td><td style="padding: 8px 0; border-bottom: 1px solid #eee;">${body.notes}</td></tr>` : ''}
+          </table>
+          
+          <h2 style="margin-top: 24px; color: #333;">💬 Conversation</h2>
+          <div style="background: #fafafa; padding: 16px; border-radius: 8px; max-height: 400px; overflow-y: auto;">
+            ${conversationHtml}
+          </div>
+          
+          <div style="margin-top: 24px; padding: 16px; background: #e8f5e9; border-radius: 8px;">
+            <h3 style="margin: 0 0 8px; color: #2e7d32;">📋 Recommended Action</h3>
+            <p style="margin: 0; color: #333;">Follow up within 1 hour for best conversion rate. The customer showed interest in ${body.products || 'LED lighting'} (${body.quantity || 'quantity TBD'}).</p>
+          </div>
+        </div>
+        
+        <div style="padding: 16px; text-align: center; font-size: 12px; color: #666;">
+          <p>Session ID: ${body.sessionId || 'N/A'}</p>
+          <p>Auvolar AI Sales Assistant</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `
+}
+
+function buildChatEscalationEmail(body: {
+  reason?: string
+  conversation?: ConversationMessage[]
+  sessionId?: string
+}): string {
+  const conversationHtml = body.conversation?.map(msg => `
+    <div style="margin-bottom: 12px; ${msg.role === 'user' ? 'text-align: right;' : ''}">
+      <span style="
+        display: inline-block;
+        padding: 10px 14px;
+        border-radius: 12px;
+        max-width: 80%;
+        ${msg.role === 'user' 
+          ? 'background: #FFD60A; color: #000;' 
+          : 'background: #f0f0f0; color: #333;'}
+      ">
+        ${msg.content}
+      </span>
+      <div style="font-size: 10px; color: #999; margin-top: 2px;">
+        ${msg.role === 'user' ? 'Customer' : 'Alex (AI)'} • ${new Date(msg.time).toLocaleTimeString()}
+      </div>
+    </div>
+  `).join('') || '<p>No conversation recorded</p>'
+
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; }
+      </style>
+    </head>
+    <body>
+      <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+        <div style="background: #ff5722; padding: 20px; text-align: center; border-radius: 8px 8px 0 0;">
+          <h1 style="margin: 0; color: #fff;">⚠️ Human Assistance Needed</h1>
+          <p style="margin: 5px 0 0; color: #ffe0b2;">Chat Escalation Request</p>
+        </div>
+        
+        <div style="background: #fff; padding: 24px; border: 1px solid #e0e0e0; border-top: none;">
+          <div style="padding: 16px; background: #fff3e0; border-radius: 8px; border-left: 4px solid #ff9800;">
+            <h3 style="margin: 0 0 8px; color: #e65100;">Reason for Escalation</h3>
+            <p style="margin: 0; color: #333; font-size: 16px;">${body.reason || 'Customer requested human assistance'}</p>
+          </div>
+          
+          <h2 style="margin-top: 24px; color: #333;">💬 Conversation History</h2>
+          <div style="background: #fafafa; padding: 16px; border-radius: 8px; max-height: 400px; overflow-y: auto;">
+            ${conversationHtml}
+          </div>
+          
+          <div style="margin-top: 24px; padding: 16px; background: #ffebee; border-radius: 8px;">
+            <h3 style="margin: 0 0 8px; color: #c62828;">🚨 Action Required</h3>
+            <p style="margin: 0; color: #333;">Please review the conversation and reach out to the customer as soon as possible. Time is critical for conversion.</p>
+          </div>
+        </div>
+        
+        <div style="padding: 16px; text-align: center; font-size: 12px; color: #666;">
+          <p>Session ID: ${body.sessionId || 'N/A'}</p>
+          <p>Auvolar AI Sales Assistant</p>
         </div>
       </div>
     </body>
