@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Zap, ArrowLeft, Plus, Trash2, CheckCircle } from 'lucide-react'
 
@@ -12,10 +11,16 @@ interface LineItem {
 }
 
 export default function RFQPage() {
-  const router = useRouter()
   const [loading, setLoading] = useState(false)
-  const [success, setSuccess] = useState<{ caseNumber: string } | null>(null)
+  const [success, setSuccess] = useState<{ message: string; caseNumber?: string } | null>(null)
   const [error, setError] = useState('')
+  
+  const [contactInfo, setContactInfo] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    company: '',
+  })
   
   const [formData, setFormData] = useState({
     projectName: '',
@@ -43,7 +48,6 @@ export default function RFQPage() {
     const newItems = [...items]
     newItems[index] = { ...newItems[index], [field]: value }
     setItems(newItems)
-    // Clear error when user modifies items
     if (error) setError('')
   }
 
@@ -51,6 +55,13 @@ export default function RFQPage() {
     e.preventDefault()
     setError('')
     setLoading(true)
+
+    // Validate contact info
+    if (!contactInfo.name || !contactInfo.email) {
+      setError('Please provide your name and email')
+      setLoading(false)
+      return
+    }
 
     // Validate at least one item has SKU or description
     const validItems = items.filter(item => item.sku || item.description)
@@ -60,20 +71,30 @@ export default function RFQPage() {
       return
     }
 
+    const productList = validItems.map((item, i) => 
+      `${i + 1}. SKU: ${item.sku || 'N/A'}, Description: ${item.description || 'N/A'}, Qty: ${item.quantity}`
+    ).join('\n')
+
+    // First try to create a case (for logged-in users)
     try {
-      const res = await fetch('/api/cases', {
+      const caseRes = await fetch('/api/cases', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           type: 'RFQ',
           subject: formData.projectName || 'Quote Request',
           message: `
+Contact: ${contactInfo.name}
+Email: ${contactInfo.email}
+Phone: ${contactInfo.phone || 'N/A'}
+Company: ${contactInfo.company || 'N/A'}
+
 Project: ${formData.projectName}
 Address: ${formData.projectAddress}
 Timeline: ${formData.timeline}
 
 Products Requested:
-${validItems.map((item, i) => `${i + 1}. SKU: ${item.sku || 'N/A'}, Description: ${item.description || 'N/A'}, Qty: ${item.quantity}`).join('\n')}
+${productList}
 
 Additional Notes:
 ${formData.notes || 'None'}
@@ -82,15 +103,48 @@ ${formData.notes || 'None'}
         }),
       })
 
-      const data = await res.json()
+      if (caseRes.ok) {
+        const caseData = await caseRes.json()
+        setSuccess({ 
+          message: 'Your quote request has been submitted and assigned a case number.',
+          caseNumber: caseData.case.caseNumber 
+        })
+        setLoading(false)
+        return
+      }
+    } catch {
+      // Case creation failed, continue to email fallback
+    }
 
-      if (!res.ok) {
-        throw new Error(data.message || 'Failed to submit request')
+    // Fallback: Send email for guest users
+    try {
+      const emailRes = await fetch('/api/email/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'rfq',
+          name: contactInfo.name,
+          email: contactInfo.email,
+          phone: contactInfo.phone,
+          company: contactInfo.company,
+          projectName: formData.projectName,
+          projectAddress: formData.projectAddress,
+          timeline: formData.timeline,
+          products: validItems,
+          notes: formData.notes,
+        }),
+      })
+
+      if (!emailRes.ok) {
+        const errorData = await emailRes.json()
+        throw new Error(errorData.error || 'Failed to send request')
       }
 
-      setSuccess({ caseNumber: data.case.caseNumber })
+      setSuccess({ 
+        message: 'Your quote request has been sent. We\'ll respond within 1 business day.' 
+      })
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred')
+      setError(err instanceof Error ? err.message : 'Failed to submit request. Please try again.')
     } finally {
       setLoading(false)
     }
@@ -105,17 +159,19 @@ ${formData.notes || 'None'}
               <CheckCircle className="h-8 w-8 text-green-600" />
             </div>
             <h1 className="mt-6 text-2xl font-bold text-gray-900">Request Submitted!</h1>
-            <p className="mt-2 text-gray-600">
-              Your quote request has been received. We&apos;ll get back to you within 1 business day.
-            </p>
-            <div className="mt-6 rounded-lg bg-gray-50 p-4">
-              <p className="text-sm text-gray-500">Case Number</p>
-              <p className="text-lg font-semibold text-gray-900">{success.caseNumber}</p>
-            </div>
+            <p className="mt-2 text-gray-600">{success.message}</p>
+            {success.caseNumber && (
+              <div className="mt-6 rounded-lg bg-gray-50 p-4">
+                <p className="text-sm text-gray-500">Case Number</p>
+                <p className="text-lg font-semibold text-gray-900">{success.caseNumber}</p>
+              </div>
+            )}
             <div className="mt-8 flex justify-center gap-4">
-              <Link href="/portal/cases" className="btn-primary btn-md">
-                View My Cases
-              </Link>
+              {success.caseNumber && (
+                <Link href="/portal/cases" className="btn-primary btn-md">
+                  View My Cases
+                </Link>
+              )}
               <Link href="/tools" className="btn-outline btn-md">
                 Back to Tools
               </Link>
@@ -153,6 +209,67 @@ ${formData.notes || 'None'}
               {error}
             </div>
           )}
+
+          {/* Contact Info */}
+          <div className="card p-6">
+            <h2 className="font-semibold text-gray-900 mb-4">Contact Information</h2>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <label htmlFor="name" className="form-label">
+                  Name <span className="text-red-500">*</span>
+                </label>
+                <input
+                  id="name"
+                  type="text"
+                  required
+                  value={contactInfo.name}
+                  onChange={(e) => setContactInfo({ ...contactInfo, name: e.target.value })}
+                  className="input"
+                  placeholder="Your name"
+                />
+              </div>
+              <div>
+                <label htmlFor="email" className="form-label">
+                  Email <span className="text-red-500">*</span>
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  required
+                  value={contactInfo.email}
+                  onChange={(e) => setContactInfo({ ...contactInfo, email: e.target.value })}
+                  className="input"
+                  placeholder="you@company.com"
+                />
+              </div>
+              <div>
+                <label htmlFor="phone" className="form-label">
+                  Phone
+                </label>
+                <input
+                  id="phone"
+                  type="tel"
+                  value={contactInfo.phone}
+                  onChange={(e) => setContactInfo({ ...contactInfo, phone: e.target.value })}
+                  className="input"
+                  placeholder="(555) 123-4567"
+                />
+              </div>
+              <div>
+                <label htmlFor="company" className="form-label">
+                  Company
+                </label>
+                <input
+                  id="company"
+                  type="text"
+                  value={contactInfo.company}
+                  onChange={(e) => setContactInfo({ ...contactInfo, company: e.target.value })}
+                  className="input"
+                  placeholder="Company name"
+                />
+              </div>
+            </div>
+          </div>
 
           {/* Project Info */}
           <div className="card p-6">
@@ -195,10 +312,10 @@ ${formData.notes || 'None'}
                   className="input"
                 >
                   <option value="">Select timeline</option>
-                  <option value="immediate">Immediate (within 1 week)</option>
-                  <option value="2-4-weeks">2-4 weeks</option>
-                  <option value="1-3-months">1-3 months</option>
-                  <option value="planning">Just planning / getting pricing</option>
+                  <option value="Immediate (within 1 week)">Immediate (within 1 week)</option>
+                  <option value="2-4 weeks">2-4 weeks</option>
+                  <option value="1-3 months">1-3 months</option>
+                  <option value="Just planning / getting pricing">Just planning / getting pricing</option>
                 </select>
               </div>
             </div>
