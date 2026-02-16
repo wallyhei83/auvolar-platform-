@@ -4,6 +4,7 @@ import './globals.css'
 import { SessionProvider } from '@/components/providers/session-provider'
 import { Toaster } from '@/components/ui/toaster'
 import { CartProvider } from '@/lib/cart-context'
+import { ChatWidget } from '@/components/chat/chat-widget'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -28,6 +29,7 @@ export default function RootLayout({
           <CartProvider>
             {children}
             <Toaster />
+            <ChatWidget />
           </CartProvider>
         </SessionProvider>
       </body>
