@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { 
-  ChevronRight, Phone, Mail, MapPin, Clock, MessageSquare,
+  ChevronRight, Phone, Mail, MapPin, Clock,
   Send, CheckCircle2
 } from 'lucide-react'
 import { Header } from '@/components/layout/header'
@@ -18,12 +18,36 @@ export default function ContactPage() {
     subject: '',
     message: '',
   })
+  const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [error, setError] = useState('')
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Simulate form submission
-    setSubmitted(true)
+    setLoading(true)
+    setError('')
+
+    try {
+      const res = await fetch('/api/email/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'contact',
+          ...formData,
+        }),
+      })
+
+      if (!res.ok) {
+        const data = await res.json()
+        throw new Error(data.error || 'Failed to send message')
+      }
+
+      setSubmitted(true)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to send message')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -112,22 +136,6 @@ export default function ContactPage() {
                 </div>
               </div>
             </div>
-
-            {/* Live Chat */}
-            <div className="rounded-xl bg-brand p-6">
-              <div className="flex items-center gap-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-black/10">
-                  <MessageSquare className="h-6 w-6 text-black" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-black">Live Chat</h3>
-                  <p className="text-sm text-gray-800">Chat with a specialist now</p>
-                </div>
-              </div>
-              <button className="mt-4 w-full rounded-lg bg-black py-2 font-semibold text-white hover:bg-gray-800">
-                Start Chat
-              </button>
-            </div>
           </div>
 
           {/* Contact Form */}
@@ -143,7 +151,10 @@ export default function ContactPage() {
                     Thank you for reaching out. Our team will get back to you within 4 business hours.
                   </p>
                   <button
-                    onClick={() => setSubmitted(false)}
+                    onClick={() => {
+                      setSubmitted(false)
+                      setFormData({ name: '', email: '', phone: '', company: '', subject: '', message: '' })
+                    }}
                     className="mt-6 rounded-lg bg-brand px-6 py-2 font-semibold text-black hover:bg-brand-dark"
                   >
                     Send Another Message
@@ -154,6 +165,12 @@ export default function ContactPage() {
               <form onSubmit={handleSubmit} className="rounded-xl border border-gray-200 bg-white p-8">
                 <h2 className="text-xl font-semibold text-gray-900">Send us a Message</h2>
                 <p className="mt-1 text-sm text-gray-500">We'll respond within 4 business hours</p>
+
+                {error && (
+                  <div className="mt-4 rounded-lg bg-red-50 border border-red-200 p-4 text-sm text-red-700">
+                    {error}
+                  </div>
+                )}
                 
                 <div className="mt-6 grid gap-6 sm:grid-cols-2">
                   <div>
@@ -207,13 +224,13 @@ export default function ContactPage() {
                       className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
                     >
                       <option value="">Select a topic</option>
-                      <option value="sales">Sales / Pricing Inquiry</option>
-                      <option value="product">Product Questions</option>
-                      <option value="order">Order Status</option>
-                      <option value="technical">Technical Support</option>
-                      <option value="rma">Returns / Warranty</option>
-                      <option value="partnership">Partnership / Reseller</option>
-                      <option value="other">Other</option>
+                      <option value="Sales / Pricing Inquiry">Sales / Pricing Inquiry</option>
+                      <option value="Product Questions">Product Questions</option>
+                      <option value="Order Status">Order Status</option>
+                      <option value="Technical Support">Technical Support</option>
+                      <option value="Returns / Warranty">Returns / Warranty</option>
+                      <option value="Partnership / Reseller">Partnership / Reseller</option>
+                      <option value="Other">Other</option>
                     </select>
                   </div>
                   
@@ -232,10 +249,11 @@ export default function ContactPage() {
                 
                 <button
                   type="submit"
-                  className="mt-6 flex items-center gap-2 rounded-lg bg-brand px-6 py-3 font-semibold text-black hover:bg-brand-dark"
+                  disabled={loading}
+                  className="mt-6 flex items-center gap-2 rounded-lg bg-brand px-6 py-3 font-semibold text-black hover:bg-brand-dark disabled:opacity-50"
                 >
                   <Send className="h-4 w-4" />
-                  Send Message
+                  {loading ? 'Sending...' : 'Send Message'}
                 </button>
               </form>
             )}
