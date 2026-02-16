@@ -73,9 +73,42 @@ export default function BOMUploadPage() {
     }
   }
 
-  const handleSubmit = () => {
-    // In real app, would submit to API
-    setStep('confirm')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState('')
+
+  const handleSubmit = async () => {
+    setIsSubmitting(true)
+    setError('')
+
+    try {
+      const response = await fetch('/api/email/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'bom-upload',
+          data: {
+            name: details.contactName,
+            email: details.email,
+            phone: details.phone,
+            company: details.company,
+            projectName: details.projectName,
+            projectAddress: `${details.projectAddress}, ${details.city}, ${details.state} ${details.zip}`,
+            projectType: details.projectType,
+            timeline: details.timeline,
+            taxExempt: details.taxExempt,
+            notes: details.notes,
+            fileName: file?.name,
+          },
+        }),
+      })
+
+      if (!response.ok) throw new Error('Failed to send')
+      setStep('confirm')
+    } catch {
+      setError('Failed to submit. Please try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (

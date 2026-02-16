@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
-import { ChevronRight, Lightbulb, Upload, CheckCircle, Clock, FileText, Send } from 'lucide-react'
+import { ChevronRight, Lightbulb, Upload, CheckCircle, Clock, FileText, Send, Loader2 } from 'lucide-react'
 
 const applicationTypes = [
   'Warehouse / Distribution Center',
@@ -52,11 +52,28 @@ export default function PhotometricRequestPage() {
     notes: '',
   })
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState('')
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // In production, this would submit to an API
-    console.log('Photometric request:', formData)
-    setSubmitted(true)
+    setIsSubmitting(true)
+    setError('')
+
+    try {
+      const response = await fetch('/api/email/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'photometric', data: formData }),
+      })
+
+      if (!response.ok) throw new Error('Failed to send')
+      setSubmitted(true)
+    } catch {
+      setError('Failed to submit. Please try again or email engineering@auvolar.com')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   if (submitted) {
@@ -279,12 +296,17 @@ export default function PhotometricRequestPage() {
                   </p>
                 </div>
 
+                {error && (
+                  <div className="rounded-lg bg-red-50 p-4 text-sm text-red-600">{error}</div>
+                )}
+
                 <button
                   type="submit"
-                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-yellow-400 px-6 py-4 font-semibold text-black transition-colors hover:bg-yellow-300"
+                  disabled={isSubmitting}
+                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-yellow-400 px-6 py-4 font-semibold text-black transition-colors hover:bg-yellow-300 disabled:opacity-50"
                 >
-                  <Send className="h-5 w-5" />
-                  Submit Request
+                  {isSubmitting ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
+                  {isSubmitting ? 'Submitting...' : 'Submit Request'}
                 </button>
               </form>
             </div>
