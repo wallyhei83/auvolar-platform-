@@ -2,7 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
-const CONTACT_EMAIL = process.env.CONTACT_EMAIL || 'sales@auvolar.com'
+// Note: Resend free tier can only send to verified owner email
+// Change this after verifying auvolar.com domain in Resend
+const CONTACT_EMAIL = process.env.CONTACT_EMAIL || 'wally@aabtecinc.com'
 
 interface ProductItem {
   sku: string
@@ -66,18 +68,18 @@ export async function POST(request: NextRequest) {
     }
 
     // Send confirmation to customer
-    if (customerEmail) {
-      const confirmationHtml = buildConfirmationEmail(type, customerName, body)
-      await resend.emails.send({
-        from: 'Auvolar <onboarding@resend.dev>',
-        to: [customerEmail],
-        subject: `We received your ${getTypeLabel(type)} - Auvolar`,
-        html: confirmationHtml,
-      }).catch(err => {
-        console.error('Failed to send confirmation email:', err)
-        // Don't fail the request if confirmation fails
-      })
-    }
+    // Note: Disabled until domain is verified (Resend free tier limitation)
+    // if (customerEmail) {
+    //   const confirmationHtml = buildConfirmationEmail(type, customerName, body)
+    //   await resend.emails.send({
+    //     from: 'Auvolar <onboarding@resend.dev>',
+    //     to: [customerEmail],
+    //     subject: `We received your ${getTypeLabel(type)} - Auvolar`,
+    //     html: confirmationHtml,
+    //   }).catch(err => {
+    //     console.error('Failed to send confirmation email:', err)
+    //   })
+    // }
 
     return NextResponse.json({ success: true })
   } catch (error) {
