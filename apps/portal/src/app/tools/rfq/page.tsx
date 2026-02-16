@@ -30,6 +30,7 @@ export default function RFQPage() {
 
   const addItem = () => {
     setItems([...items, { sku: '', description: '', quantity: 1 }])
+    if (error) setError('')
   }
 
   const removeItem = (index: number) => {
@@ -42,6 +43,8 @@ export default function RFQPage() {
     const newItems = [...items]
     newItems[index] = { ...newItems[index], [field]: value }
     setItems(newItems)
+    // Clear error when user modifies items
+    if (error) setError('')
   }
 
   async function handleSubmit(e: React.FormEvent) {
