@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { 
   ChevronRight, Phone, Mail, MapPin, Clock, MessageSquare,
-  Send, CheckCircle2, Loader2
+  Send, CheckCircle2
 } from 'lucide-react'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
@@ -19,28 +19,11 @@ export default function ContactPage() {
     message: '',
   })
   const [submitted, setSubmitted] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [error, setError] = useState('')
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    setIsSubmitting(true)
-    setError('')
-
-    try {
-      const response = await fetch('/api/email/send', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'contact', data: formData }),
-      })
-
-      if (!response.ok) throw new Error('Failed to send')
-      setSubmitted(true)
-    } catch {
-      setError('Failed to send message. Please try again or email us directly.')
-    } finally {
-      setIsSubmitting(false)
-    }
+    // Simulate form submission
+    setSubmitted(true)
   }
 
   return (
@@ -247,17 +230,12 @@ export default function ContactPage() {
                   </div>
                 </div>
                 
-                {error && (
-                  <div className="mt-4 rounded-lg bg-red-50 p-4 text-sm text-red-600">{error}</div>
-                )}
-
                 <button
                   type="submit"
-                  disabled={isSubmitting}
-                  className="mt-6 flex items-center gap-2 rounded-lg bg-brand px-6 py-3 font-semibold text-black hover:bg-brand-dark disabled:opacity-50"
+                  className="mt-6 flex items-center gap-2 rounded-lg bg-brand px-6 py-3 font-semibold text-black hover:bg-brand-dark"
                 >
-                  {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
-                  {isSubmitting ? 'Sending...' : 'Send Message'}
+                  <Send className="h-4 w-4" />
+                  Send Message
                 </button>
               </form>
             )}
