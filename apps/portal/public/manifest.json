@@ -1,0 +1,16 @@
+{
+  "name": "Auvolar - Commercial LED Lighting Platform",
+  "short_name": "Auvolar",
+  "description": "B2B LED lighting platform for contractors, electricians, and facility managers",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1f2937",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    }
+  ]
+}
