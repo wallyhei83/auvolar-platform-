@@ -3,7 +3,7 @@ import type { NextConfig } from 'next'
 const nextConfig: NextConfig = {
   reactStrictMode: true,
 
-  // 图片优化增强
+  // 图像优化增强
   images: {
     formats: ['image/webp', 'image/avif'],
     minimumCacheTTL: 31536000, // 1 year
@@ -43,7 +43,7 @@ const nextConfig: NextConfig = {
     },
   },
 
-  // SEO 安全头
+  // SEO安全头
   async headers() {
     return [
       {
@@ -71,13 +71,35 @@ const nextConfig: NextConfig = {
             value: 'public, max-age=31536000, immutable'
           }
         ]
+      },
+      {
+        source: '/images/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=86400'
+          }
+        ]
       }
     ]
   },
 
-  // 输出配置
+  // SEO友好重写
+  async rewrites() {
+    return [
+      {
+        source: '/sitemap.xml',
+        destination: '/api/sitemap'
+      },
+      {
+        source: '/robots.txt',
+        destination: '/api/robots'
+      }
+    ]
+  },
+
+  // 部署优化
   output: 'standalone',
 }
 
 export default nextConfig
-
