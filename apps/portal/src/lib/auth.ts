@@ -1,7 +1,8 @@
 import { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import bcrypt from 'bcryptjs'
-import { db } from './db'
+import { db } from './db' // 确保你的Prisma客户端db已正确导入
+import { UserRole } from '@prisma/client' // 导入UserRole枚举
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -21,21 +22,22 @@ export const authOptions: NextAuthOptions = {
         })
 
         if (!user || !user.passwordHash) {
-          return null
+          return null // 用户不存在或密码未设置
         }
 
         const isValid = await bcrypt.compare(credentials.password, user.passwordHash)
 
         if (!isValid) {
-          return null
+          return null // 密码不匹配
         }
 
+        // 如果登录成功，返回用户对象，包含自定义字段
         return {
           id: user.id,
           email: user.email,
           name: user.name ?? undefined,
-          role: user.role,
-          companyName: user.companyName ?? undefined,
+          role: user.role, // <-- 添加：将角色传递给session
+          companyName: user.companyName ?? undefined, // <-- 添加：将公司名传递给session
         }
       },
     }),
@@ -44,23 +46,23 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id
-        token.role = user.role
-        token.companyName = user.companyName
+        token.role = user.role // <-- 添加：将角色保存到JWT
+        token.companyName = user.companyName // <-- 添加：将公司名保存到JWT
       }
       return token
     },
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string
-        session.user.role = token.role as string
-        session.user.companyName = token.companyName as string | undefined
+        session.user.role = token.role as UserRole // <-- 添加：从JWT获取角色
+        session.user.companyName = token.companyName as string | undefined // <-- 添加：从JWT获取公司名
       }
       return session
     },
   },
   pages: {
-    signIn: '/login',
-    error: '/login',
+    signIn: '/admin/login', // 将登录页指向管理员登录页
+    error: '/admin/login', // 错误页也指向管理员登录页
   },
   session: {
     strategy: 'jwt',
@@ -69,13 +71,14 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 }
 
-// Type extensions
+// Next-Auth 类型扩展：确保session和JWT包含自定义字段
+// 确保这些类型定义与你schema.prisma中的User模型和UserRole枚举一致
 declare module 'next-auth' {
   interface User {
     id: string
     email: string
     name?: string
-    role: string
+    role: UserRole // <-- 更新：使用UserRole枚举
     companyName?: string
   }
   interface Session {
@@ -83,7 +86,7 @@ declare module 'next-auth' {
       id: string
       email: string
       name?: string
-      role: string
+      role: UserRole // <-- 更新：使用UserRole枚举
       companyName?: string
     }
   }
@@ -92,7 +95,7 @@ declare module 'next-auth' {
 declare module 'next-auth/jwt' {
   interface JWT {
     id: string
-    role: string
+    role: UserRole // <-- 更新：使用UserRole枚举
     companyName?: string
   }
 }
