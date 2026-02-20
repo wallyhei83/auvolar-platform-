@@ -39,10 +39,15 @@ async function getInStockProducts(): Promise<InStockProduct[]> {
     
     const data = await response.json();
     
-    // Filter products with actual inventory, sort by inventory descending
+    // Filter products with actual inventory, pin product 159 first, then sort by inventory
+    const PINNED_ID = 159;
     const inStockProducts = data.data
       .filter((p: any) => p.inventory_level > 0)
-      .sort((a: any, b: any) => b.inventory_level - a.inventory_level)
+      .sort((a: any, b: any) => {
+        if (a.id === PINNED_ID) return -1;
+        if (b.id === PINNED_ID) return 1;
+        return b.inventory_level - a.inventory_level;
+      })
       .slice(0, 8)
       .map((p: any) => {
         const primaryImage = p.images?.find((img: any) => img.is_thumbnail) || p.images?.[0];
