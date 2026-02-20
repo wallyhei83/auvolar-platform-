@@ -298,7 +298,7 @@ ${formData.notes || 'None'}
                   value={formData.projectAddress}
                   onChange={(e) => setFormData({ ...formData, projectAddress: e.target.value })}
                   className="input"
-                  placeholder="123 Industrial Blvd, City, State ZIP"
+                  placeholder="17531 Railroad St Ste F, City of Industry, CA 91748"
                 />
               </div>
               <div>

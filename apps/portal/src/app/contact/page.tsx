@@ -130,8 +130,8 @@ export default function ContactPage() {
                 <div>
                   <h3 className="font-semibold text-gray-900">Location</h3>
                   <p className="text-gray-600">
-                    123 Industrial Blvd, Suite 100<br />
-                    Houston, TX 77001
+                    17531 Railroad St Ste F<br />
+                    City of Industry, CA 91748
                   </p>
                 </div>
               </div>
