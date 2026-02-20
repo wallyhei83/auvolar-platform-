@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Input } from '@/components/ui/input'
+import { PasswordInput } from '@/components/ui/password-input'
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
@@ -114,9 +115,8 @@ return (
             </div>
             <div className="grid gap-2">
               <Label htmlFor="password">密码</Label>
-              <Input
+              <PasswordInput
                 id="password"
-                type="password"
                 placeholder="输入至少8位密码"
                 required
                 value={password}

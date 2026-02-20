@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { PasswordInput } from '@/components/ui/password-input'
 import { Label } from '@/components/ui/label'
 import {
   Select,
@@ -235,7 +236,7 @@ function CreateUserDialog({ open, onClose, onSuccess }: { open: boolean; onClose
           </div>
           <div>
             <Label>Password *</Label>
-            <Input type="password" value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} placeholder="Min 8 characters" />
+            <PasswordInput value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} placeholder="Min 8 characters" />
           </div>
           <div>
             <Label>Phone</Label>
@@ -322,7 +323,7 @@ function EditUserDialog({ user, open, onClose, onSuccess }: { user: User; open: 
           </div>
           <div>
             <Label>New Password (leave blank to keep)</Label>
-            <Input type="password" value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} placeholder="••••••••" />
+            <PasswordInput value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} placeholder="••••••••" />
           </div>
         </div>
         <DialogFooter>
