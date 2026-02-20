@@ -5,28 +5,61 @@ import { SessionProvider } from '@/components/providers/session-provider'
 import { Toaster } from '@/components/ui/toaster'
 import { CartProvider } from '@/lib/cart-context'
 import { ChatWidget } from '@/components/chat/chat-widget'
+import { OrganizationJsonLd, WebSiteJsonLd, LocalBusinessJsonLd } from '@/components/seo/json-ld'
 import Script from 'next/script'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: {
-    default: 'Auvolar - Light Done Right',
-    template: '%s | Auvolar',
+    default: 'Auvolar - Commercial & Industrial LED Lighting | Wholesale Pricing',
+    template: '%s | Auvolar LED Lighting',
   },
-  description: 'Commercial LED lighting solutions for contractors and businesses. Quality products, competitive pricing, expert support.',
-  keywords: ['LED lighting', 'commercial lighting', 'high bay', 'wall pack', 'contractor pricing', 'B2B lighting'],
+  description: 'Auvolar is a B2B LED lighting manufacturer in California. 125+ DLC-certified commercial fixtures: high bays, wall packs, area lights, troffers, LED tubes. Wholesale pricing for contractors. Ships in 24h.',
+  keywords: [
+    'LED lighting', 'commercial LED lighting', 'industrial LED lighting',
+    'high bay lights', 'LED high bay', 'UFO high bay',
+    'wall pack lights', 'LED wall pack',
+    'area lights', 'shoebox lights', 'parking lot lights',
+    'flood lights', 'LED flood light',
+    'LED troffer', 'LED panel', 'flat panel LED',
+    'LED tube T8', 'LED tube T5',
+    'vapor tight light', 'strip light', 'wrap light',
+    'LED downlight', 'canopy light', 'garage light',
+    'bollard light', 'post top light', 'barn light',
+    'solar street light', 'solar wall pack',
+    'DLC certified lighting', 'contractor pricing', 'wholesale LED',
+    'B2B lighting', 'commercial lighting distributor',
+    'utility rebates LED', 'energy efficient lighting',
+    'warehouse lighting', 'retail lighting', 'office lighting',
+  ],
   other: {
-    'google-site-verification': 'Qq-Q9kxfMTJRHUHc1Sd0ib6Tmhz55UGxPywxCQ4sI4E'
+    'google-site-verification': 'Qq-Q9kxfMTJRHUHc1Sd0ib6Tmhz55UGxPywxCQ4sI4E',
   },
   viewport: 'width=device-width, initial-scale=1',
-  robots: 'index, follow',
+  robots: {
+    index: true,
+    follow: true,
+    'max-image-preview': 'large',
+    'max-snippet': -1,
+    'max-video-preview': -1,
+  },
+  alternates: {
+    canonical: 'https://www.auvolar.com',
+  },
   openGraph: {
-    title: 'Auvolar - Commercial LED Lighting Solutions',
-    description: 'Quality LED lighting for contractors, electricians, and facility managers. DLC certified, competitive pricing, expert support.',
+    title: 'Auvolar - Commercial & Industrial LED Lighting | Wholesale Pricing',
+    description: 'B2B LED lighting manufacturer. 125+ DLC-certified fixtures for contractors, electricians, and facility managers. Wholesale pricing, ships from California in 24h.',
     type: 'website',
     url: 'https://www.auvolar.com',
-  }
+    siteName: 'Auvolar',
+    locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Auvolar - Commercial LED Lighting | Wholesale Pricing',
+    description: 'B2B LED lighting manufacturer. 125+ DLC-certified fixtures. Wholesale pricing for contractors.',
+  },
 }
 
 export default function RootLayout({
@@ -58,6 +91,9 @@ export default function RootLayout({
         </Script>
       </head>
       <body className={inter.className}>
+        <OrganizationJsonLd />
+        <WebSiteJsonLd />
+        <LocalBusinessJsonLd />
         <SessionProvider>
           <CartProvider>
             {children}
