@@ -2,6 +2,5 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "installCommand": "pnpm install",
   "buildCommand": "pnpm --filter portal build",
-  "devCommand": "pnpm --filter portal dev",
-  "root": "apps/portal"
+  "devCommand": "pnpm --filter portal dev"
 }
