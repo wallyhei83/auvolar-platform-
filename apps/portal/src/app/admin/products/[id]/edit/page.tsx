@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Input } from '@/components/ui/input'
@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card'
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
 import { useToast } from '@/components/ui/use-toast'
 import { Loader2, Save } from 'lucide-react'
 import { DocType } from '@prisma/client'
@@ -36,9 +36,9 @@ interface ProductDocAsset {
 export default function AdminEditProductAttachmentPage({
   params,
 }: {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }) {
-  const { id } = params
+  const { id } = React.use(params)
   const [doc, setDoc] = useState<ProductDocAsset | null>(null)
   const [bcProductId, setBcProductId] = useState('')
   const [sku, setSku] = useState('')
@@ -61,7 +61,7 @@ export default function AdminEditProductAttachmentPage({
     try {
       // 假设 /api/documents/[id] 是你的后端API，用于获取单个附件详情
       const response = await fetch(`/api/documents/${docId}`)
-      const data = await await response.json()
+      const data = await response.json()
       if (response.ok) {
         setDoc(data)
         setBcProductId(data.bcProductId)
