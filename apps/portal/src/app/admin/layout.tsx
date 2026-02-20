@@ -36,7 +36,7 @@ export default async function AdminLayout({
     { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
     { name: 'Cases', href: '/admin/cases', icon: FileText },
     { name: 'Quotes', href: '/admin/quotes', icon: Package },
-    { name: 'Customers', href: '/admin/customers', icon: Users },
+    { name: 'Users', href: '/admin/users', icon: Users },
     { name: 'Tax Exempt', href: '/admin/tax-exempt', icon: FileCheck },
     { name: 'Products & Docs', href: '/admin/products', icon: FileText },
     { name: 'Integrations', href: '/admin/integrations', icon: Link2 },
