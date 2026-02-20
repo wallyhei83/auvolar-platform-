@@ -58,6 +58,9 @@ export async function GET(request: NextRequest) {
       }
     }
     
+    // Sort by sort_order (BC API doesn't support sort=sort_order natively)
+    allProducts.sort((a: any, b: any) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
+    
     // Get category info
     const categoryInfo = websiteCategories.find(c => c.slug === categorySlug)
     
@@ -84,6 +87,7 @@ function formatProduct(product: any) {
     sku: product.sku,
     slug: product.custom_url?.url?.replace(/^\/|\/$/g, '') || product.sku.toLowerCase(),
     price: product.price,
+    sortOrder: product.sort_order ?? 0,
     salePrice: product.sale_price || 0,
     msrp: product.retail_price || product.price * 1.4,
     description: stripHtml(product.description || ''),

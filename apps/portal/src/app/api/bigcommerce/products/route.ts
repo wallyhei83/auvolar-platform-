@@ -94,8 +94,10 @@ export async function GET(request: NextRequest) {
       getCategories({ limit: 100 }),
     ])
 
-    // Transform products for frontend
-    const products = productsResult.data.map(p => ({
+    // Transform products for frontend, sort by sort_order (BC API doesn't support sort=sort_order)
+    const products = productsResult.data
+      .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
+      .map(p => ({
       id: p.id,
       name: p.name,
       sku: p.sku,
@@ -107,6 +109,7 @@ export async function GET(request: NextRequest) {
       inStock: (p.inventory_level || 0) > 0,
       categories: p.categories,
       weight: p.weight,
+      sortOrder: p.sort_order ?? 0,
       images: p.images
         ?.sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
         .map(img => ({
