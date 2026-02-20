@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select' // 假设你有一个Select组件
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card'
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
 import { useToast } from '@/components/ui/use-toast'
 import { Loader2, UploadCloud } from 'lucide-react'
 import { DocType } from '@prisma/client' // 导入DocType枚举
@@ -114,7 +114,7 @@ export default function AdminUploadProductAttachmentPage() {
         toast({
           title: '上传成功',
           description: '产品附件已成功上传并关联。',
-          variant: 'success',
+          variant: 'default',
         });
 router.push('/admin/products'); // 上传成功后跳转到附件列表
       } else {

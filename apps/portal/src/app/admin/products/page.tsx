@@ -94,7 +94,7 @@ export default function AdminProductAttachmentsPage() {
         toast({
           title: '删除成功',
           description: '产品附件已删除。',
-          variant: 'success',
+          variant: 'default',
         })
         fetchDocuments() // 重新加载列表
         setIsDeleteDialogOpen(false)
