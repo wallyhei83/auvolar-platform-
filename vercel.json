@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "installCommand": "pnpm install",
+  "installCommand": "pnpm install --registry https://registry.npmmirror.com/", // <-- 修改为这个
   "buildCommand": "pnpm --filter portal build",
   "devCommand": "pnpm --filter portal dev"
 }
