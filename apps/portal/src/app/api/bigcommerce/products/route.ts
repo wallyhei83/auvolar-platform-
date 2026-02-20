@@ -51,12 +51,14 @@ export async function GET(request: NextRequest) {
           inStock: p.availability === 'available' || (p.inventory_level || 0) > 0,
           weight: p.weight,
           categories: p.categories || [],
-          images: (p.images || []).map((img: any) => ({
-            url: img.url_standard || img.url_thumbnail,
-            thumbnail: img.url_thumbnail,
-            zoom: img.url_zoom || img.url_standard,
-            isPrimary: img.is_thumbnail,
-          })),
+          images: (p.images || [])
+            .sort((a: any, b: any) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
+            .map((img: any) => ({
+              url: img.url_standard || img.url_thumbnail,
+              thumbnail: img.url_thumbnail,
+              zoom: img.url_zoom || img.url_standard,
+              isPrimary: img.is_thumbnail,
+            })),
           variants: (p.variants || []).map((v: any) => ({
             id: v.id,
             sku: v.sku,
@@ -88,6 +90,8 @@ export async function GET(request: NextRequest) {
         'categories:in': category || undefined,
         include: 'variants,images,custom_fields',
         is_visible: true,
+        sort: 'sort_order',
+        direction: 'asc',
       }),
       getCategories({ limit: 100 }),
     ])
@@ -105,12 +109,14 @@ export async function GET(request: NextRequest) {
       inStock: (p.inventory_level || 0) > 0,
       categories: p.categories,
       weight: p.weight,
-      images: p.images?.map(img => ({
-        url: img.url_standard,
-        thumbnail: img.url_thumbnail,
-        zoom: img.url_zoom,
-        isPrimary: img.is_thumbnail,
-      })) || [],
+      images: p.images
+        ?.sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
+        .map(img => ({
+          url: img.url_standard,
+          thumbnail: img.url_thumbnail,
+          zoom: img.url_zoom,
+          isPrimary: img.is_thumbnail,
+        })) || [],
       variants: p.variants?.map(v => ({
         id: v.id,
         sku: v.sku,
