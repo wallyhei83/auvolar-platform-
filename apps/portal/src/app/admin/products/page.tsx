@@ -28,7 +28,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Loader2, MoreHorizontal, PlusCircle } from 'lucide-react'
 import { useToast } from '@/components/ui/use-toast'
-import { format } from 'date-fns' // 用于格式化日期
+// date formatting handled inline
 
 interface ProductDocAsset {
   id: string
@@ -135,8 +135,7 @@ return (
       </div>
     )
   }
-return
-(
+return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">产品附件管理</h1>
@@ -194,9 +193,10 @@ return
                     {doc.title}
                   </a>
                 </TableCell>
+                <TableCell>{doc.docType}</TableCell>
                 <TableCell>{doc.version || '-'}</TableCell>
                 <TableCell>{doc.fileSize ? `${(doc.fileSize / 1024 / 1024).toFixed(2)} MB` : '-'}</TableCell>
-                <TableCell>{format(new Date(doc.createdAt), 'yyyy-MM-dd')}</TableCell> {/* 格式化日期 */}
+                <TableCell>{new Date(doc.createdAt).toLocaleDateString()}</TableCell>
                 <TableCell className="text-right">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
