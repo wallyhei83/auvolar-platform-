@@ -54,7 +54,7 @@ pnpm dev
 Visit http://localhost:3000
 
 **Test accounts:**
-- Admin: admin@lumilinkai.com / admin123
+- Admin: wally@auvolar.com / admin123
 - Customer: contractor@example.com / customer123
 
 ## Production Deployment (Vercel)
