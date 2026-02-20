@@ -46,7 +46,7 @@
     "eslint": "^9.19.0",
     "eslint-config-next": "^15.1.6"
     "critters": "^0.0.20"
-  },
+  }
   "prisma": {
     "seed": "npx tsx prisma/seed.ts"
   }
