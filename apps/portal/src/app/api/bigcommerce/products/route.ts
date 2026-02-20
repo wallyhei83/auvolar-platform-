@@ -90,8 +90,6 @@ export async function GET(request: NextRequest) {
         'categories:in': category || undefined,
         include: 'variants,images,custom_fields',
         is_visible: true,
-        sort: 'sort_order',
-        direction: 'asc',
       }),
       getCategories({ limit: 100 }),
     ])
