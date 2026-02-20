@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getProducts, getCategories, getProductBySku } from '@/lib/bigcommerce'
 
-const BC_STORE_HASH = process.env.BIGCOMMERCE_STORE_HASH || 'hhcdvxqxzq'
-const BC_ACCESS_TOKEN = process.env.BIGCOMMERCE_ACCESS_TOKEN || 'taw41x7qx3rqu1hjmt04s20b665pse6'
+const BC_STORE_HASH = process.env.BIGCOMMERCE_STORE_HASH!
+const BC_ACCESS_TOKEN = process.env.BIGCOMMERCE_ACCESS_TOKEN!
 
 // GET /api/bigcommerce/products - List products from BigCommerce
 // Supports: ?id=123 for single product, ?sku=ABC for by SKU, or list with ?category=26,43

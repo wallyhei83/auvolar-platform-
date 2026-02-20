@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getBcCategoryIds, websiteCategories } from '@/lib/bc-categories'
 
-const BC_STORE_HASH = process.env.BIGCOMMERCE_STORE_HASH || 'hhcdvxqxzq'
-const BC_ACCESS_TOKEN = process.env.BIGCOMMERCE_ACCESS_TOKEN || 'taw41x7qx3rqu1hjmt04s20b665pse6'
+const BC_STORE_HASH = process.env.BIGCOMMERCE_STORE_HASH!
+const BC_ACCESS_TOKEN = process.env.BIGCOMMERCE_ACCESS_TOKEN!
 
 // GET /api/products/by-category?category=area-light
 export async function GET(request: NextRequest) {
