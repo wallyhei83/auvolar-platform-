@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-const BC_STORE_HASH = process.env.BIGCOMMERCE_STORE_HASH || 'hhcdvxqxzq'
-const BC_ACCESS_TOKEN = process.env.BIGCOMMERCE_ACCESS_TOKEN || 'taw41x7qx3rqu1hjmt04s20b665pse6'
+const BC_STORE_HASH = process.env.BIGCOMMERCE_STORE_HASH!
+const BC_ACCESS_TOKEN = process.env.BIGCOMMERCE_ACCESS_TOKEN!
 
 // GET /api/bigcommerce/single?id=123 - Get single product
 export async function GET(request: NextRequest) {
