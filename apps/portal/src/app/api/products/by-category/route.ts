@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
     const seenSkus = new Set<string>()
     
     for (const catId of bcCategoryIds) {
-      const url = `https://api.bigcommerce.com/stores/${BC_STORE_HASH}/v3/catalog/products?categories:in=${catId}&include=images,variants&limit=${limit}`
+      const url = `https://api.bigcommerce.com/stores/${BC_STORE_HASH}/v3/catalog/products?categories:in=${catId}&include=images,variants&limit=${limit}&sort=sort_order&direction=asc`
       
       const response = await fetch(url, {
         headers: {
@@ -92,14 +92,17 @@ function formatProduct(product: any) {
     inStock: product.availability === 'available' || product.inventory_level > 0,
     weight: product.weight,
     categories: product.categories || [],
-    images: (product.images || []).map((img: any) => ({
-      url: img.url_standard || img.url_thumbnail,
-      thumbnail: img.url_thumbnail,
-      zoom: img.url_zoom || img.url_standard,
-      isPrimary: img.is_thumbnail,
-    })),
+    images: (product.images || [])
+      .sort((a: any, b: any) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
+      .map((img: any) => ({
+        url: img.url_standard || img.url_thumbnail,
+        thumbnail: img.url_thumbnail,
+        zoom: img.url_zoom || img.url_standard,
+        isPrimary: img.is_thumbnail,
+        sortOrder: img.sort_order ?? 0,
+      })),
     primaryImage: product.images?.find((img: any) => img.is_thumbnail)?.url_standard 
-      || product.images?.[0]?.url_standard 
+      || product.images?.sort((a: any, b: any) => (a.sort_order ?? 0) - (b.sort_order ?? 0))?.[0]?.url_standard 
       || null,
     variants: (product.variants || []).map((v: any) => ({
       id: v.id,

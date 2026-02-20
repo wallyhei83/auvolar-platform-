@@ -184,6 +184,8 @@ export async function getProducts(params?: {
   'sku:in'?: string
   'categories:in'?: string
   is_visible?: boolean
+  sort?: string
+  direction?: string
 }): Promise<{ data: BCProduct[]; meta: { pagination: any } }> {
   const searchParams = new URLSearchParams()
   if (params?.page) searchParams.set('page', String(params.page))
@@ -192,6 +194,8 @@ export async function getProducts(params?: {
   if (params?.['sku:in']) searchParams.set('sku:in', params['sku:in'])
   if (params?.['categories:in']) searchParams.set('categories:in', params['categories:in'])
   if (params?.is_visible !== undefined) searchParams.set('is_visible', String(params.is_visible))
+  if (params?.sort) searchParams.set('sort', params.sort)
+  if (params?.direction) searchParams.set('direction', params.direction)
   
   const query = searchParams.toString()
   return bcFetch(`/v3/catalog/products${query ? `?${query}` : ''}`)
