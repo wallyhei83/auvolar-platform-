@@ -54,6 +54,7 @@ export interface BCProduct {
   height?: number
   depth?: number
   is_visible?: boolean
+  sort_order?: number
   custom_fields?: { id?: number; name: string; value: string }[]
   variants?: BCVariant[]
   images?: BCImage[]
