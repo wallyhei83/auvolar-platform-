@@ -12,7 +12,7 @@ import InStockProducts from '@/components/home/in-stock-products'
 // All product subcategories — product main images only (no project/application photos)
 const categories = [
   // Outdoor first — Area Light at position 1
-  { name: 'Area Lights', description: 'Parking lots, streets', image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/113/images/413/Area_Light_OT75W-420W_Silver__68409.1770976359.386.513.jpg?c=1', href: '/products/outdoor/area-light', badge: 'Best Seller' },
+  { name: 'Area Lights', description: 'Parking lots, streets', image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/159/images/457/1770976190.1280.1280.jpg?c=1', href: '/products/outdoor/area-light', badge: 'Best Seller' },
   // Indoor
   { name: 'High Bay Lights', description: 'Warehouses, gyms, factories', image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/156/images/452/Highbay_Light_OH60W-240W__96466.1770882596.386.513.jpg?c=1', href: '/products/indoor/high-bay', badge: null },
   { name: 'Troffers & Panels', description: 'Offices, retail, schools', image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/178/images/484/image__12842.1770886820.386.513.png?c=1', href: '/products/indoor/troffer', badge: null },
