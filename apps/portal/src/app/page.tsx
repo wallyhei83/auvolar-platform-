@@ -9,50 +9,29 @@ import { Footer } from '@/components/layout/footer'
 import { FeaturedProducts } from '@/components/home/featured-products'
 import InStockProducts from '@/components/home/in-stock-products'
 
-// Product categories with matching BC product images
+// All product subcategories — product main images only (no project/application photos)
 const categories = [
-  { 
-    name: 'High Bay Lights', 
-    description: 'Warehouses, manufacturing, gyms',
-    image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/156/images/452/Highbay_Light_OH60W-240W__96466.1770882596.386.513.jpg?c=1', // BC: UFO High Bay (30)
-    href: '/products/indoor/high-bay',
-    badge: 'Best Seller'
-  },
-  { 
-    name: 'Wall Packs', 
-    description: 'Building perimeter, security',
-    image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/123/images/571/Minni_Wallpack_AN-WPA26W_-5KP-BZ_Application_reference__40018.1771055698.386.513.jpg?c=1', // BC: Wall Pack (27)
-    href: '/products/outdoor/wall-pack',
-    badge: null
-  },
-  { 
-    name: 'Area Lights', 
-    description: 'Parking lots, pathways',
-    image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/113/images/412/Area_Light_OT75W-420W_Black__19697.1770976359.386.513.jpg?c=1', // BC: Area Light (26)
-    href: '/products/outdoor/area-light',
-    badge: null
-  },
-  { 
-    name: 'Troffers & Panels', 
-    description: 'Office, retail, education',
-    image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/178/images/484/image__12842.1770886820.386.513.png?c=1', // BC: Panel Light (33)
-    href: '/products/indoor/troffer',
-    badge: null
-  },
-  { 
-    name: 'Solar Lights', 
-    description: 'Off-grid street & area lights',
-    image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/197/images/535/04BB1E37-4E58-4b31-8B76-2EFFD4AE7AE6__86041.1770891195.386.513.png?c=1', // BC: Solar Area (59)
-    href: '/products/solar',
-    badge: 'New'
-  },
-  { 
-    name: 'LED Tubes', 
-    description: 'T8/T5 retrofit replacements',
-    image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/138/images/421/WPS20260212144030__14594.1770879720.386.513.png?c=1', // BC: LED Tube (36)
-    href: '/products/indoor/led-tube',
-    badge: null
-  },
+  // Indoor
+  { name: 'High Bay Lights', description: 'Warehouses, gyms, factories', image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/156/images/452/Highbay_Light_OH60W-240W__96466.1770882596.386.513.jpg?c=1', href: '/products/indoor/high-bay', badge: 'Best Seller' },
+  { name: 'Troffers & Panels', description: 'Offices, retail, schools', image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/178/images/484/image__12842.1770886820.386.513.png?c=1', href: '/products/indoor/troffer', badge: null },
+  { name: 'LED Tubes', description: 'T8/T5 retrofit replacements', image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/138/images/421/WPS20260212144030__14594.1770879720.386.513.png?c=1', href: '/products/indoor/led-tube', badge: null },
+  { name: 'Strip Lights', description: 'Linear commercial lighting', image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/131/images/569/Linear_strip_AN-WR4FT40W_-5K_Application_reference__27998.1771055058.386.513.jpg?c=1', href: '/products/indoor/strip', badge: null },
+  { name: 'Vapor Tight', description: 'IP65 harsh environments', image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/125/images/568/Vapor_Tight_AN-VF4FT-NV40W_-5K_Application_reference__73869.1771054854.386.513.jpg?c=1', href: '/products/indoor/vapor-tight', badge: null },
+  { name: 'Downlights', description: 'Recessed commercial LED', image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/148/images/438/46_INSD_DOWN__29025.1770976562.386.513.png?c=1', href: '/products/indoor/downlight', badge: null },
+  { name: 'Canopy & Garage', description: 'Parking garages, covered areas', image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/126/images/393/MUM_1953__85455.1770876682.386.513.png?c=1', href: '/products/indoor/canopy', badge: null },
+  { name: 'Exit Signs', description: 'Emergency exit lighting', image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/122/images/388/exit_01__21417.1770876268.386.513.jpg?c=1', href: '/products/indoor/exit', badge: null },
+  // Outdoor
+  { name: 'Area Lights', description: 'Parking lots, streets', image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/113/images/412/Area_Light_OT75W-420W_Black__19697.1770976359.386.513.jpg?c=1', href: '/products/outdoor/area-light', badge: null },
+  { name: 'Wall Packs', description: 'Building perimeter, security', image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/130/images/405/QQ20260212-142924__81406.1770878366.386.513.png?c=1', href: '/products/outdoor/wall-pack', badge: null },
+  { name: 'Flood Lights', description: 'Sports fields, facades', image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/124/images/390/01__25331.1770875986.386.513.jpg?c=1', href: '/products/outdoor/flood', badge: null },
+  { name: 'Bollard Lights', description: 'Pathways, landscapes', image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/196/images/559/Garden_Light_A-B10-18-25W_-345K-BZ__32542.1771050772.386.513.jpg?c=1', href: '/products/outdoor/bollard', badge: null },
+  { name: 'Post Top Lights', description: 'Decorative street lighting', image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/116/images/380/WPS2026021210250920__75892.1770874772.386.513.png?c=1', href: '/products/outdoor/post-top', badge: null },
+  { name: 'Barn Lights', description: 'Decorative gooseneck', image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/175/images/481/WPS20260212165051__97966.1770886364.386.513.png?c=1', href: '/products/outdoor/barn', badge: null },
+  // Solar
+  { name: 'Solar Area Lights', description: 'Off-grid street & area', image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/197/images/535/04BB1E37-4E58-4b31-8B76-2EFFD4AE7AE6__86041.1770891195.386.513.png?c=1', href: '/products/solar/solar-area', badge: 'New' },
+  { name: 'Solar Wall Packs', description: 'Off-grid wall mounted', image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/119/images/562/Solar_Wallpack_Light_AN-SBR6W_-6K-WH__87869.1771053883.386.513.jpg?c=1', href: '/products/solar/solar-wall', badge: 'New' },
+  // Specialty
+  { name: 'Grow Lights', description: 'Horticulture & indoor growing', image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/179/images/485/WPS20260212165738__33477.1770886942.386.513.png?c=1', href: '/products/specialty/grow-light', badge: null },
 ]
 
 // Applications
@@ -288,30 +267,30 @@ export default function HomePage() {
             </Link>
           </div>
           
-          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
             {categories.map((category) => (
               <Link
                 key={category.name}
                 href={category.href}
-                className="group relative overflow-hidden rounded-xl border border-gray-200 bg-white transition-all hover:border-brand hover:shadow-lg"
+                className="group relative overflow-hidden rounded-lg border border-gray-200 bg-white transition-all hover:border-brand hover:shadow-md"
               >
-                <div className="aspect-[4/3] bg-gray-100 overflow-hidden">
+                <div className="aspect-square bg-gray-50 overflow-hidden p-2">
                   <img 
                     src={category.image}
                     alt={category.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
                 {category.badge && (
-                  <span className="absolute right-3 top-3 rounded-full bg-brand px-2.5 py-1 text-xs font-semibold text-black">
+                  <span className="absolute right-2 top-2 rounded-full bg-brand px-2 py-0.5 text-[10px] font-semibold text-black">
                     {category.badge}
                   </span>
                 )}
-                <div className="p-4">
-                  <h3 className="font-semibold text-gray-900 group-hover:text-brand">
+                <div className="p-2.5">
+                  <h3 className="text-sm font-semibold text-gray-900 group-hover:text-brand leading-tight">
                     {category.name}
                   </h3>
-                  <p className="mt-1 text-sm text-gray-600">{category.description}</p>
+                  <p className="mt-0.5 text-xs text-gray-500 line-clamp-1">{category.description}</p>
                 </div>
               </Link>
             ))}
