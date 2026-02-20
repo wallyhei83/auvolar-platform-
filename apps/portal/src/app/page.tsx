@@ -11,8 +11,10 @@ import InStockProducts from '@/components/home/in-stock-products'
 
 // All product subcategories — product main images only (no project/application photos)
 const categories = [
+  // Outdoor first — Area Light at position 1
+  { name: 'Area Lights', description: 'Parking lots, streets', image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/113/images/413/Area_Light_OT75W-420W_Silver__68409.1770976359.386.513.jpg?c=1', href: '/products/outdoor/area-light', badge: 'Best Seller' },
   // Indoor
-  { name: 'High Bay Lights', description: 'Warehouses, gyms, factories', image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/156/images/452/Highbay_Light_OH60W-240W__96466.1770882596.386.513.jpg?c=1', href: '/products/indoor/high-bay', badge: 'Best Seller' },
+  { name: 'High Bay Lights', description: 'Warehouses, gyms, factories', image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/156/images/452/Highbay_Light_OH60W-240W__96466.1770882596.386.513.jpg?c=1', href: '/products/indoor/high-bay', badge: null },
   { name: 'Troffers & Panels', description: 'Offices, retail, schools', image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/178/images/484/image__12842.1770886820.386.513.png?c=1', href: '/products/indoor/troffer', badge: null },
   { name: 'LED Tubes', description: 'T8/T5 retrofit replacements', image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/138/images/421/WPS20260212144030__14594.1770879720.386.513.png?c=1', href: '/products/indoor/led-tube', badge: null },
   { name: 'Strip Lights', description: 'Linear commercial lighting', image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/131/images/407/WPS20260212142820__81518.1771055435.386.513.png?c=1', href: '/products/indoor/strip', badge: null },
@@ -21,7 +23,6 @@ const categories = [
   { name: 'Canopy & Garage', description: 'Parking garages, covered areas', image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/126/images/393/MUM_1953__85455.1770876682.386.513.png?c=1', href: '/products/indoor/canopy', badge: null },
   { name: 'Exit Signs', description: 'Emergency exit lighting', image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/122/images/388/exit_01__21417.1770876268.386.513.jpg?c=1', href: '/products/indoor/exit', badge: null },
   // Outdoor
-  { name: 'Area Lights', description: 'Parking lots, streets', image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/113/images/412/Area_Light_OT75W-420W_Black__19697.1770976359.386.513.jpg?c=1', href: '/products/outdoor/area-light', badge: null },
   { name: 'Wall Packs', description: 'Building perimeter, security', image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/130/images/406/QQ20260212-142908__81026.1770878366.386.513.png?c=1', href: '/products/outdoor/wall-pack', badge: null },
   { name: 'Flood Lights', description: 'Sports fields, facades', image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/124/images/390/01__25331.1770875986.386.513.jpg?c=1', href: '/products/outdoor/flood', badge: null },
   { name: 'Bollard Lights', description: 'Pathways, landscapes', image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/196/images/559/Garden_Light_A-B10-18-25W_-345K-BZ__32542.1771050772.386.513.jpg?c=1', href: '/products/outdoor/bollard', badge: null },

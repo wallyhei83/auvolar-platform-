@@ -127,7 +127,7 @@ export const productCategories: MainCategory[] = [
         name: 'Area Lights',
         description: 'LED area lights and shoebox fixtures for parking lots, streets, and outdoor commercial spaces.',
         bcCategoryIds: [26, 43], // Area Light + Parking Lighting (merged)
-        image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/113/images/412/Area_Light_OT75W-420W_Black__19697.1770976359.386.513.jpg?c=1',
+        image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/113/images/413/Area_Light_OT75W-420W_Silver__68409.1770976359.386.513.jpg?c=1',
       },
       {
         id: 'wall-pack',
