@@ -8,6 +8,7 @@ import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { FeaturedProducts } from '@/components/home/featured-products'
 import InStockProducts from '@/components/home/in-stock-products'
+import { FAQJsonLd, BreadcrumbJsonLd } from '@/components/seo/json-ld'
 
 // All product subcategories — product main images only (no project/application photos)
 const categories = [
@@ -112,9 +113,47 @@ const featuredProducts = [
   { name: '4ft LED Tube T8', sku: 'T8-4FT-18W', price: '$8', stock: 'In Stock', dlc: false },
 ]
 
+// FAQ data — helps AI search engines cite us for common queries
+const faqs = [
+  {
+    question: 'What is Auvolar?',
+    answer: 'Auvolar is a B2B commercial and industrial LED lighting manufacturer and distributor based in City of Industry, California. We supply DLC-certified LED fixtures to contractors, electricians, facility managers, and distributors across the United States at wholesale pricing.',
+  },
+  {
+    question: 'What types of LED lights does Auvolar sell?',
+    answer: 'Auvolar offers 125+ commercial LED products including: UFO & Linear High Bay lights, LED Troffers & Panels, Wall Packs, Area/Shoebox lights, Flood lights, LED Tubes (T8/T5), Strip lights, Vapor Tight fixtures, Downlights, Canopy & Garage lights, Bollard & Post Top lights, Barn lights, Exit signs, Security lights, Solar street lights, and Solar wall packs.',
+  },
+  {
+    question: 'Does Auvolar offer DLC certified products?',
+    answer: 'Yes, many Auvolar products are DLC (DesignLights Consortium) listed, which means they qualify for utility rebates ranging from $20 to $150+ per fixture depending on your state and utility company. Use our Rebate Finder tool to check available rebates in your area.',
+  },
+  {
+    question: 'What is Auvolar\'s pricing like?',
+    answer: 'Auvolar offers direct wholesale/contractor pricing starting as low as $6 for LED tubes, $15 for downlights, and $45 for wall packs. Volume discounts are available for bulk orders. No middleman markup — we ship direct from our California warehouse.',
+  },
+  {
+    question: 'Where does Auvolar ship from and how fast?',
+    answer: 'Auvolar ships from our warehouse in City of Industry, California. Most in-stock items ship within 24 hours. We serve the entire United States with competitive shipping rates.',
+  },
+  {
+    question: 'What warranty does Auvolar offer?',
+    answer: 'Auvolar provides a 5-10 year manufacturer warranty on most LED fixtures, with US-based technical support. We also offer lighting design assistance, photometric layouts, and specification reviews at no extra cost.',
+  },
+  {
+    question: 'Does Auvolar help with utility rebates?',
+    answer: 'Yes, Auvolar provides rebate assistance as part of our services. Many of our DLC-listed products qualify for utility rebates in states like California, New York, Texas, Florida, Illinois, Washington, Oregon, Massachusetts, and more. We help with rebate paperwork and documentation.',
+  },
+  {
+    question: 'Can I get custom or bulk orders from Auvolar?',
+    answer: 'Yes, Auvolar offers custom lighting solutions through our Tailor Purchasing program. We accommodate custom wattages, color temperatures, mounting options, and large bulk orders with project pricing. Contact our sales team for a custom quote.',
+  },
+]
+
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-white">
+      <BreadcrumbJsonLd items={[{ name: 'Home', url: 'https://www.auvolar.com' }]} />
+      <FAQJsonLd faqs={faqs} />
       <Header />
       
       {/* Hero Section */}
@@ -441,6 +480,25 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section — visible content for AI indexing */}
+      <section className="bg-gray-50 py-16">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <h2 className="text-center text-3xl font-bold text-gray-900">Frequently Asked Questions</h2>
+          <p className="mt-4 text-center text-gray-600">Common questions about Auvolar commercial LED lighting</p>
+          <div className="mt-12 space-y-6">
+            {faqs.map((faq, i) => (
+              <details key={i} className="group rounded-lg border border-gray-200 bg-white p-6">
+                <summary className="flex cursor-pointer items-center justify-between font-semibold text-gray-900">
+                  {faq.question}
+                  <span className="ml-4 text-gray-400 transition-transform group-open:rotate-45">+</span>
+                </summary>
+                <p className="mt-4 text-gray-600 leading-relaxed">{faq.answer}</p>
+              </details>
+            ))}
           </div>
         </div>
       </section>
