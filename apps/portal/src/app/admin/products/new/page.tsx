@@ -6,241 +6,282 @@ import { useRouter } from 'next/navigation'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea' // 假设你有一个Textarea组件
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select' // 假设你有一个Select组件
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
+} from '@/components/ui/select'
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
 import { useToast } from '@/components/ui/use-toast'
-import { Loader2, UploadCloud } from 'lucide-react'
-import { DocType } from '@prisma/client' // 导入DocType枚举
+import { Loader2, UploadCloud, X, FileText, CheckCircle2 } from 'lucide-react'
 
-export default function AdminUploadProductAttachmentPage() {
-  const [bcProductId, setBcProductId] = useState('')
-  const [sku, setSku] = useState('')
-  const [title, setTitle] = useState('')
-  const [docType, setDocType] = useState<DocType>(DocType.OTHER)
-  const [version, setVersion] = useState('')
-  const [file, setFile] = useState<File | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [uploadProgress, setUploadProgress] = useState(0)
+type DocType = 'CUT_SHEET' | 'IES' | 'INSTALL_GUIDE' | 'DIMENSIONS' | 'DLC_CERT' | 'WARRANTY' | 'OTHER'
+
+interface FileEntry {
+  file: File
+  docType: DocType
+  title: string
+  status: 'pending' | 'uploading' | 'done' | 'error'
+}
+
+// Auto-detect doc type from filename
+function detectDocType(filename: string): DocType {
+  const name = filename.toLowerCase()
+  if (name.includes('spec') || name.includes('cut') || name.includes('datasheet') || name.includes('data-sheet')) return 'CUT_SHEET'
+  if (name.includes('.ies') || name.includes('ies') || name.includes('photometric')) return 'IES'
+  if (name.includes('install') || name.includes('guide') || name.includes('instruction') || name.includes('manual')) return 'INSTALL_GUIDE'
+  if (name.includes('dimension') || name.includes('drawing') || name.includes('dim')) return 'DIMENSIONS'
+  if (name.includes('dlc') || name.includes('cert') || name.includes('certificate')) return 'DLC_CERT'
+  if (name.includes('warranty') || name.includes('warr')) return 'WARRANTY'
+  return 'OTHER'
+}
+
+function docTypeLabel(type: DocType): string {
+  const labels: Record<DocType, string> = {
+    CUT_SHEET: 'Spec/Cut Sheet',
+    IES: 'IES File',
+    INSTALL_GUIDE: 'Installation Guide',
+    DIMENSIONS: 'Dimensions',
+    DLC_CERT: 'DLC Certificate',
+    WARRANTY: 'Warranty',
+    OTHER: 'Other',
+  }
+  return labels[type]
+}
+
+export default function AdminUploadProductDocsPage() {
   const router = useRouter()
   const { toast } = useToast()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0])
-    }
+  const [bcProductId, setBcProductId] = useState('')
+  const [sku, setSku] = useState('')
+  const [files, setFiles] = useState<FileEntry[]>([])
+  const [uploading, setUploading] = useState(false)
+
+  const handleFilesSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return
+    const newFiles: FileEntry[] = Array.from(e.target.files).map(file => ({
+      file,
+      docType: detectDocType(file.name),
+      title: file.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' '),
+      status: 'pending',
+    }))
+    setFiles(prev => [...prev, ...newFiles])
+    // Reset input so same files can be selected again
+    if (fileInputRef.current) fileInputRef.current.value = ''
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!file) {
-      toast({
-        title: '文件缺失',
-        description: '请选择一个文件上传。',
-        variant: 'destructive',
-      })
+  const removeFile = (index: number) => {
+    setFiles(prev => prev.filter((_, i) => i !== index))
+  }
+
+  const updateFileType = (index: number, docType: DocType) => {
+    setFiles(prev => prev.map((f, i) => i === index ? { ...f, docType } : f))
+  }
+
+  const updateFileTitle = (index: number, title: string) => {
+    setFiles(prev => prev.map((f, i) => i === index ? { ...f, title } : f))
+  }
+
+  const handleUploadAll = async () => {
+    if (!bcProductId || !sku) {
+      toast({ title: 'Please enter Product ID and SKU', variant: 'destructive' })
+      return
+    }
+    if (files.length === 0) {
+      toast({ title: 'Please add files', variant: 'destructive' })
       return
     }
 
-    setLoading(true)
-    setUploadProgress(0)
+    setUploading(true)
 
-    try {
-      // Step 1: 获取预签名URL (假设 /api/upload/init 是你的后端API)
-      const initResponse = await fetch('/api/upload/init', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          filename: file.name,
-          contentType: file.type,
-          fileSize: file.size,
-          // 可以根据需要添加更多文件元数据
-        }),
-      })
+    for (let i = 0; i < files.length; i++) {
+      setFiles(prev => prev.map((f, idx) => idx === i ? { ...f, status: 'uploading' } : f))
 
-      if (!initResponse.ok) {
-        const errorData = await initResponse.json();
-        throw new Error(errorData.message || '获取上传URL失败。');
+      try {
+        const formData = new FormData()
+        formData.append('file', files[i].file)
+        formData.append('bcProductId', bcProductId)
+        formData.append('sku', sku)
+        formData.append('title', files[i].title)
+        formData.append('docType', files[i].docType)
+
+        const res = await fetch('/api/documents/upload', {
+          method: 'POST',
+          body: formData,
+        })
+
+        if (res.ok) {
+          setFiles(prev => prev.map((f, idx) => idx === i ? { ...f, status: 'done' } : f))
+        } else {
+          setFiles(prev => prev.map((f, idx) => idx === i ? { ...f, status: 'error' } : f))
+        }
+      } catch {
+        setFiles(prev => prev.map((f, idx) => idx === i ? { ...f, status: 'error' } : f))
       }
-      const { url: uploadUrl, assetUrl } = await initResponse.json();
-
-      // Step 2: 上传文件到预签名URL
-      const uploadResponse = await fetch(uploadUrl, {
-        method: 'PUT', // 通常预签名URL使用PUT方法上传文件
-        headers: {
-          'Content-Type': file.type || 'application/octet-stream',
-          'x-ms-blob-type': 'BlockBlob', // For Azure Blob Storage, adjust for other services
-        },
-        body: file,
-        // 如果需要显示上传进度，可以尝试使用XMLHttpRequest或fetch的ReadableStream
-        // 但fetch API直接显示进度比较复杂，这里简化处理
-      });
-
-      if (!uploadResponse.ok) {
-        throw new Error('文件上传到存储服务失败。');
-      }
-
-      // Step 3: 将附件信息保存到数据库 (假设 /api/documents 是你的后端API)
-      const saveResponse = await fetch('/api/documents', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          bcProductId,
-          sku,
-          title,
-          docType,
-          version,
-          url: assetUrl, // 使用从后端获取的最终文件URL
-          fileSize: file.size,
-          mimeType: file.type,
-          // uploadedBy: session.user.id, // 如果有用户信息，可以添加
-        }),
-      });
-
-      const data = await saveResponse.json();
-
-      if (saveResponse.ok) {
-        toast({
-          title: '上传成功',
-          description: '产品附件已成功上传并关联。',
-          variant: 'default',
-        });
-router.push('/admin/products'); // 上传成功后跳转到附件列表
-      } else {
-        throw new Error(data.message || '保存附件信息到数据库失败。');
-      }
-
-    } catch (error: any) {
-      console.error('Upload error:', error);
-      toast({
-        title: '上传失败',
-        description: error.message || '发生未知错误，请稍后重试。',
-        variant: 'destructive',
-      });
-    } finally {
-      setLoading(false);
-      setUploadProgress(0);
     }
-  };
 
-  const docTypeOptions = Object.values(DocType).map(type => ({
-    value: type,
-    label: type.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, s => s.toUpperCase()) // 格式化为可读性更好的字符串
-  }));
-return (
+    setUploading(false)
+    const successCount = files.filter(f => f.status === 'done').length
+    toast({ title: `Uploaded ${successCount}/${files.length} files` })
+
+    if (successCount === files.length) {
+      setTimeout(() => router.push('/admin/products'), 1500)
+    }
+  }
+
+  return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">上传新产品附件</h1>
+        <div>
+          <h1 className="text-2xl font-bold">Upload Product Documents</h1>
+          <p className="text-gray-600">Upload multiple files — auto-classified by filename</p>
+        </div>
         <Link href="/admin/products">
-          <Button variant="outline">返回附件列表</Button>
+          <Button variant="outline">Back to List</Button>
         </Link>
       </div>
 
-      <p className="text-gray-600">上传新的产品规格表、安装指南、IES 文件等，并关联到具体的产品。</p>
-
-      <Card className="w-full">
+      {/* Product Info */}
+      <Card>
         <CardHeader>
-          <CardTitle>附件详情</CardTitle>
-          <CardDescription>填写附件信息并选择要上传的文件。</CardDescription>
+          <CardTitle>Product Information</CardTitle>
+          <CardDescription>All files below will be linked to this product</CardDescription>
+        </CardHeader>
+        <CardContent className="grid grid-cols-2 gap-4">
+          <div>
+            <Label>BigCommerce Product ID *</Label>
+            <Input value={bcProductId} onChange={e => setBcProductId(e.target.value)} placeholder="e.g. 12345" />
+          </div>
+          <div>
+            <Label>SKU *</Label>
+            <Input value={sku} onChange={e => setSku(e.target.value)} placeholder="e.g. AV-HB150W-50K" />
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* File Drop Zone */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Files</CardTitle>
+          <CardDescription>Drag & drop or click to add files. Type is auto-detected from filename.</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div
+            className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-50/50 transition-colors"
+            onClick={() => fileInputRef.current?.click()}
+          >
+            <UploadCloud className="h-10 w-10 mx-auto text-gray-400 mb-3" />
+            <p className="text-sm font-medium text-gray-700">Click to select files or drag & drop</p>
+            <p className="text-xs text-gray-400 mt-1">PDF, IES, images — multiple files allowed</p>
+            <input
+              ref={fileInputRef}
+              type="file"
+              multiple
+              className="hidden"
+              onChange={handleFilesSelected}
+              accept=".pdf,.ies,.jpg,.jpeg,.png,.doc,.docx"
+            />
+          </div>
+
+          {/* File List */}
+          {files.length > 0 && (
+            <div className="space-y-3">
+              {files.map((entry, index) => (
+                <div key={index} className={`flex items-center gap-3 p-3 rounded-lg border ${
+                  entry.status === 'done' ? 'bg-green-50 border-green-200' :
+                  entry.status === 'error' ? 'bg-red-50 border-red-200' :
+                  entry.status === 'uploading' ? 'bg-blue-50 border-blue-200' :
+                  'bg-white border-gray-200'
+                }`}>
+                  {/* Icon */}
+                  <div className="flex-shrink-0">
+                    {entry.status === 'done' ? (
+                      <CheckCircle2 className="h-5 w-5 text-green-600" />
+                    ) : entry.status === 'uploading' ? (
+                      <Loader2 className="h-5 w-5 animate-spin text-blue-600" />
+                    ) : (
+                      <FileText className="h-5 w-5 text-gray-400" />
+                    )}
+                  </div>
+
+                  {/* File name */}
+                  <div className="flex-1 min-w-0">
+                    <Input
+                      value={entry.title}
+                      onChange={e => updateFileTitle(index, e.target.value)}
+                      className="text-sm h-8"
+                      disabled={entry.status !== 'pending'}
+                    />
+                    <p className="text-xs text-gray-400 mt-1 truncate">{entry.file.name} ({(entry.file.size / 1024 / 1024).toFixed(2)} MB)</p>
+                  </div>
+
+                  {/* Type selector */}
+                  <div className="flex-shrink-0 w-44">
+                    <Select
+                      value={entry.docType}
+                      onValueChange={(v: DocType) => updateFileType(index, v)}
+                      disabled={entry.status !== 'pending'}
+                    >
+                      <SelectTrigger className="h-8 text-sm">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="CUT_SHEET">Spec/Cut Sheet</SelectItem>
+                        <SelectItem value="IES">IES File</SelectItem>
+                        <SelectItem value="INSTALL_GUIDE">Installation Guide</SelectItem>
+                        <SelectItem value="DIMENSIONS">Dimensions</SelectItem>
+                        <SelectItem value="DLC_CERT">DLC Certificate</SelectItem>
+                        <SelectItem value="WARRANTY">Warranty</SelectItem>
+                        <SelectItem value="OTHER">Other</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {/* Remove */}
+                  {entry.status === 'pending' && (
+                    <Button variant="ghost" size="icon" onClick={() => removeFile(index)} className="flex-shrink-0">
+                      <X className="h-4 w-4" />
+                    </Button>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Upload Button */}
+          {files.length > 0 && (
+            <div className="flex items-center justify-between pt-4 border-t">
+              <p className="text-sm text-gray-500">{files.length} file(s) ready</p>
+              <Button onClick={handleUploadAll} disabled={uploading}>
+                {uploading ? (
+                  <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Uploading...</>
+                ) : (
+                  <><UploadCloud className="mr-2 h-4 w-4" /> Upload All</>
+                )}
+              </Button>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Auto-classification hint */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-sm">Auto-Classification Rules</CardTitle>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="grid gap-6">
-            <div className="grid gap-2">
-              <Label htmlFor="bcProductId">BigCommerce 产品ID</Label>
-              <Input
-                id="bcProductId"
-                type="text"
-                placeholder="例如: 12345"
-                required
-                value={bcProductId}
-                onChange={(e) => setBcProductId(e.target.value)}
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="sku">SKU</Label>
-              <Input
-                id="sku"
-                type="text"
-                placeholder="例如: AV-HB150W-50K"
-                required
-                value={sku}
-                onChange={(e) => setSku(e.target.value)}
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="title">附件标题</Label>
-              <Input
-                id="title"
-                type="text"
-                placeholder="例如: AV-HB150W-50K 规格表"
-                required
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="docType">附件类型</Label>
-              <Select value={docType} onValueChange={(value: DocType) => setDocType(value)}>
-                <SelectTrigger id="docType">
-                  <SelectValue placeholder="选择附件类型" />
-                </SelectTrigger>
-                <SelectContent>
-                  {docTypeOptions.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="version">版本 (可选)</Label>
-              <Input
-                id="version"
-                type="text"
-                placeholder="例如: 1.0.0"
-                value={version}
-                onChange={(e) => setVersion(e.target.value)}
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="file">文件</Label>
-              <Input
-                id="file"
-                type="file"
-                required
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                className="file:text-blue-600 file:bg-blue-50 file:border-none file:hover:bg-blue-100"
-              />
-              {file && <p className="text-sm text-gray-500">已选择文件: {file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)</p>}
-            </div>
-
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  <span>上传中... ({uploadProgress}%)</span>
-                </>
-              ) : (
-                <>
-                  <UploadCloud className="mr-2 h-4 w-4" />
-                  <span>上传附件</span>
-                </>
-              )}
-            </Button>
-          </form>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs text-gray-500">
+            <div><span className="font-medium text-gray-700">Spec Sheet:</span> spec, cut, datasheet</div>
+            <div><span className="font-medium text-gray-700">IES File:</span> .ies, photometric</div>
+            <div><span className="font-medium text-gray-700">Install Guide:</span> install, guide, manual</div>
+            <div><span className="font-medium text-gray-700">Warranty:</span> warranty, warr</div>
+            <div><span className="font-medium text-gray-700">DLC Cert:</span> dlc, cert</div>
+            <div><span className="font-medium text-gray-700">Dimensions:</span> dimension, drawing</div>
+          </div>
         </CardContent>
       </Card>
     </div>
