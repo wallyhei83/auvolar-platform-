@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
     const seenSkus = new Set<string>()
     
     for (const catId of bcCategoryIds) {
-      const url = `https://api.bigcommerce.com/stores/${BC_STORE_HASH}/v3/catalog/products?categories:in=${catId}&include=images,variants&limit=${limit}&sort=sort_order&direction=asc`
+      const url = `https://api.bigcommerce.com/stores/${BC_STORE_HASH}/v3/catalog/products?categories:in=${catId}&include=images,variants&limit=${limit}`
       
       const response = await fetch(url, {
         headers: {
