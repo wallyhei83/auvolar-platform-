@@ -117,7 +117,7 @@ export default function AdminEditProductAttachmentPage({
         toast({
           title: '更新成功',
           description: '产品附件信息已更新。',
-          variant: 'success',
+          variant: 'default',
         })
         router.push('/admin/products') // 更新成功后跳转到附件列表
       } else {

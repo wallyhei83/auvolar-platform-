@@ -38,7 +38,7 @@ export default function AdminRegisterPage() {
         toast({
           title: '注册成功',
           description: '管理员账户已创建，请登录。',
-          variant: 'success',
+          variant: 'default',
         })
         router.push('/admin/login') // 注册成功后跳转到管理员登录页面
       } else {

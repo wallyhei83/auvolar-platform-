@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/accordion' // 假设有Accordion组件
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator' // 假设有Separator组件
-import { Download, FileText, ExternalLink } from 'lucide-react'
+import { Download, FileText, ExternalLink, Loader2 } from 'lucide-react'
 import { DocType } from '@prisma/client'
 
 interface ProductDocAsset {
