@@ -50,6 +50,18 @@ export default function TailorPurchasingPage() {
     description: '',
   })
   const [submitted, setSubmitted] = useState(false)
+  const [files, setFiles] = useState<File[]>([])
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const newFiles = Array.from(e.target.files).filter(f => f.size <= 10 * 1024 * 1024)
+      setFiles(prev => [...prev, ...newFiles])
+    }
+  }
+
+  const removeFile = (index: number) => {
+    setFiles(prev => prev.filter((_, i) => i !== index))
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -305,17 +317,34 @@ export default function TailorPurchasingPage() {
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Attachments (Optional)</label>
-                  <div className="mt-1 flex items-center justify-center rounded-lg border-2 border-dashed border-gray-300 p-6">
+                  <label className="mt-1 flex items-center justify-center rounded-lg border-2 border-dashed border-gray-300 p-6 cursor-pointer hover:border-brand hover:bg-yellow-50/30 transition-colors">
                     <div className="text-center">
                       <Upload className="mx-auto h-8 w-8 text-gray-400" />
                       <p className="mt-2 text-sm text-gray-600">
-                        Drag & drop files or <span className="text-brand">browse</span>
+                        Drag & drop files or <span className="text-brand font-medium">browse</span>
                       </p>
                       <p className="text-xs text-gray-500">
                         PDF, images, drawings (max 10MB)
                       </p>
                     </div>
-                  </div>
+                    <input
+                      type="file"
+                      multiple
+                      className="hidden"
+                      accept=".pdf,.jpg,.jpeg,.png,.gif,.dwg,.dxf,.doc,.docx"
+                      onChange={handleFileChange}
+                    />
+                  </label>
+                  {files.length > 0 && (
+                    <div className="mt-2 space-y-1">
+                      {files.map((file, i) => (
+                        <div key={i} className="flex items-center justify-between rounded bg-gray-50 px-3 py-1.5 text-sm">
+                          <span className="truncate text-gray-700">{file.name} <span className="text-gray-400">({(file.size / 1024 / 1024).toFixed(2)} MB)</span></span>
+                          <button type="button" onClick={() => removeFile(i)} className="ml-2 text-red-500 hover:text-red-700 text-xs font-medium">✕</button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 
                 <button
