@@ -4,7 +4,7 @@ import { Resend } from 'resend'
 const resend = new Resend(process.env.RESEND_API_KEY)
 // Note: Resend free tier can only send to verified owner email
 // Change this after verifying auvolar.com domain in Resend
-const CONTACT_EMAIL = process.env.CONTACT_EMAIL || 'wally@aabtecinc.com'
+const CONTACT_EMAIL = process.env.CONTACT_EMAIL || 'sales@auvolar.com'
 
 interface ProductItem {
   sku: string
