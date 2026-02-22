@@ -89,6 +89,24 @@ export async function POST(request: NextRequest) {
       },
     })
 
+    // Send email notification to sales team
+    try {
+      const emailRes = await fetch(`${process.env.NEXTAUTH_URL || 'https://www.auvolar.com'}/api/email/send`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'contact',
+          name: user.name || user.email,
+          email: user.email,
+          subject: `New Case ${caseRecord.caseNumber}: [${type}] ${subject}`,
+          message: `Case Number: ${caseRecord.caseNumber}\nType: ${type}\nPriority: ${priority}\nCompany: ${user.companyName || 'N/A'}\n\n${description}`,
+        }),
+      })
+      if (!emailRes.ok) console.error('Case email notification failed')
+    } catch (err) {
+      console.error('Failed to send case notification email:', err)
+    }
+
     return NextResponse.json({
       message: 'Case created successfully',
       case: {
