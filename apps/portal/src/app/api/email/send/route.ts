@@ -46,42 +46,45 @@ export async function POST(request: NextRequest) {
     let customerEmail = body.email as string
     let customerName = body.name as string
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const data = body as any
+
     switch (type) {
       case 'contact':
-        subject = `Contact Form: ${body.subject || 'General Inquiry'}`
-        htmlContent = buildContactEmail(body)
+        subject = `Contact Form: ${data.subject || 'General Inquiry'}`
+        htmlContent = buildContactEmail(data)
         break
 
       case 'rfq':
-        subject = `RFQ Request: ${body.projectName || 'Quote Request'}`
-        htmlContent = buildRFQEmail(body)
+        subject = `RFQ Request: ${data.projectName || 'Quote Request'}`
+        htmlContent = buildRFQEmail(data)
         break
 
       case 'photometric':
-        subject = `Photometric Request: ${body.projectName || 'Lighting Layout'}`
-        htmlContent = buildPhotometricEmail(body)
+        subject = `Photometric Request: ${data.projectName || 'Lighting Layout'}`
+        htmlContent = buildPhotometricEmail(data)
         break
 
       case 'spec-package':
-        subject = `Spec Package Request: ${body.projectName || 'Submittal Package'}`
-        htmlContent = buildSpecPackageEmail(body)
+        subject = `Spec Package Request: ${data.projectName || 'Submittal Package'}`
+        htmlContent = buildSpecPackageEmail(data)
         break
 
       case 'bom-upload':
-        subject = `BOM Upload: ${body.projectName || 'Bill of Materials'}`
-        htmlContent = buildBOMEmail(body)
+        subject = `BOM Upload: ${data.projectName || 'Bill of Materials'}`
+        htmlContent = buildBOMEmail(data)
         break
 
       case 'chat-lead':
-        subject = `🔥 New Sales Lead from AI Chat${body.company ? `: ${body.company}` : ''}`
-        htmlContent = buildChatLeadEmail(body)
-        customerEmail = body.email
-        customerName = body.name
+        subject = `🔥 New Sales Lead from AI Chat${data.company ? `: ${data.company}` : ''}`
+        htmlContent = buildChatLeadEmail(data)
+        customerEmail = data.email
+        customerName = data.name
         break
 
       case 'chat-escalation':
-        subject = `⚠️ Chat Escalation - Human Needed: ${body.reason || 'Customer Request'}`
-        htmlContent = buildChatEscalationEmail(body)
+        subject = `⚠️ Chat Escalation - Human Needed: ${data.reason || 'Customer Request'}`
+        htmlContent = buildChatEscalationEmail(data)
         break
 
       default:
