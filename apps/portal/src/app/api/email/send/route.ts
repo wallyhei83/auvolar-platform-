@@ -19,13 +19,32 @@ interface ProductItem {
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
-    const { type } = body
+    // Support both JSON and FormData
+    const contentType = request.headers.get('content-type') || ''
+    let body: Record<string, unknown>
+    let attachmentFiles: { filename: string; content: Buffer }[] = []
+
+    if (contentType.includes('multipart/form-data')) {
+      const formData = await request.formData()
+      body = {} as Record<string, unknown>
+      for (const [key, value] of formData.entries()) {
+        if (key === 'attachments' && value instanceof File) {
+          const buffer = Buffer.from(await value.arrayBuffer())
+          attachmentFiles.push({ filename: value.name, content: buffer })
+        } else {
+          body[key] = value
+        }
+      }
+    } else {
+      body = await request.json()
+    }
+
+    const { type } = body as { type: string }
 
     let subject = ''
     let htmlContent = ''
-    let customerEmail = body.email
-    let customerName = body.name
+    let customerEmail = body.email as string
+    let customerName = body.name as string
 
     switch (type) {
       case 'contact':
@@ -80,6 +99,7 @@ export async function POST(request: NextRequest) {
       subject: enrichedSubject,
       html: htmlContent,
       replyTo: customerEmail || undefined,
+      attachments: attachmentFiles.length > 0 ? attachmentFiles : undefined,
     })
 
     // Send confirmation to customer

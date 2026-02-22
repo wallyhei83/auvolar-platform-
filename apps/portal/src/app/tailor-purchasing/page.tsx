@@ -69,18 +69,18 @@ export default function TailorPurchasingPage() {
     e.preventDefault()
     setIsSubmitting(true)
     try {
+      const body = new FormData()
+      body.append('type', 'contact')
+      body.append('name', formData.name)
+      body.append('email', formData.email)
+      body.append('phone', formData.phone || '')
+      body.append('company', formData.company || '')
+      body.append('subject', `Tailor Purchasing: ${formData.projectType || 'Custom Order'}`)
+      body.append('message', `Project Type: ${formData.projectType}\nEstimated Quantity: ${formData.quantity}\n\n${formData.description}`)
+      files.forEach(f => body.append('attachments', f))
       await fetch('/api/email/send', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          type: 'contact',
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          company: formData.company,
-          subject: `Tailor Purchasing: ${formData.projectType || 'Custom Order'}`,
-          message: `Project Type: ${formData.projectType}\nEstimated Quantity: ${formData.quantity}\n\n${formData.description}\n\nAttachments: ${files.length} file(s)`,
-        }),
+        body,
       })
     } catch (err) {
       console.error('Failed to send email:', err)
