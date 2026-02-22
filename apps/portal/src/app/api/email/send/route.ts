@@ -65,13 +65,22 @@ export async function POST(request: NextRequest) {
     }
 
     // Send to sales team
-    // Note: Using Resend's test domain until auvolar.com is verified
+    // Subject includes customer name/email for quick identification
+    const fromName = customerName && customerEmail 
+      ? `${customerName} via Auvolar` 
+      : customerEmail 
+        ? `${customerEmail} via Auvolar`
+        : 'Auvolar Website'
+    const enrichedSubject = customerEmail 
+      ? `${subject} [${customerEmail}]` 
+      : subject
+
     const { error: salesError } = await resend.emails.send({
-      from: 'Auvolar <onboarding@resend.dev>',
+      from: `${fromName} <onboarding@resend.dev>`,
       to: [CONTACT_EMAIL],
-      subject: subject,
+      subject: enrichedSubject,
       html: htmlContent,
-      replyTo: customerEmail,
+      replyTo: customerEmail || undefined,
     })
 
     if (salesError) {
