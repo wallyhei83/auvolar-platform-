@@ -63,8 +63,29 @@ export default function TailorPurchasingPage() {
     setFiles(prev => prev.filter((_, i) => i !== index))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setIsSubmitting(true)
+    try {
+      await fetch('/api/email/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'contact',
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          company: formData.company,
+          subject: `Tailor Purchasing: ${formData.projectType || 'Custom Order'}`,
+          message: `Project Type: ${formData.projectType}\nEstimated Quantity: ${formData.quantity}\n\n${formData.description}\n\nAttachments: ${files.length} file(s)`,
+        }),
+      })
+    } catch (err) {
+      console.error('Failed to send email:', err)
+    }
+    setIsSubmitting(false)
     setSubmitted(true)
   }
 

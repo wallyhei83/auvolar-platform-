@@ -75,8 +75,22 @@ export default function SpecPackagePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500))
+    try {
+      await fetch('/api/email/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'spec-package',
+          name: projectName,
+          email: email,
+          projectName: projectName,
+          subject: `Spec Package Request: ${projectName || 'Submittal Package'}`,
+          message: `Project: ${projectName}\nEmail: ${email}\nProducts: ${selectedProducts.map(p => p.sku + ' - ' + p.name).join(', ')}\nDocuments: ${selectedDocs.join(', ')}`,
+        }),
+      })
+    } catch (err) {
+      console.error('Failed to send email:', err)
+    }
     setIsSubmitting(false)
     setSubmitted(true)
   }

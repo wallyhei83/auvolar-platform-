@@ -73,8 +73,25 @@ export default function BOMUploadPage() {
     }
   }
 
-  const handleSubmit = () => {
-    // In real app, would submit to API
+  const handleSubmit = async () => {
+    try {
+      await fetch('/api/email/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'bom-upload',
+          name: formData.contactName,
+          email: formData.email,
+          phone: formData.phone,
+          company: formData.company,
+          projectName: formData.projectName,
+          subject: `BOM Upload: ${formData.projectName || 'Bill of Materials'}`,
+          message: `Project: ${formData.projectName}\nAddress: ${formData.projectAddress}, ${formData.city}, ${formData.state} ${formData.zip}\nType: ${formData.projectType}\nTimeline: ${formData.timeline}\nTax Exempt: ${formData.taxExempt ? 'Yes' : 'No'}\nFile: ${file?.name || 'None'}\nItems: ${items.length}\n\nNotes: ${formData.notes}`,
+        }),
+      })
+    } catch (err) {
+      console.error('Failed to send email:', err)
+    }
     setStep('confirm')
   }
 

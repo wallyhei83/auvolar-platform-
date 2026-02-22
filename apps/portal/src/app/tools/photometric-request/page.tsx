@@ -52,10 +52,30 @@ export default function PhotometricRequestPage() {
     notes: '',
   })
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // In production, this would submit to an API
-    console.log('Photometric request:', formData)
+    setIsSubmitting(true)
+    try {
+      await fetch('/api/email/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'photometric',
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          company: formData.company,
+          projectName: formData.projectName,
+          subject: `Photometric Request: ${formData.projectName || 'Lighting Layout'}`,
+          message: `Application: ${formData.applicationType}\nMounting Height: ${formData.mountingHeight}\nTarget Light Level: ${formData.targetLightLevel}\nDimensions: ${formData.dimensions}\n\nNotes: ${formData.notes}`,
+        }),
+      })
+    } catch (err) {
+      console.error('Failed to send email:', err)
+    }
+    setIsSubmitting(false)
     setSubmitted(true)
   }
 
