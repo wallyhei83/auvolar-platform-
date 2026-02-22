@@ -1,10 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { Resend } from 'resend'
+import nodemailer from 'nodemailer'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-// Note: Resend free tier can only send to verified owner email
-// Change this after verifying auvolar.com domain in Resend
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL || 'sales@auvolar.com'
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.GMAIL_USER || 'sales@auvolar.com',
+    pass: process.env.GMAIL_APP_PASSWORD,
+  },
+})
 
 interface ProductItem {
   sku: string
@@ -65,42 +70,30 @@ export async function POST(request: NextRequest) {
     }
 
     // Send to sales team
-    // Subject includes customer name/email for quick identification
-    const fromName = customerName && customerEmail 
-      ? `${customerName} via Auvolar` 
-      : customerEmail 
-        ? `${customerEmail} via Auvolar`
-        : 'Auvolar Website'
     const enrichedSubject = customerEmail 
       ? `${subject} [${customerEmail}]` 
       : subject
 
-    const { error: salesError } = await resend.emails.send({
-      from: `${fromName} <onboarding@resend.dev>`,
-      to: [CONTACT_EMAIL],
+    await transporter.sendMail({
+      from: `Auvolar Website <${CONTACT_EMAIL}>`,
+      to: CONTACT_EMAIL,
       subject: enrichedSubject,
       html: htmlContent,
       replyTo: customerEmail || undefined,
     })
 
-    if (salesError) {
-      console.error('Failed to send sales email:', salesError)
-      return NextResponse.json({ error: salesError.message }, { status: 500 })
-    }
-
     // Send confirmation to customer
-    // Note: Disabled until domain is verified (Resend free tier limitation)
-    // if (customerEmail) {
-    //   const confirmationHtml = buildConfirmationEmail(type, customerName, body)
-    //   await resend.emails.send({
-    //     from: 'Auvolar <onboarding@resend.dev>',
-    //     to: [customerEmail],
-    //     subject: `We received your ${getTypeLabel(type)} - Auvolar`,
-    //     html: confirmationHtml,
-    //   }).catch(err => {
-    //     console.error('Failed to send confirmation email:', err)
-    //   })
-    // }
+    if (customerEmail) {
+      const confirmationHtml = buildConfirmationEmail(type, customerName, body)
+      await transporter.sendMail({
+        from: `Auvolar <${CONTACT_EMAIL}>`,
+        to: customerEmail,
+        subject: `We received your ${getTypeLabel(type)} - Auvolar`,
+        html: confirmationHtml,
+      }).catch(err => {
+        console.error('Failed to send confirmation email:', err)
+      })
+    }
 
     return NextResponse.json({ success: true })
   } catch (error) {
