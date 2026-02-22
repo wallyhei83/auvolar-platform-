@@ -80,13 +80,13 @@ export default function BOMUploadPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           type: 'bom-upload',
-          name: formData.contactName,
-          email: formData.email,
-          phone: formData.phone,
-          company: formData.company,
-          projectName: formData.projectName,
-          subject: `BOM Upload: ${formData.projectName || 'Bill of Materials'}`,
-          message: `Project: ${formData.projectName}\nAddress: ${formData.projectAddress}, ${formData.city}, ${formData.state} ${formData.zip}\nType: ${formData.projectType}\nTimeline: ${formData.timeline}\nTax Exempt: ${formData.taxExempt ? 'Yes' : 'No'}\nFile: ${file?.name || 'None'}\nItems: ${items.length}\n\nNotes: ${formData.notes}`,
+          name: details.contactName,
+          email: details.email,
+          phone: details.phone,
+          company: details.company,
+          projectName: details.projectName,
+          subject: `BOM Upload: ${details.projectName || 'Bill of Materials'}`,
+          message: `Project: ${details.projectName}\nAddress: ${details.projectAddress}, ${details.city}, ${details.state} ${details.zip}\nType: ${details.projectType}\nTimeline: ${details.timeline}\nTax Exempt: ${details.taxExempt ? 'Yes' : 'No'}\nFile: ${file?.name || 'None'}\n\nNotes: ${details.notes}`,
         }),
       })
     } catch (err) {
