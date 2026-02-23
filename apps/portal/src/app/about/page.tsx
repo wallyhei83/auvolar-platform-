@@ -247,7 +247,7 @@ export default function AboutPage() {
               </div>
               <div>
                 <p className="text-sm text-gray-700">Location</p>
-                <p className="font-semibold text-black">Houston, TX</p>
+                <p className="font-semibold text-black">City of Industry, CA</p>
               </div>
             </div>
           </div>

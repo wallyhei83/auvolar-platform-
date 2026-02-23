@@ -56,7 +56,7 @@ const createProduct = (base: Partial<Product>): Product => ({
   stock: base.stockQty && base.stockQty > 0 ? 'In Stock' : 'Ships in 3-5 days',
   stockQty: base.stockQty || 0,
   leadTime: base.stockQty && base.stockQty > 0 ? 'Ships within 24 hours' : '3-5 business days',
-  warehouse: base.warehouse || 'Houston, TX',
+  warehouse: base.warehouse || 'City of Industry, CA',
   description: base.description || '',
   shortDescription: base.shortDescription || '',
   variants: base.variants,

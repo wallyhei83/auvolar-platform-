@@ -38,12 +38,12 @@ const faqContent: Record<string, { title: string; category: string; content: str
     content: `
       <p>Shipping times depend on your location and chosen method:</p>
       <ul>
-        <li><strong>TX, LA, OK, AR:</strong> 1-2 business days</li>
+        <li><strong>CA, AZ, NV:</strong> 1-2 business days</li>
         <li><strong>CA, AZ, NM, CO, KS, MO:</strong> 2-3 business days</li>
         <li><strong>Most of the US:</strong> 3-5 business days</li>
         <li><strong>Northeast, AK, HI:</strong> 5-7 business days</li>
       </ul>
-      <p>These are estimates for ground shipping from our Houston, TX warehouse. Expedited options are available for faster delivery.</p>
+      <p>These are estimates for ground shipping from our City of Industry, CA warehouse. Expedited options are available for faster delivery.</p>
     `,
   },
   'international': {

@@ -29,7 +29,7 @@ export default function ShopPage() {
             <h1 className="text-4xl font-bold mb-4">Shop LED Lighting</h1>
             <p className="text-gray-300 max-w-2xl text-lg">
               Browse our complete catalog of commercial and industrial LED lighting products.
-              All products ship from our Houston, TX warehouse.
+              All products ship from our City of Industry, CA warehouse.
             </p>
           </div>
         </div>

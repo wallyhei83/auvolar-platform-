@@ -31,8 +31,8 @@ const shippingMethods = [
 ]
 
 const zones = [
-  { zone: 'Zone 1', area: 'TX, LA, OK, AR', days: '1-2 days' },
-  { zone: 'Zone 2', area: 'CA, AZ, NM, CO, KS, MO', days: '2-3 days' },
+  { zone: 'Zone 1', area: 'CA, AZ, NV', days: '1-2 days' },
+  { zone: 'Zone 2', area: 'OR, WA, UT, CO, NM, TX', days: '2-3 days' },
   { zone: 'Zone 3', area: 'Most of the US', days: '3-5 days' },
   { zone: 'Zone 4', area: 'Northeast, Alaska, Hawaii', days: '5-7 days' },
 ]
@@ -50,7 +50,7 @@ export default function ShippingPage() {
           </div>
           <h1 className="text-3xl font-bold text-white sm:text-4xl">Shipping Information</h1>
           <p className="mx-auto mt-4 max-w-xl text-purple-100">
-            Fast, reliable shipping from our Texas warehouse. Most in-stock items ship within 24 hours.
+            Fast, reliable shipping from our California warehouse. Most in-stock items ship within 24 hours.
           </p>
         </div>
       </section>
@@ -96,7 +96,7 @@ export default function ShippingPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">Estimated Transit Times</h2>
           <p className="text-center text-gray-600 mb-8">
-            Orders ship from our warehouse in Houston, TX. Transit times are estimates for ground shipping.
+            Orders ship from our warehouse in City of Industry, CA. Transit times are estimates for ground shipping.
           </p>
           <div className="max-w-2xl mx-auto">
             <div className="bg-gray-50 rounded-xl overflow-hidden">
