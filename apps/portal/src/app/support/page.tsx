@@ -1,4 +1,11 @@
+import { Metadata } from 'next'
 import Link from 'next/link'
+
+export const metadata: Metadata = {
+  title: 'Support Center | Auvolar LED Lighting',
+  description: 'Get help with Auvolar LED lighting products. Find spec sheets, installation guides, warranty information, shipping details, and contact our technical support team.',
+  alternates: { canonical: 'https://www.auvolar.com/support' },
+}
 import { 
   Search, Package, FileText, Wrench, Phone, MessageSquare, Clock,
   ChevronRight, ArrowRight, Shield, HelpCircle, Truck, AlertTriangle

@@ -1,4 +1,11 @@
+import { Metadata } from 'next'
 import Link from 'next/link'
+
+export const metadata: Metadata = {
+  title: 'LED Lighting Applications | Warehouse, Commercial, Industrial | Auvolar',
+  description: 'Explore Auvolar LED lighting solutions for warehouses, parking lots, retail stores, offices, manufacturing facilities, and outdoor commercial spaces. Energy-efficient, DLC-certified fixtures.',
+  alternates: { canonical: 'https://www.auvolar.com/applications' },
+}
 import { 
   ChevronRight, ArrowRight, Warehouse, Factory, ShoppingCart, Building2,
   Car, Fuel, GraduationCap, Dumbbell, Theater, Thermometer

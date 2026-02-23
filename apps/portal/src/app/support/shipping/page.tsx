@@ -1,4 +1,11 @@
+import { Metadata } from 'next'
 import Link from 'next/link'
+
+export const metadata: Metadata = {
+  title: 'Shipping Information | Free Shipping $500+ | Auvolar',
+  description: 'Auvolar shipping rates, transit times, and policies. Free ground shipping on orders over $500. Ships from City of Industry, CA. Most items ship within 24 hours.',
+  alternates: { canonical: 'https://www.auvolar.com/support/shipping' },
+}
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { Truck, Clock, MapPin, Package, CheckCircle, AlertTriangle } from 'lucide-react'

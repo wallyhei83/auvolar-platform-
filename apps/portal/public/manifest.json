@@ -1,16 +1,21 @@
 {
   "name": "Auvolar - Commercial LED Lighting Platform",
   "short_name": "Auvolar",
-  "description": "B2B LED lighting platform for contractors, electricians, and facility managers",
+  "description": "B2B LED lighting platform for contractors, electricians, and facility managers. 125+ DLC-certified fixtures at wholesale pricing.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#1f2937",
+  "theme_color": "#FFD60A",
   "icons": [
     {
-      "src": "/favicon.ico",
-      "sizes": "32x32",
-      "type": "image/x-icon"
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/apple-icon",
+      "sizes": "180x180",
+      "type": "image/png"
     }
   ]
 }

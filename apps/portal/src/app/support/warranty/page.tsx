@@ -1,4 +1,11 @@
+import { Metadata } from 'next'
 import Link from 'next/link'
+
+export const metadata: Metadata = {
+  title: 'Warranty Policy | 5-10 Year LED Lighting Warranty | Auvolar',
+  description: 'Auvolar LED lighting warranty coverage. Most products include 5-year warranty. Learn about warranty terms, claims process, and coverage details.',
+  alternates: { canonical: 'https://www.auvolar.com/support/warranty' },
+}
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { Shield, CheckCircle, XCircle, Clock, Award, FileText } from 'lucide-react'

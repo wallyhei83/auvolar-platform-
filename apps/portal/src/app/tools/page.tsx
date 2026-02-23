@@ -1,4 +1,11 @@
+import { Metadata } from 'next'
 import Link from 'next/link'
+
+export const metadata: Metadata = {
+  title: 'LED Lighting Tools | ROI Calculator, Rebate Finder, BOM Upload | Auvolar',
+  description: 'Free LED lighting tools: ROI calculator, energy savings calculator, rebate finder, replacement finder, BOM upload, and photometric request. Plan your LED upgrade with Auvolar.',
+  alternates: { canonical: 'https://www.auvolar.com/tools' },
+}
 import { 
   Package, Upload, Search, Calculator, MapPin, FileText, 
   ArrowRight, Zap, Download, Clock, Lightbulb, HelpCircle
