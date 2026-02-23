@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     // BigCommerce generates checkout URLs using the site's primary domain (auvolar.com),
     // but checkout is hosted on BigCommerce's servers, not our Vercel frontend.
     // Replace with the BigCommerce-hosted domain for checkout to work.
-    const BC_CHECKOUT_DOMAIN = 'https://store-hhcdvxqxzq-1.mybigcommerce.com'
+    const BC_CHECKOUT_DOMAIN = 'https://checkout.auvolar.com'
     const checkoutUrl = checkoutResult.data.checkout_url.replace(
       'https://auvolar.com',
       BC_CHECKOUT_DOMAIN
