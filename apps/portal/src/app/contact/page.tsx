@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, Suspense } from 'react'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { 
   ChevronRight, Phone, Mail, MapPin, Clock,
@@ -10,6 +11,15 @@ import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 
 export default function ContactPage() {
+  return (
+    <Suspense>
+      <ContactPageInner />
+    </Suspense>
+  )
+}
+
+function ContactPageInner() {
+  const searchParams = useSearchParams()
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -18,6 +28,19 @@ export default function ContactPage() {
     subject: '',
     message: '',
   })
+
+  // Pre-fill from URL params (e.g. from Replacement Finder)
+  useEffect(() => {
+    const subject = searchParams.get('subject')
+    const message = searchParams.get('message')
+    if (subject || message) {
+      setFormData(prev => ({
+        ...prev,
+        ...(subject ? { subject } : {}),
+        ...(message ? { message } : {}),
+      }))
+    }
+  }, [searchParams])
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')

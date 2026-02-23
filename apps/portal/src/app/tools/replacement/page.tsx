@@ -510,13 +510,16 @@ export default function ReplacementFinderPage() {
                         </div>
                       </div>
 
-                      {/* Add to Cart */}
+                      {/* Request Quote for this product */}
                       <button
-                        onClick={(e) => { e.stopPropagation() }}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          window.location.href = `/contact?subject=${encodeURIComponent(`Quote Request: ${reco.name}`)}&message=${encodeURIComponent(`I'm interested in ${reco.name} (${reco.sku}), Qty: ${fixture.quantity || 1}. Please send me a quote.`)}`
+                        }}
                         className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-brand py-2.5 font-semibold text-black hover:bg-brand-dark"
                       >
                         <ShoppingCart className="h-4 w-4" />
-                        Add to Cart
+                        Request Quote
                       </button>
                     </div>
                   </div>
@@ -560,15 +563,24 @@ export default function ReplacementFinderPage() {
                 </div>
 
                 <div className="mt-6 flex flex-wrap gap-4">
-                  <button className="flex items-center gap-2 rounded-lg bg-brand px-6 py-3 font-semibold text-black hover:bg-brand-dark">
+                  <button
+                    onClick={() => {
+                      const reco = recommendations.find(r => r.id === selectedReco)
+                      if (reco) {
+                        const savings = calculateSavings(reco)
+                        window.location.href = `/contact?subject=${encodeURIComponent(`Project Quote: ${reco.name}`)}&message=${encodeURIComponent(`Replacement Finder Results:\n\nProduct: ${reco.name} (${reco.sku})\nQty: ${fixture.quantity || 1}\nUnit Price: $${reco.price}\nAnnual Savings: $${savings.annualSavings.toFixed(0)}\nPayback: ${reco.payback} yr\n\nPlease send me a detailed project quote.`)}`
+                      }
+                    }}
+                    className="flex items-center gap-2 rounded-lg bg-brand px-6 py-3 font-semibold text-black hover:bg-brand-dark"
+                  >
                     <ShoppingCart className="h-5 w-5" />
-                    Add All to Cart
-                  </button>
-                  <button className="rounded-lg border border-gray-300 px-6 py-3 font-medium text-gray-700 hover:border-brand hover:text-brand">
                     Request Project Quote
                   </button>
-                  <button className="rounded-lg border border-gray-300 px-6 py-3 font-medium text-gray-700 hover:border-brand hover:text-brand">
-                    Download Summary PDF
+                  <button
+                    onClick={() => window.location.href = '/contact'}
+                    className="rounded-lg border border-gray-300 px-6 py-3 font-medium text-gray-700 hover:border-brand hover:text-brand"
+                  >
+                    Contact Sales Team
                   </button>
                 </div>
 
