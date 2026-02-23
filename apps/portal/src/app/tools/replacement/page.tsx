@@ -8,6 +8,7 @@ import {
 } from 'lucide-react'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
+import { useCart } from '@/lib/cart-context'
 
 type Step = 'input' | 'results'
 
@@ -136,6 +137,8 @@ const getRecommendations = (fixture: LegacyFixture): Recommendation[] => {
 }
 
 export default function ReplacementFinderPage() {
+  const { addToCart } = useCart()
+  const [addedToCart, setAddedToCart] = useState<Record<string, boolean>>({})
   const [step, setStep] = useState<Step>('input')
   const [fixture, setFixture] = useState<LegacyFixture>({
     type: '',
@@ -510,16 +513,38 @@ export default function ReplacementFinderPage() {
                         </div>
                       </div>
 
-                      {/* Request Quote for this product */}
+                      {/* Add to Cart */}
                       <button
-                        onClick={(e) => {
+                        onClick={async (e) => {
                           e.stopPropagation()
-                          window.location.href = `/contact?subject=${encodeURIComponent(`Quote Request: ${reco.name}`)}&message=${encodeURIComponent(`I'm interested in ${reco.name} (${reco.sku}), Qty: ${fixture.quantity || 1}. Please send me a quote.`)}`
+                          const qty = quantities[reco.id] || fixture.quantity || 1
+                          await addToCart({
+                            productId: parseInt(reco.id) || 0,
+                            name: reco.name,
+                            sku: reco.sku,
+                            price: reco.price,
+                            quantity: qty,
+                          })
+                          setAddedToCart(prev => ({ ...prev, [reco.id]: true }))
+                          setTimeout(() => setAddedToCart(prev => ({ ...prev, [reco.id]: false })), 2000)
                         }}
-                        className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-brand py-2.5 font-semibold text-black hover:bg-brand-dark"
+                        className={`mt-4 flex w-full items-center justify-center gap-2 rounded-lg py-2.5 font-semibold ${
+                          addedToCart[reco.id] 
+                            ? 'bg-green-500 text-white' 
+                            : 'bg-brand text-black hover:bg-brand-dark'
+                        }`}
                       >
-                        <ShoppingCart className="h-4 w-4" />
-                        Request Quote
+                        {addedToCart[reco.id] ? (
+                          <>
+                            <CheckCircle2 className="h-4 w-4" />
+                            Added!
+                          </>
+                        ) : (
+                          <>
+                            <ShoppingCart className="h-4 w-4" />
+                            Add to Cart
+                          </>
+                        )}
                       </button>
                     </div>
                   </div>
@@ -564,23 +589,44 @@ export default function ReplacementFinderPage() {
 
                 <div className="mt-6 flex flex-wrap gap-4">
                   <button
-                    onClick={() => {
-                      const reco = recommendations.find(r => r.id === selectedReco)
-                      if (reco) {
-                        const savings = calculateSavings(reco)
-                        window.location.href = `/contact?subject=${encodeURIComponent(`Project Quote: ${reco.name}`)}&message=${encodeURIComponent(`Replacement Finder Results:\n\nProduct: ${reco.name} (${reco.sku})\nQty: ${fixture.quantity || 1}\nUnit Price: $${reco.price}\nAnnual Savings: $${savings.annualSavings.toFixed(0)}\nPayback: ${reco.payback} yr\n\nPlease send me a detailed project quote.`)}`
+                    onClick={async () => {
+                      for (const reco of recommendations) {
+                        const qty = quantities[reco.id] || fixture.quantity || 1
+                        await addToCart({
+                          productId: parseInt(reco.id) || 0,
+                          name: reco.name,
+                          sku: reco.sku,
+                          price: reco.price,
+                          quantity: qty,
+                        })
                       }
+                      const allAdded: Record<string, boolean> = {}
+                      recommendations.forEach(r => allAdded[r.id] = true)
+                      setAddedToCart(allAdded)
+                      setTimeout(() => setAddedToCart({}), 2000)
                     }}
                     className="flex items-center gap-2 rounded-lg bg-brand px-6 py-3 font-semibold text-black hover:bg-brand-dark"
                   >
                     <ShoppingCart className="h-5 w-5" />
+                    Add All to Cart
+                  </button>
+                  <button
+                    onClick={() => {
+                      const reco = recommendations.find(r => r.id === selectedReco)
+                      if (reco) {
+                        const savings = calculateSavings(reco)
+                        window.location.href = `/contact?subject=${encodeURIComponent(`Project Quote: ${reco.name}`)}&message=${encodeURIComponent(`Product: ${reco.name} (${reco.sku})\nQty: ${fixture.quantity || 1}\nUnit Price: $${reco.price}\nAnnual Savings: $${savings.annualSavings.toFixed(0)}\nPayback: ${reco.payback} yr\n\nPlease send me a detailed project quote.`)}`
+                      }
+                    }}
+                    className="rounded-lg border border-gray-300 px-6 py-3 font-medium text-gray-700 hover:border-brand hover:text-brand"
+                  >
                     Request Project Quote
                   </button>
                   <button
-                    onClick={() => window.location.href = '/contact'}
+                    onClick={() => window.print()}
                     className="rounded-lg border border-gray-300 px-6 py-3 font-medium text-gray-700 hover:border-brand hover:text-brand"
                   >
-                    Contact Sales Team
+                    Download Summary PDF
                   </button>
                 </div>
 
