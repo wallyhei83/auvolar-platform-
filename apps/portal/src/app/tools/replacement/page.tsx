@@ -22,6 +22,7 @@ interface LegacyFixture {
 
 interface Recommendation {
   id: string
+  bcProductId: number
   name: string
   sku: string
   wattage: number
@@ -33,6 +34,7 @@ interface Recommendation {
   energySavings: number
   payback: number
   badge?: string
+  image?: string
 }
 
 // Mock recommendations
@@ -41,9 +43,10 @@ const getRecommendations = (fixture: LegacyFixture): Recommendation[] => {
   if (fixture.type === 'metal-halide' && fixture.wattage === '400') {
     return [
       {
-        id: '1',
-        name: 'UFO High Bay 150W',
-        sku: 'HB-UFO-150W-5K',
+        id: '201',
+        bcProductId: 201,
+        name: 'UFO High Bay LED Light 150W',
+        sku: 'HB-UFO-150W',
         wattage: 150,
         lumens: 22500,
         price: 89,
@@ -52,12 +55,14 @@ const getRecommendations = (fixture: LegacyFixture): Recommendation[] => {
         warranty: '5 Year',
         energySavings: 63,
         payback: 0.8,
-        badge: 'Best Value'
+        badge: 'Best Value',
+        image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/156/images/453/Highbay_Light_OH60W-240W_01__39759.1770882597.386.513.jpg?c=1',
       },
       {
-        id: '2',
-        name: 'UFO High Bay 200W',
-        sku: 'HB-UFO-200W-5K',
+        id: '202',
+        bcProductId: 202,
+        name: 'UFO High Bay LED Light 200W',
+        sku: 'HB-UFO-200W',
         wattage: 200,
         lumens: 30000,
         price: 109,
@@ -66,20 +71,23 @@ const getRecommendations = (fixture: LegacyFixture): Recommendation[] => {
         warranty: '5 Year',
         energySavings: 50,
         payback: 1.1,
-        badge: 'Best Output'
+        badge: 'Best Output',
+        image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/182/images/488/Highbay_Light_HBA100W-200W_03__99308.1770887179.386.513.jpg?c=1',
       },
       {
-        id: '3',
-        name: 'Linear High Bay 165W',
-        sku: 'LHB-165W-5K',
+        id: '204',
+        bcProductId: 204,
+        name: 'Linear High Bay LED 165W',
+        sku: 'LHB-165W',
         wattage: 165,
         lumens: 24750,
-        price: 119,
+        price: 99,
         stock: 'In Stock',
         dlc: true,
         warranty: '5 Year',
         energySavings: 59,
         payback: 1.0,
+        image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/165/images/467/WPS20260212160345__76337.1770884624.386.513.png?c=1',
       }
     ]
   }
@@ -87,32 +95,36 @@ const getRecommendations = (fixture: LegacyFixture): Recommendation[] => {
   if (fixture.type === 'hps' && fixture.wattage === '250') {
     return [
       {
-        id: '1',
-        name: 'Wall Pack 80W',
-        sku: 'WP-80W-5K',
+        id: '130',
+        bcProductId: 130,
+        name: 'Wall Pack Light WP Series',
+        sku: 'AN-WP26W',
         wattage: 80,
         lumens: 11200,
-        price: 79,
+        price: 42,
         stock: 'In Stock',
         dlc: true,
         warranty: '5 Year',
         energySavings: 68,
         payback: 0.6,
-        badge: 'Best Value'
+        badge: 'Best Value',
+        image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/130/images/405/QQ20260212-142924__81406.1770878366.386.513.png?c=1',
       },
       {
-        id: '2',
-        name: 'Wall Pack 100W',
-        sku: 'WP-100W-5K',
+        id: '147',
+        bcProductId: 147,
+        name: 'Wall Pack Light SCWP Series',
+        sku: 'AN-SCWP',
         wattage: 100,
         lumens: 14000,
-        price: 99,
+        price: 110,
         stock: 'In Stock',
         dlc: true,
         warranty: '5 Year',
         energySavings: 60,
         payback: 0.8,
-        badge: 'Best Output'
+        badge: 'Best Output',
+        image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/147/images/437/Application____40269.png',
       }
     ]
   }
@@ -120,9 +132,10 @@ const getRecommendations = (fixture: LegacyFixture): Recommendation[] => {
   // Default recommendations
   return [
     {
-      id: '1',
-      name: 'UFO High Bay 150W',
-      sku: 'HB-UFO-150W-5K',
+      id: '201',
+      bcProductId: 201,
+      name: 'UFO High Bay LED Light 150W',
+      sku: 'HB-UFO-150W',
       wattage: 150,
       lumens: 22500,
       price: 89,
@@ -131,7 +144,8 @@ const getRecommendations = (fixture: LegacyFixture): Recommendation[] => {
       warranty: '5 Year',
       energySavings: 60,
       payback: 0.9,
-      badge: 'Recommended'
+      badge: 'Recommended',
+      image: 'https://cdn11.bigcommerce.com/s-hhcdvxqxzq/products/156/images/453/Highbay_Light_OH60W-240W_01__39759.1770882597.386.513.jpg?c=1',
     }
   ]
 }
@@ -451,16 +465,32 @@ export default function ReplacementFinderPage() {
                       </span>
                     )}
 
-                    {/* Product Image Placeholder */}
-                    <div className="flex h-32 items-center justify-center rounded-lg bg-gray-100">
-                      <Zap className="h-12 w-12 text-gray-300" />
-                    </div>
+                    {/* Product Image */}
+                    <Link
+                      href={`/bc-products?id=${reco.bcProductId}`}
+                      onClick={(e) => e.stopPropagation()}
+                      className="block h-32 rounded-lg bg-gray-100 overflow-hidden hover:opacity-80 transition-opacity"
+                    >
+                      {reco.image ? (
+                        <img src={reco.image} alt={reco.name} className="h-full w-full object-contain p-2" />
+                      ) : (
+                        <div className="flex h-full items-center justify-center">
+                          <Zap className="h-12 w-12 text-gray-300" />
+                        </div>
+                      )}
+                    </Link>
 
                     {/* Product Info */}
                     <div className="mt-4">
                       <div className="flex items-start justify-between">
                         <div>
-                          <h3 className="font-semibold text-gray-900">{reco.name}</h3>
+                          <Link
+                            href={`/bc-products?id=${reco.bcProductId}`}
+                            onClick={(e) => e.stopPropagation()}
+                            className="font-semibold text-gray-900 hover:text-brand transition-colors"
+                          >
+                            {reco.name}
+                          </Link>
                           <p className="text-xs text-gray-500">{reco.sku}</p>
                         </div>
                         {reco.dlc && (
@@ -519,7 +549,7 @@ export default function ReplacementFinderPage() {
                           e.stopPropagation()
                           const qty = quantities[reco.id] || fixture.quantity || 1
                           await addToCart({
-                            productId: parseInt(reco.id) || 0,
+                            productId: reco.bcProductId,
                             name: reco.name,
                             sku: reco.sku,
                             price: reco.price,
@@ -593,7 +623,7 @@ export default function ReplacementFinderPage() {
                       for (const reco of recommendations) {
                         const qty = quantities[reco.id] || fixture.quantity || 1
                         await addToCart({
-                          productId: parseInt(reco.id) || 0,
+                          productId: reco.bcProductId,
                           name: reco.name,
                           sku: reco.sku,
                           price: reco.price,
@@ -623,7 +653,43 @@ export default function ReplacementFinderPage() {
                     Request Project Quote
                   </button>
                   <button
-                    onClick={() => window.print()}
+                    onClick={() => {
+                      const selected = recommendations.find(r => r.id === selectedReco)
+                      const rows = recommendations.map(reco => {
+                        const s = calculateSavings(reco)
+                        const qty = quantities[reco.id] || fixture.quantity || 1
+                        return `<tr>
+                          <td style="padding:8px;border:1px solid #ddd;">${reco.name}</td>
+                          <td style="padding:8px;border:1px solid #ddd;">${reco.sku}</td>
+                          <td style="padding:8px;border:1px solid #ddd;text-align:center;">${reco.wattage}W</td>
+                          <td style="padding:8px;border:1px solid #ddd;text-align:center;">${reco.lumens.toLocaleString()} lm</td>
+                          <td style="padding:8px;border:1px solid #ddd;text-align:center;">${qty}</td>
+                          <td style="padding:8px;border:1px solid #ddd;text-align:right;">$${reco.price}</td>
+                          <td style="padding:8px;border:1px solid #ddd;text-align:right;">$${(reco.price * qty).toFixed(0)}</td>
+                          <td style="padding:8px;border:1px solid #ddd;text-align:center;">${reco.energySavings}%</td>
+                          <td style="padding:8px;border:1px solid #ddd;text-align:right;">$${s.annualSavings.toFixed(0)}/yr</td>
+                          <td style="padding:8px;border:1px solid #ddd;text-align:center;">${reco.payback} yr</td>
+                          <td style="padding:8px;border:1px solid #ddd;text-align:center;">${reco.dlc ? 'Yes' : 'No'}</td>
+                          <td style="padding:8px;border:1px solid #ddd;">${reco.warranty}</td>
+                        </tr>`
+                      }).join('')
+                      const totalCost = recommendations.reduce((sum, r) => sum + r.price * (quantities[r.id] || fixture.quantity || 1), 0)
+                      const totalSavings = recommendations.reduce((sum, r) => sum + calculateSavings(r).annualSavings, 0)
+                      const w = window.open('', '_blank')
+                      if (w) {
+                        w.document.write(`<!DOCTYPE html><html><head><title>Auvolar Replacement Finder Summary</title>
+                          <style>body{font-family:Arial,sans-serif;padding:40px;color:#333}table{border-collapse:collapse;width:100%}th{background:#FFD60A;padding:10px;border:1px solid #ddd;text-align:left;font-size:12px}td{font-size:12px}h1{color:#000}h2{color:#555;margin-top:30px}.footer{margin-top:40px;padding-top:20px;border-top:2px solid #FFD60A;font-size:11px;color:#888}.logo{font-size:28px;font-weight:bold;color:#000}.highlight{background:#f0fdf4;font-weight:bold}</style></head><body>
+                          <div class="logo">AUVOLAR</div>
+                          <h1>LED Replacement Summary</h1>
+                          <p><strong>Current Fixture:</strong> ${fixture.type.replace('-', ' ').toUpperCase()} ${fixture.wattage}W × ${fixture.quantity} units | ${fixture.hoursPerDay} hrs/day</p>
+                          <h2>Recommended LED Replacements</h2>
+                          <table><thead><tr><th>Product</th><th>SKU</th><th>Watts</th><th>Lumens</th><th>Qty</th><th>Unit $</th><th>Total $</th><th>Savings</th><th>Annual</th><th>Payback</th><th>DLC</th><th>Warranty</th></tr></thead><tbody>${rows}</tbody>
+                          <tfoot><tr class="highlight"><td colspan="6" style="padding:8px;border:1px solid #ddd;"><strong>Total</strong></td><td style="padding:8px;border:1px solid #ddd;text-align:right;"><strong>$${totalCost.toFixed(0)}</strong></td><td colspan="2" style="padding:8px;border:1px solid #ddd;text-align:right;"><strong>$${totalSavings.toFixed(0)}/yr</strong></td><td colspan="3" style="padding:8px;border:1px solid #ddd;"></td></tr></tfoot></table>
+                          <div class="footer"><p>Generated by Auvolar Replacement Finder | www.auvolar.com | sales@auvolar.com</p><p>* Savings based on $0.12/kWh. Actual savings may vary.</p></div>
+                          <script>setTimeout(()=>window.print(),500)<\/script></body></html>`)
+                        w.document.close()
+                      }
+                    }}
                     className="rounded-lg border border-gray-300 px-6 py-3 font-medium text-gray-700 hover:border-brand hover:text-brand"
                   >
                     Download Summary PDF
