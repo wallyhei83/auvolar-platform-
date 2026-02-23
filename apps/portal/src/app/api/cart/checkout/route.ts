@@ -26,8 +26,22 @@ export async function POST(request: NextRequest) {
     // Create checkout redirect URL
     const checkoutResult = await createCheckoutUrl(cartId)
     
+    // BigCommerce generates checkout URLs using the site's primary domain (auvolar.com),
+    // but checkout is hosted on BigCommerce's servers, not our Vercel frontend.
+    // Replace with the BigCommerce-hosted domain for checkout to work.
+    const BC_CHECKOUT_DOMAIN = 'https://store-hhcdvxqxzq-1.mybigcommerce.com'
+    const checkoutUrl = checkoutResult.data.checkout_url.replace(
+      'https://auvolar.com',
+      BC_CHECKOUT_DOMAIN
+    )
+    const cartUrl = checkoutResult.data.cart_url?.replace(
+      'https://auvolar.com',
+      BC_CHECKOUT_DOMAIN
+    )
+    
     return NextResponse.json({
-      checkoutUrl: checkoutResult.data.checkout_url,
+      checkoutUrl,
+      cartUrl,
       cartId,
     })
   } catch (error) {

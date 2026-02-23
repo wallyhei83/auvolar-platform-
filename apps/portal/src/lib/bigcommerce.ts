@@ -353,7 +353,7 @@ export async function deleteCartItem(cartId: string, itemId: string): Promise<{ 
 // ==================== CHECKOUT ====================
 
 // Create checkout redirect URL (for hosted checkout)
-export async function createCheckoutUrl(cartId: string): Promise<{ data: { checkout_url: string } }> {
+export async function createCheckoutUrl(cartId: string): Promise<{ data: { checkout_url: string; cart_url?: string } }> {
   return bcFetch(`/v3/carts/${cartId}/redirect_urls`, {
     method: 'POST',
   })
