@@ -66,6 +66,10 @@
 
 Auvolar products are used in: warehouses, manufacturing facilities, retail stores, offices, parking lots & garages, gas stations, schools & universities, sports facilities, cold storage, food processing plants, automotive dealerships, and logistics centers.
 
+## Individual Product Pages
+
+Every product has a dedicated page at `https://www.auvolar.com/p/{product-slug}` with full specifications, pricing, images, and structured data. Browse the complete catalog at https://www.auvolar.com/products or see the full product list at https://www.auvolar.com/llms-full.txt
+
 ## Optional
 
 - [Detailed product data with specifications](https://www.auvolar.com/llms-full.txt)

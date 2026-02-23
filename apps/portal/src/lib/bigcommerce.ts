@@ -56,6 +56,7 @@ export interface BCProduct {
   is_visible?: boolean
   sort_order?: number
   custom_fields?: { id?: number; name: string; value: string }[]
+  custom_url?: { url: string; is_customized: boolean }
   variants?: BCVariant[]
   images?: BCImage[]
 }

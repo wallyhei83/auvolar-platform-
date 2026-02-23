@@ -1,7 +1,8 @@
 import { MetadataRoute } from 'next'
 import { getAllBlogPosts } from '@/lib/blog-posts'
+import { getAllProducts } from '@/lib/bc-products-server'
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://www.auvolar.com'
   
   // Main pages
@@ -222,10 +223,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }]
 
+  // Individual product pages from BigCommerce
+  let productPages: MetadataRoute.Sitemap = []
+  try {
+    const products = await getAllProducts()
+    productPages = products.map(p => ({
+      url: `${baseUrl}/p/${p.slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    }))
+  } catch (e) {
+    console.error('Sitemap: failed to fetch products for /p/ pages', e)
+  }
+
   return [
     ...mainPages,
     ...blogIndex,
     ...blogPostEntries,
+    ...productPages,
     ...productCategories,
     ...applications,
     ...locations,
