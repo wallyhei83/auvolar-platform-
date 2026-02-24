@@ -141,7 +141,7 @@ function LoginForm() {
             </button>
           </form>
 
-          <div className="mt-6">
+          <div className="mt-8">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-gray-200" />
@@ -151,9 +151,29 @@ function LoginForm() {
               </div>
             </div>
 
-            <div className="mt-6">
-              <Link href="/register" className="btn-outline btn-lg w-full">
-                Create an account
+            <div className="mt-6 bg-gray-50 rounded-xl p-6">
+              <h3 className="text-base font-semibold text-gray-900 text-center mb-2">Join Auvolar Today</h3>
+              <p className="text-sm text-gray-500 text-center mb-4">Unlock wholesale pricing, order tracking, and exclusive deals</p>
+              <div className="grid grid-cols-2 gap-3 mb-4">
+                <div className="flex items-center gap-2 text-xs text-gray-600">
+                  <svg className="w-4 h-4 text-yellow-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  Wholesale Pricing
+                </div>
+                <div className="flex items-center gap-2 text-xs text-gray-600">
+                  <svg className="w-4 h-4 text-yellow-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  Order Tracking
+                </div>
+                <div className="flex items-center gap-2 text-xs text-gray-600">
+                  <svg className="w-4 h-4 text-yellow-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  Net 30 Terms
+                </div>
+                <div className="flex items-center gap-2 text-xs text-gray-600">
+                  <svg className="w-4 h-4 text-yellow-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  Free Lighting Design
+                </div>
+              </div>
+              <Link href="/register" className="block text-center w-full py-3 px-4 border-2 border-gray-900 rounded-lg text-sm font-semibold text-gray-900 hover:bg-gray-900 hover:text-white transition-all">
+                Get Started — It&apos;s Free
               </Link>
             </div>
           </div>
