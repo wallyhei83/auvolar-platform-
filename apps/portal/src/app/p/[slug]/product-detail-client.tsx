@@ -5,7 +5,7 @@ import Link from 'next/link'
 import {
   ShoppingCart, Plus, Minus, Check, CheckCircle2, Clock,
   ChevronLeft, ChevronRight, Share2, Heart, Truck, Shield, Zap,
-  Phone, Mail
+  Phone, Mail, FileText, Download
 } from 'lucide-react'
 import { useCart } from '@/lib/cart-context'
 
@@ -287,6 +287,45 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
           >
             Request Volume Quote
           </Link>
+
+          {/* Downloads & Resources */}
+          <div className="mb-6">
+            <h3 className="text-sm font-semibold text-gray-900 mb-3">Downloads & Resources</h3>
+            <div className="grid grid-cols-2 gap-2">
+              <a
+                href={`/api/docs/spec-sheets/${encodeURIComponent(product.sku)}`}
+                target="_blank"
+                className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm"
+              >
+                <FileText className="w-4 h-4 text-yellow-600" />
+                <span>Spec Sheet</span>
+              </a>
+              <a
+                href={`/api/docs/ies/${encodeURIComponent(product.sku)}`}
+                target="_blank"
+                className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm"
+              >
+                <Download className="w-4 h-4 text-yellow-600" />
+                <span>IES File</span>
+              </a>
+              <a
+                href={`/api/docs/instructions/${encodeURIComponent(product.sku)}`}
+                target="_blank"
+                className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm"
+              >
+                <FileText className="w-4 h-4 text-yellow-600" />
+                <span>Install Guide</span>
+              </a>
+              <a
+                href={`/api/docs/warranty/${encodeURIComponent(product.sku)}`}
+                target="_blank"
+                className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm"
+              >
+                <Shield className="w-4 h-4 text-yellow-600" />
+                <span>Warranty Info</span>
+              </a>
+            </div>
+          </div>
 
           {/* Trust Badges */}
           <div className="grid grid-cols-2 gap-3 mb-6">

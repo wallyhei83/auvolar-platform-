@@ -545,10 +545,16 @@ Solar LED lighting is one of the fastest-growing segments in commercial lighting
   },
 ]
 
+// Import new blog posts from Phase 2 expansion
+import { newBlogPosts } from './blog-posts-new'
+
+// Merge all blog posts
+const allBlogPosts = [...blogPosts, ...newBlogPosts]
+
 export function getBlogPost(slug: string): BlogPost | undefined {
-  return blogPosts.find(p => p.slug === slug)
+  return allBlogPosts.find(p => p.slug === slug)
 }
 
 export function getAllBlogPosts(): BlogPost[] {
-  return blogPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  return allBlogPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 }
