@@ -56,10 +56,78 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
   const [selectedImage, setSelectedImage] = useState(0)
   const [quantity, setQuantity] = useState(1)
   const [addedToCart, setAddedToCart] = useState(false)
-  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(
-    product.variants.length > 0 ? product.variants[0] : null
-  )
   const { addToCart } = useCart()
+
+  // Build option groups: { "Wattage": ["75W","115W","145W"], "AC Input": [...], ... }
+  const optionGroups: Record<string, string[]> = {}
+  const optionOrder: string[] = [] // preserve option display order
+  product.variants.forEach(v => {
+    v.options.forEach(opt => {
+      if (!optionGroups[opt.name]) {
+        optionGroups[opt.name] = []
+        optionOrder.push(opt.name)
+      }
+      if (!optionGroups[opt.name].includes(opt.value)) {
+        optionGroups[opt.name].push(opt.value)
+      }
+    })
+  })
+
+  // Track selected value per option independently
+  const getInitialSelections = (): Record<string, string> => {
+    const sel: Record<string, string> = {}
+    if (product.variants.length > 0) {
+      // Default to first variant's options
+      product.variants[0].options.forEach(opt => {
+        sel[opt.name] = opt.value
+      })
+    }
+    return sel
+  }
+  const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>(getInitialSelections)
+
+  // Find the variant matching all currently selected options
+  const findMatchingVariant = (selections: Record<string, string>): ProductVariant | null => {
+    return product.variants.find(v =>
+      v.options.every(opt => selections[opt.name] === opt.value)
+    ) || null
+  }
+
+  const selectedVariant = findMatchingVariant(selectedOptions)
+
+  // When user clicks an option value, update that dimension only
+  const handleOptionSelect = (optName: string, value: string) => {
+    const newSelections = { ...selectedOptions, [optName]: value }
+    // Check if this exact combination exists
+    const match = findMatchingVariant(newSelections)
+    if (match) {
+      setSelectedOptions(newSelections)
+    } else {
+      // Combination doesn't exist — update this option and try to find closest match
+      // Keep the newly selected value and try adjusting other options
+      setSelectedOptions(newSelections)
+    }
+  }
+
+  // Determine which option values are available given current selections
+  const getAvailableValues = (optName: string): Set<string> => {
+    // Filter variants that match all OTHER selected options
+    const otherSelections = { ...selectedOptions }
+    delete otherSelections[optName]
+
+    const available = new Set<string>()
+    product.variants.forEach(v => {
+      const matchesOthers = v.options.every(opt => {
+        if (opt.name === optName) return true // skip the dimension we're checking
+        return otherSelections[opt.name] === undefined || otherSelections[opt.name] === opt.value
+      })
+      if (matchesOthers) {
+        const thisOpt = v.options.find(o => o.name === optName)
+        if (thisOpt) available.add(thisOpt.value)
+      }
+    })
+    return available
+  }
 
   const images = product.images.length > 0
     ? product.images
@@ -82,17 +150,6 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
     setAddedToCart(true)
     setTimeout(() => setAddedToCart(false), 2000)
   }
-
-  // Group variants by option name for selection UI
-  const optionGroups: Record<string, string[]> = {}
-  product.variants.forEach(v => {
-    v.options.forEach(opt => {
-      if (!optionGroups[opt.name]) optionGroups[opt.name] = []
-      if (!optionGroups[opt.name].includes(opt.value)) {
-        optionGroups[opt.name].push(opt.value)
-      }
-    })
-  })
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
@@ -208,35 +265,49 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
             </p>
           )}
 
-          {/* Variant Selection */}
-          {Object.keys(optionGroups).length > 0 && (
+          {/* Variant Selection — independent per dimension */}
+          {optionOrder.length > 0 && (
             <div className="space-y-4 mb-6">
-              {Object.entries(optionGroups).map(([optName, values]) => (
-                <div key={optName}>
-                  <label className="text-sm font-medium text-gray-700 mb-2 block">{optName}</label>
-                  <div className="flex flex-wrap gap-2">
-                    {values.map(value => {
-                      const variant = product.variants.find(v =>
-                        v.options.some(o => o.name === optName && o.value === value)
-                      )
-                      const isSelected = selectedVariant?.id === variant?.id
-                      return (
-                        <button
-                          key={value}
-                          onClick={() => variant && setSelectedVariant(variant)}
-                          className={`px-4 py-2 rounded-lg border text-sm font-medium transition-all ${
-                            isSelected
-                              ? 'border-yellow-500 bg-yellow-50 text-yellow-700'
-                              : 'border-gray-200 hover:border-gray-400 text-gray-700'
-                          }`}
-                        >
-                          {value}
-                        </button>
-                      )
-                    })}
+              {optionOrder.map(optName => {
+                const values = optionGroups[optName]
+                const availableValues = getAvailableValues(optName)
+                return (
+                  <div key={optName}>
+                    <label className="text-sm font-medium text-gray-700 mb-2 block">
+                      {optName}: <span className="text-gray-900">{selectedOptions[optName] || ''}</span>
+                    </label>
+                    <div className="flex flex-wrap gap-2">
+                      {values.map(value => {
+                        const isSelected = selectedOptions[optName] === value
+                        const isAvailable = availableValues.has(value)
+                        return (
+                          <button
+                            key={value}
+                            onClick={() => isAvailable && handleOptionSelect(optName, value)}
+                            disabled={!isAvailable}
+                            className={`px-4 py-2 rounded-lg border text-sm font-medium transition-all ${
+                              isSelected
+                                ? 'border-yellow-500 bg-yellow-50 text-yellow-700'
+                                : isAvailable
+                                  ? 'border-gray-200 hover:border-gray-400 text-gray-700'
+                                  : 'border-gray-100 bg-gray-50 text-gray-300 cursor-not-allowed line-through'
+                            }`}
+                          >
+                            {value}
+                          </button>
+                        )
+                      })}
+                    </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}
+              {/* Show selected variant SKU */}
+              {selectedVariant && selectedVariant.sku && (
+                <p className="text-xs text-gray-400">SKU: {selectedVariant.sku}</p>
+              )}
+              {!selectedVariant && Object.keys(selectedOptions).length > 0 && (
+                <p className="text-xs text-orange-500">This combination is not available. Please adjust your selections.</p>
+              )}
             </div>
           )}
 
