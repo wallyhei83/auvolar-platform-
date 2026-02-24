@@ -157,12 +157,12 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
         {/* Image Gallery */}
         <div>
           {/* Main Image */}
-          <div className="relative aspect-square bg-white rounded-2xl border overflow-hidden mb-4">
+          <div className="relative aspect-[4/3] bg-white rounded-2xl border overflow-hidden">
             {images[selectedImage]?.url ? (
               <img
                 src={images[selectedImage].zoom || images[selectedImage].url}
                 alt={`${product.name} - Image ${selectedImage + 1}`}
-                className="w-full h-full object-contain p-6"
+                className="w-full h-full object-contain p-4"
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-gray-300">
@@ -200,17 +200,17 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
 
           {/* Thumbnails */}
           {images.length > 1 && (
-            <div className="flex gap-2 overflow-x-auto pb-2">
-              {images.map((img, i) => (
+            <div className="grid grid-cols-5 gap-2 mt-3">
+              {images.slice(0, 5).map((img, i) => (
                 <button
                   key={i}
                   onClick={() => setSelectedImage(i)}
-                  className={`flex-shrink-0 w-20 h-20 rounded-lg border-2 overflow-hidden transition-all ${
+                  className={`aspect-square rounded-lg border-2 overflow-hidden transition-all ${
                     selectedImage === i ? 'border-yellow-500 shadow-md' : 'border-gray-200 hover:border-gray-400'
                   }`}
                 >
                   {img.thumbnail ? (
-                    <img src={img.thumbnail} alt={`${product.name} thumbnail ${i + 1}`} className="w-full h-full object-contain p-1" />
+                    <img src={img.thumbnail} alt={`${product.name} thumbnail ${i + 1}`} className="w-full h-full object-contain p-1.5 bg-gray-50" />
                   ) : (
                     <div className="w-full h-full bg-gray-100" />
                   )}
