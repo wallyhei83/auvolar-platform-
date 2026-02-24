@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next'
 import { getAllBlogPosts } from '@/lib/blog-posts'
 import { getAllProducts } from '@/lib/bc-products-server'
+import { getAllApplicationSlugs } from '@/lib/applications-data'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://www.auvolar.com'
@@ -137,27 +138,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }))
 
-  // Applications/Industries
-  const applications = [
-    'warehouse',
-    'retail',
-    'industrial',
-    'parking-lot',
-    'commercial',
-    'manufacturing',
-    'logistics',
-    'automotive',
-    'food-processing',
-    'cold-storage',
-    'office',
-    'education',
-    'sports',
-    'gas-station',
-    'healthcare',
-    'hospitality',
-    'municipal',
-  ].map(app => ({
-    url: `${baseUrl}/applications/${app}`,
+  // Applications/Industries — from data file
+  const applicationPages = getAllApplicationSlugs().map(slug => ({
+    url: `${baseUrl}/applications/${slug}`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.7,
@@ -243,7 +226,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...blogPostEntries,
     ...productPages,
     ...productCategories,
-    ...applications,
+    ...applicationPages,
     ...locations,
     ...resources,
   ]
