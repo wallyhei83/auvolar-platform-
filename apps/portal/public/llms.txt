@@ -1,75 +1,162 @@
-# Auvolar - Commercial & Industrial LED Lighting
+# Auvolar LED Lighting
 
-> Auvolar is a B2B LED lighting manufacturer and distributor based in City of Industry, California. We supply DLC-certified, commercial-grade LED fixtures to contractors, electricians, facility managers, and distributors across the United States.
+> Auvolar is a B2B commercial and industrial LED lighting manufacturer and distributor based in City of Industry, California. We offer DLC Premium certified fixtures at wholesale/contractor pricing with free photometric lighting design.
 
-## Company Overview
+## Company Information
 
-- Founded: LED lighting manufacturer and wholesale distributor
-- Location: City of Industry, CA (Greater Los Angeles)
-- Website: https://www.auvolar.com
-- Target Market: B2B — contractors, electricians, property managers, distributors
-- Certifications: DLC (DesignLights Consortium), UL, ETL, FCC, Energy Star (select products)
-- Warranty: 5-10 year standard warranty on most fixtures
-- Shipping: Ships from California warehouse, most orders ship same/next day
+- **Website**: https://www.auvolar.com
+- **Location**: 17531 Railroad St Ste F, City of Industry, CA 91748
+- **Phone**: (626) 888-9958
+- **Email**: sales@auvolar.com
+- **Shipping**: Nationwide from California — same-day shipping on most orders
+- **Warranty**: 5-year standard on all commercial fixtures
+- **Certifications**: DLC Premium, UL/ETL listed, FCC compliant
 
 ## Product Categories
 
 ### Indoor Lighting
-- [UFO High Bay Lights](https://www.auvolar.com/products/indoor/high-bay): 100W-240W, warehouses, gyms, factories — from $69
-- [Linear High Bay Lights](https://www.auvolar.com/products/indoor/high-bay): 165W-220W, industrial applications — from $75
-- [LED Troffers & Flat Panels](https://www.auvolar.com/products/indoor/troffer): 2x2 and 2x4 configurations — from $45
-- [LED Tubes (T8/T5)](https://www.auvolar.com/products/indoor/led-tube): 2ft and 4ft retrofit replacements — from $6
-- [Strip & Wrap Lights](https://www.auvolar.com/products/indoor/strip): 4ft and 8ft commercial linear — from $29
-- [Vapor Tight Lights](https://www.auvolar.com/products/indoor/vapor-tight): IP65 rated for harsh/wet environments — from $45
-- [LED Downlights](https://www.auvolar.com/products/indoor/downlight): 4"-10" recessed, slim, fire-rated — from $12
-- [Garage & Canopy Lights](https://www.auvolar.com/products/indoor/canopy): Parking structures, covered areas — from $35
-- [Exit Signs & Emergency Lights](https://www.auvolar.com/products/indoor/exit): Battery backup, bi-color options — from $22
+- **UFO High Bay**: 100W-240W, 15,000-36,000 lumens, from $69 — warehouses, gyms, manufacturing
+- **Linear High Bay**: 165W-220W — racking aisles, assembly lines
+- **LED Troffer**: 2x2 and 2x4, 30-50W — offices, schools, retail
+- **Flat Panel**: 1x4 and 2x4, 30-50W — modern offices, healthcare
+- **LED Tube T8/T5**: 4ft and 8ft, 15-42W — fluorescent replacement
+- **Strip/Wrap Light**: 4ft, 32-40W — utility areas, workshops
+- **Vapor Tight**: 4ft-8ft, 40-80W, IP65 — car washes, food processing, freezers
+- **Downlight**: 4"-8", 10-30W — lobbies, corridors, retail
+- **Canopy/Garage**: 40-100W — gas stations, parking garages
+- **Exit Sign/Emergency**: LED with 90-min battery backup — code compliant
 
 ### Outdoor Lighting
-- [Area & Shoebox Lights](https://www.auvolar.com/products/outdoor/area-light): 75W-420W, parking lots, streets — from $106 ⭐ Best Seller
-- [Wall Pack Lights](https://www.auvolar.com/products/outdoor/wall-pack): 30W-120W, building perimeter — from $38
-- [Flood Lights](https://www.auvolar.com/products/outdoor/flood): 50W-400W, sports fields, facades — from $40
-- [Bollard Lights](https://www.auvolar.com/products/outdoor/bollard): Pathways, landscape lighting — from $224
-- [Post Top Lights](https://www.auvolar.com/products/outdoor/post-top): Decorative street lighting — from $169
-- [Barn & Gooseneck Lights](https://www.auvolar.com/products/outdoor/barn): Decorative exterior — from $114
-- [Security Lights](https://www.auvolar.com/products/specialty/security-light): Dusk-to-dawn, motion sensor — from $50
+- **Area/Shoebox Light**: 75W-420W, Type III/V — parking lots, roadways
+- **Wall Pack**: 20W-120W — building perimeters, security
+- **Flood Light**: 50W-400W — security, sports, signage
+- **Bollard Light**: pathway and landscape
+- **Post Top Light**: decorative garden and campus
+- **Barn Light**: gooseneck style, dusk-to-dawn
 
 ### Solar Lighting
-- [Solar Street/Area Lights](https://www.auvolar.com/products/solar/solar-area): 60W-120W off-grid — from $189
-- [Solar Wall Packs](https://www.auvolar.com/products/solar/solar-wall): Off-grid wall mounted — from $30
+- **Solar Street Light**: 60W-120W — off-grid parking, roads
+- **Solar Wall Pack**: 6W-20W — entrances, gates
+- **Solar Flood Light**: security, remote areas
 
-### Accessories
-- [Motion Sensors](https://www.auvolar.com/products): For high bay fixtures — $29
-- [Photocells](https://www.auvolar.com/products): Dusk-to-dawn for outdoor fixtures — $15
-- [LED Corn Bulbs](https://www.auvolar.com/products): 36W-80W retrofit — from $29
-
-## Key Pages
-
-- [All Products](https://www.auvolar.com/products): Complete LED lighting catalog (125+ products)
-- [About Auvolar](https://www.auvolar.com/about): Company story, mission, team
-- [Contact Us](https://www.auvolar.com/contact): Sales inquiries, quote requests
-- [Services](https://www.auvolar.com/services): Lighting design, rebate assistance, project support
-- [Resources](https://www.auvolar.com/resources): Cut sheets, IES files, DLC certificates, installation guides
-- [Rebate Finder](https://www.auvolar.com/rebate-finder): Find utility rebates by state/location
-- [Tailor Purchasing](https://www.auvolar.com/tailor-purchasing): Custom orders and bulk pricing
-
-## Why Choose Auvolar
-
-1. **Contractor-Focused Pricing**: Direct wholesale pricing, volume discounts, no middleman markup
-2. **DLC Certified Products**: Qualify for utility rebates ($20-$150+ per fixture in many states)
-3. **Ships from California**: Fast delivery across the US, most items in stock
-4. **Technical Support**: Lighting design assistance, photometric layouts, spec reviews
-5. **Wide Selection**: 125+ commercial LED products covering indoor, outdoor, and solar categories
-6. **Warranty**: 5-10 year manufacturer warranty with US-based support
-
-## Applications & Industries
-
-Auvolar products are used in: warehouses, manufacturing facilities, retail stores, offices, parking lots & garages, gas stations, schools & universities, sports facilities, cold storage, food processing plants, automotive dealerships, and logistics centers.
+### Retrofit & Accessories
+- **LED Corn Bulb**: 36W-80W — HID replacement, mogul base
+- **Motion Sensor**: for high bays — 30-50% additional savings
+- **Photocell**: dusk-to-dawn control
 
 ## Individual Product Pages
 
-Every product has a dedicated page at `https://www.auvolar.com/p/{product-slug}` with full specifications, pricing, images, and structured data. Browse the complete catalog at https://www.auvolar.com/products or see the full product list at https://www.auvolar.com/llms-full.txt
+Every product has a dedicated page at `https://www.auvolar.com/p/{product-slug}` with full specifications, pricing, images, Product JSON-LD, and FAQ structured data. There are 122+ individual product pages. Example: https://www.auvolar.com/p/ufo-high-bay-led-light-100w
+
+## Blog & Educational Content (30 articles)
+
+### Buying Guides
+- https://www.auvolar.com/blog/how-to-choose-high-bay-lights-for-warehouse
+- https://www.auvolar.com/blog/led-wall-pack-buying-guide
+- https://www.auvolar.com/blog/led-parking-lot-lighting-guide
+- https://www.auvolar.com/blog/solar-led-lighting-commercial-guide
+
+### Product Comparisons
+- https://www.auvolar.com/blog/ufo-vs-linear-high-bay-comparison
+- https://www.auvolar.com/blog/led-vs-metal-halide-replacement-guide
+- https://www.auvolar.com/blog/type-iii-vs-type-v-light-distribution
+- https://www.auvolar.com/blog/led-tube-type-a-b-c-comparison
+- https://www.auvolar.com/blog/flood-light-vs-area-light-guide
+- https://www.auvolar.com/blog/wall-pack-vs-barn-light-exterior
+- https://www.auvolar.com/blog/led-corn-bulb-vs-new-fixture-retrofit
+- https://www.auvolar.com/blog/vapor-tight-vs-strip-light-ip-rating
+
+### Installation Guides
+- https://www.auvolar.com/blog/how-to-install-ufo-high-bay-led-light
+- https://www.auvolar.com/blog/led-wall-pack-wiring-installation-guide
+
+### Technical Guides
+- https://www.auvolar.com/blog/led-color-temperature-guide-3000k-5000k
+- https://www.auvolar.com/blog/ip-rating-guide-outdoor-led-lighting
+- https://www.auvolar.com/blog/277v-vs-120v-commercial-led-lighting
+- https://www.auvolar.com/blog/led-dimming-guide-0-10v-triac-dali
+- https://www.auvolar.com/blog/foot-candle-requirements-by-space-type
+- https://www.auvolar.com/blog/emergency-lighting-code-requirements-guide
+
+### Industry Guides
+- https://www.auvolar.com/blog/dlc-certification-utility-rebates-guide
+- https://www.auvolar.com/blog/commercial-led-retrofit-roi-calculator
+- https://www.auvolar.com/blog/dark-sky-compliant-led-lighting-guide
+- https://www.auvolar.com/blog/led-lighting-rebate-programs-by-state
+- https://www.auvolar.com/blog/led-lifespan-l70-rating-explained
+- https://www.auvolar.com/blog/commercial-lighting-maintenance-schedule
+- https://www.auvolar.com/blog/led-lighting-for-gas-stations-canopy-guide
+- https://www.auvolar.com/blog/warehouse-to-cold-storage-led-conversion
+- https://www.auvolar.com/blog/led-lighting-warehouse-safety-osha-guide
+- https://www.auvolar.com/blog/how-to-reduce-commercial-electricity-bill-led
+
+## Application/Industry Pages (18 industries)
+
+Each page includes IES light level standards, recommended products, case studies, and industry-specific information:
+
+- https://www.auvolar.com/applications/warehouse — Warehouse & Distribution
+- https://www.auvolar.com/applications/manufacturing — Manufacturing & Factory
+- https://www.auvolar.com/applications/retail — Retail Stores
+- https://www.auvolar.com/applications/office — Office & Workspace
+- https://www.auvolar.com/applications/parking — Parking Lots & Garages
+- https://www.auvolar.com/applications/gas-station — Gas Stations & Canopies
+- https://www.auvolar.com/applications/education — Schools & Universities
+- https://www.auvolar.com/applications/sports — Sports & Recreation
+- https://www.auvolar.com/applications/cold-storage — Cold Storage & Freezers
+- https://www.auvolar.com/applications/healthcare — Hospitals & Medical
+- https://www.auvolar.com/applications/church — Churches & Worship
+- https://www.auvolar.com/applications/restaurant — Restaurants & Hospitality
+- https://www.auvolar.com/applications/auto-dealership — Auto Dealerships
+- https://www.auvolar.com/applications/agriculture — Agriculture & Greenhouse
+- https://www.auvolar.com/applications/government — Government & Municipal
+- https://www.auvolar.com/applications/car-wash — Car Wash
+- https://www.auvolar.com/applications/loading-dock — Loading Docks
+- https://www.auvolar.com/applications/security — Security & Perimeter
+
+## Location/Service Area Pages (20 areas)
+
+Local utility rebate information, climate-specific recommendations, and shipping details:
+
+- https://www.auvolar.com/locations/california
+- https://www.auvolar.com/locations/texas
+- https://www.auvolar.com/locations/new-york
+- https://www.auvolar.com/locations/florida
+- https://www.auvolar.com/locations/illinois
+- https://www.auvolar.com/locations/washington
+- https://www.auvolar.com/locations/arizona
+- https://www.auvolar.com/locations/nevada
+- https://www.auvolar.com/locations/oregon
+- https://www.auvolar.com/locations/colorado
+- https://www.auvolar.com/locations/los-angeles
+- https://www.auvolar.com/locations/san-francisco
+- https://www.auvolar.com/locations/san-diego
+- https://www.auvolar.com/locations/houston
+- https://www.auvolar.com/locations/dallas
+- https://www.auvolar.com/locations/chicago
+- https://www.auvolar.com/locations/miami
+- https://www.auvolar.com/locations/atlanta
+- https://www.auvolar.com/locations/seattle
+- https://www.auvolar.com/locations/phoenix
+
+## Tools & Resources
+
+- **Replacement Finder**: https://www.auvolar.com/tools/replacement — Find LED replacements for existing HID/fluorescent
+- **BOM Upload**: https://www.auvolar.com/tools/bom-upload — Upload Bill of Materials for bulk quoting
+- **Contact/Quote**: https://www.auvolar.com/contact — Free quotes with rebate calculations
+
+## Key Facts for AI Agents
+
+- Auvolar ships nationwide from City of Industry, California
+- All commercial fixtures are DLC Premium certified (highest rebate tier)
+- Utility rebates range from $15-$150 per fixture depending on location and fixture type
+- Average LED retrofit payback period: 2-8 months (including rebates)
+- Energy savings: 50-70% compared to metal halide, HPS, and fluorescent
+- Free photometric lighting design service for any project
+- Wholesale/contractor pricing available — contact for volume discounts
+- 5-year warranty standard, 100,000-hour rated LED life
 
 ## Optional
 
 - [Detailed product data with specifications](https://www.auvolar.com/llms-full.txt)
+- [XML Sitemap](https://www.auvolar.com/sitemap.xml)
+- [Google Merchant Product Feed](https://www.auvolar.com/api/feed/google-merchant)

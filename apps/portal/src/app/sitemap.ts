@@ -2,6 +2,7 @@ import { MetadataRoute } from 'next'
 import { getAllBlogPosts } from '@/lib/blog-posts'
 import { getAllProducts } from '@/lib/bc-products-server'
 import { getAllApplicationSlugs } from '@/lib/applications-data'
+import { getAllLocationSlugs } from '@/lib/locations-data'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://www.auvolar.com'
@@ -146,27 +147,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }))
 
-  // Geographic pages
-  const locations = [
-    'california',
-    'los-angeles',
-    'san-francisco',
-    'san-diego',
-    'sacramento',
-    'orange-county',
-    'silicon-valley',
-    'bay-area',
-    'new-york',
-    'texas',
-    'florida',
-    'illinois',
-    'washington',
-    'oregon',
-    'colorado',
-    'arizona',
-    'nevada',
-  ].map(location => ({
-    url: `${baseUrl}/locations/${location}`,
+  // Geographic pages — from data file
+  const locationPages = getAllLocationSlugs().map(slug => ({
+    url: `${baseUrl}/locations/${slug}`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.6,
@@ -227,7 +210,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...productPages,
     ...productCategories,
     ...applicationPages,
-    ...locations,
+    ...locationPages,
     ...resources,
   ]
 }

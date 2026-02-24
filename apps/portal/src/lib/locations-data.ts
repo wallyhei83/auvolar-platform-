@@ -1,0 +1,388 @@
+// Location/geographic landing pages for SEO + AI Agent optimization
+// Each page targets "[product] + [location]" long-tail queries
+
+export interface LocationData {
+  slug: string
+  name: string
+  type: 'state' | 'city' | 'region'
+  state?: string
+  metaTitle: string
+  metaDescription: string
+  keywords: string[]
+  electricityCost: string // avg $/kWh
+  topUtilities: { name: string; rebateRange: string }[]
+  climate: string
+  lightingNeeds: string
+  seoContent: string
+  nearbyLocations: string[] // slugs of related locations
+}
+
+export const locations: LocationData[] = [
+  // === STATES ===
+  {
+    slug: 'california',
+    name: 'California',
+    type: 'state',
+    metaTitle: 'LED Lighting Supplier in California | Commercial LED Lights CA | Auvolar',
+    metaDescription: 'California commercial LED lighting supplier. Ships from City of Industry, CA. DLC certified fixtures qualifying for SCE, PG&E, SDG&E rebates. Same-day shipping.',
+    keywords: ['California LED lighting', 'LED supplier California', 'commercial lighting CA', 'SCE rebate LED', 'PG&E LED rebate', 'California DLC lighting', 'LED lights Los Angeles', 'LED lights San Francisco'],
+    electricityCost: '$0.22-$0.30/kWh (highest in continental US)',
+    topUtilities: [
+      { name: 'Southern California Edison (SCE)', rebateRange: '$25-$100/fixture' },
+      { name: 'Pacific Gas & Electric (PG&E)', rebateRange: '$25-$75/fixture' },
+      { name: 'San Diego Gas & Electric (SDG&E)', rebateRange: '$20-$70/fixture' },
+      { name: 'LADWP (Los Angeles)', rebateRange: 'Custom incentives' },
+    ],
+    climate: 'Mediterranean to desert. Hot summers in inland areas drive cooling costs — LED\'s 60% lower heat output reduces HVAC load. Coastal fog and salt air require IP65+ rated outdoor fixtures.',
+    lightingNeeds: 'California has the highest electricity rates in the continental US, making LED upgrades the highest-ROI energy investment. Title 24 energy code requires high-efficiency lighting in new construction and major renovations. The state\'s aggressive sustainability goals create strong rebate programs through all major utilities.',
+    seoContent: 'Auvolar is headquartered in City of Industry, California — the heart of the Greater Los Angeles industrial corridor. As a California-based LED lighting manufacturer and distributor, we offer same-day shipping on most orders, with next-day delivery available throughout Southern California. Our DLC Premium certified fixtures qualify for the generous rebate programs offered by SCE, PG&E, SDG&E, and LADWP — among the highest LED rebates in the nation. California\'s high electricity rates ($0.22-$0.30/kWh) mean LED retrofits here achieve the fastest payback periods, often under 3 months after rebates. Whether you\'re a contractor in Los Angeles, a facility manager in San Francisco, or a property owner in San Diego, Auvolar provides wholesale pricing, free lighting design, and rebate application assistance for California commercial projects.',
+    nearbyLocations: ['los-angeles', 'san-francisco', 'san-diego', 'arizona', 'nevada'],
+  },
+  {
+    slug: 'texas',
+    name: 'Texas',
+    type: 'state',
+    metaTitle: 'LED Lighting Supplier in Texas | Commercial LED Lights TX | Auvolar',
+    metaDescription: 'Texas commercial LED lighting supplier. DLC certified fixtures for warehouses, offices, parking lots. Oncor & CenterPoint rebates. Ships from CA, 3-5 day delivery.',
+    keywords: ['Texas LED lighting', 'LED supplier Texas', 'commercial lighting TX', 'Oncor LED rebate', 'CenterPoint rebate', 'Houston LED lighting', 'Dallas LED lights', 'San Antonio lighting'],
+    electricityCost: '$0.10-$0.14/kWh',
+    topUtilities: [
+      { name: 'Oncor (Dallas/Fort Worth)', rebateRange: '$15-$60/fixture' },
+      { name: 'CenterPoint (Houston)', rebateRange: '$10-$50/fixture' },
+      { name: 'AEP Texas', rebateRange: '$10-$45/fixture' },
+    ],
+    climate: 'Hot and humid (Gulf Coast) to hot and dry (West Texas). Extreme summer heat demands fixtures rated for high ambient temperatures. LED\'s lower heat output reduces HVAC load in air-conditioned commercial spaces.',
+    lightingNeeds: 'Texas\'s massive commercial and industrial sector — warehouses, manufacturing, oil & gas facilities, retail — drives enormous demand for commercial LED lighting. While electricity rates are moderate, the sheer volume of lighting in Texas facilities means LED upgrades deliver significant absolute dollar savings. Oncor and CenterPoint offer solid rebate programs for DLC-certified fixtures.',
+    seoContent: 'Texas is one of the largest commercial lighting markets in the US, with massive warehouse, manufacturing, retail, and office sectors. Auvolar serves Texas customers with 3-5 day shipping from our California warehouse, with volume orders eligible for freight shipping at reduced rates. Our DLC Premium certified fixtures qualify for Oncor, CenterPoint, and AEP Texas rebate programs. For Houston warehouses, Dallas office buildings, San Antonio retail spaces, or Austin tech campuses, Auvolar provides competitive wholesale pricing and free photometric layout design. Contact us for a custom quote on your Texas commercial lighting project.',
+    nearbyLocations: ['california', 'florida', 'arizona'],
+  },
+  {
+    slug: 'new-york',
+    name: 'New York',
+    type: 'state',
+    metaTitle: 'LED Lighting Supplier in New York | Commercial LED Lights NY | Auvolar',
+    metaDescription: 'New York commercial LED lighting supplier. Con Edison & National Grid rebates $30-$100/fixture. DLC certified, compliant with NY energy codes.',
+    keywords: ['New York LED lighting', 'LED supplier New York', 'commercial lighting NY', 'Con Edison rebate', 'National Grid LED rebate', 'NYC LED lighting', 'Manhattan commercial lighting'],
+    electricityCost: '$0.18-$0.28/kWh',
+    topUtilities: [
+      { name: 'Con Edison (NYC metro)', rebateRange: '$30-$80/fixture' },
+      { name: 'National Grid (upstate)', rebateRange: '$35-$100/fixture' },
+      { name: 'PSEG Long Island', rebateRange: '$25-$60/fixture' },
+      { name: 'NYSERDA (statewide)', rebateRange: 'Additional incentives' },
+    ],
+    climate: 'Cold winters require indoor-rated fixtures. Salt and ice on exterior fixtures — IP65+ essential for outdoor applications. Long winter nights increase operating hours for exterior lighting.',
+    lightingNeeds: 'New York has among the highest electricity rates in the US, making LED upgrades extremely cost-effective. The state\'s aggressive Climate Leadership and Community Protection Act drives incentives for energy efficiency upgrades. NYSERDA supplements utility rebates with statewide programs.',
+    seoContent: 'New York\'s high electricity rates and aggressive energy efficiency programs make it one of the best states for LED lighting ROI. Auvolar serves New York commercial customers with DLC Premium certified fixtures qualifying for Con Edison, National Grid, PSEG Long Island, and NYSERDA rebate programs. Combined utility and state rebates can cover 50-70% of fixture costs in many New York projects. Whether you\'re upgrading a Manhattan office building, a Brooklyn warehouse, or an upstate manufacturing facility, our wholesale pricing and free lighting design service help maximize your savings.',
+    nearbyLocations: ['new-jersey', 'connecticut', 'massachusetts'],
+  },
+  {
+    slug: 'florida',
+    name: 'Florida',
+    type: 'state',
+    metaTitle: 'LED Lighting Supplier in Florida | Commercial LED Lights FL | Auvolar',
+    metaDescription: 'Florida commercial LED lighting supplier. FPL & Duke Energy rebates. Hurricane-rated fixtures, IP65+ for coastal salt air. DLC certified.',
+    keywords: ['Florida LED lighting', 'LED supplier Florida', 'commercial lighting FL', 'FPL LED rebate', 'Miami LED lighting', 'Tampa LED lights', 'hurricane rated lighting'],
+    electricityCost: '$0.12-$0.16/kWh',
+    topUtilities: [
+      { name: 'FPL (Florida Power & Light)', rebateRange: '$15-$45/fixture' },
+      { name: 'Duke Energy Florida', rebateRange: '$20-$50/fixture' },
+      { name: 'TECO (Tampa)', rebateRange: '$10-$40/fixture' },
+    ],
+    climate: 'Hot, humid, and hurricane-prone. Coastal salt air accelerates corrosion — IP65+ and marine-grade fixtures essential. High humidity requires sealed outdoor fixtures. Hurricane-rated mounting recommended.',
+    lightingNeeds: 'Florida\'s year-round warm climate means extended hours for outdoor commercial lighting. Coastal locations require corrosion-resistant fixtures. The state\'s large hospitality, retail, and logistics sectors drive significant commercial lighting demand.',
+    seoContent: 'Florida\'s unique combination of heat, humidity, salt air, and hurricane exposure demands durable, weather-resistant LED fixtures. Auvolar serves Florida commercial customers with IP65+ rated fixtures designed for harsh coastal environments. Our wall packs, area lights, and flood lights feature sealed housings and corrosion-resistant hardware suitable for Florida\'s climate. DLC certified fixtures qualify for FPL, Duke Energy, and TECO rebate programs. We serve Miami, Tampa, Orlando, Jacksonville, and all Florida markets with competitive wholesale pricing.',
+    nearbyLocations: ['texas', 'georgia'],
+  },
+  {
+    slug: 'illinois',
+    name: 'Illinois',
+    type: 'state',
+    metaTitle: 'LED Lighting Supplier in Illinois | Commercial LED Lights IL | Auvolar',
+    metaDescription: 'Illinois commercial LED lighting supplier. ComEd & Ameren rebates. DLC certified fixtures for Chicago offices, warehouses, and industrial facilities.',
+    keywords: ['Illinois LED lighting', 'LED supplier Illinois', 'commercial lighting IL', 'ComEd LED rebate', 'Chicago LED lighting', 'Ameren Illinois rebate'],
+    electricityCost: '$0.12-$0.16/kWh',
+    topUtilities: [
+      { name: 'ComEd (Northern IL / Chicago)', rebateRange: '$20-$60/fixture' },
+      { name: 'Ameren Illinois (Central/Southern)', rebateRange: '$15-$50/fixture' },
+    ],
+    climate: 'Cold winters with snow and ice. Fixtures must be rated for sub-zero temperatures. Salt and de-icing chemicals affect exterior fixtures. Long heating season means LED\'s lower heat output is a minor negative in winter but major positive in summer.',
+    lightingNeeds: 'Illinois is a major logistics and manufacturing hub, with massive warehouse and distribution center footprints in the Chicago metro area. The state\'s Climate and Equitable Jobs Act drives energy efficiency investments.',
+    seoContent: 'Illinois — particularly the Chicago metropolitan area — is one of the largest warehouse and logistics markets in the US. Auvolar serves Illinois commercial customers with DLC Premium certified LED fixtures qualifying for ComEd and Ameren Illinois rebate programs. Our high bay lights are especially popular for Chicago-area distribution centers, manufacturing facilities, and cold storage operations. Contact us for wholesale pricing on your Illinois commercial lighting project.',
+    nearbyLocations: ['michigan', 'ohio', 'indiana'],
+  },
+  {
+    slug: 'washington',
+    name: 'Washington',
+    type: 'state',
+    metaTitle: 'LED Lighting Supplier in Washington | Commercial LED Lights WA | Auvolar',
+    metaDescription: 'Washington state commercial LED lighting supplier. PSE & Seattle City Light rebates. DLC certified for Seattle, Tacoma, and statewide projects.',
+    keywords: ['Washington LED lighting', 'LED supplier Washington', 'commercial lighting WA', 'PSE LED rebate', 'Seattle LED lighting', 'Seattle City Light rebate'],
+    electricityCost: '$0.09-$0.12/kWh',
+    topUtilities: [
+      { name: 'Puget Sound Energy (PSE)', rebateRange: '$20-$70/fixture' },
+      { name: 'Seattle City Light', rebateRange: '$25-$75/fixture' },
+      { name: 'Tacoma Power', rebateRange: '$15-$50/fixture' },
+    ],
+    climate: 'Pacific Northwest — mild but cloudy. Extended cloud cover means less natural daylight, increasing reliance on artificial lighting. Wet conditions require IP65+ for outdoor fixtures.',
+    lightingNeeds: 'Washington\'s tech industry (Amazon, Microsoft campus facilities), port logistics (Seattle/Tacoma ports), and agricultural sector drive diverse commercial lighting needs. Strong state energy efficiency programs provide excellent rebates.',
+    seoContent: 'Washington state offers excellent LED rebate programs through PSE, Seattle City Light, and Tacoma Power. Auvolar serves Washington commercial customers across the tech corridor, port logistics operations, and agricultural sector. Our DLC Premium fixtures qualify for the state\'s generous rebate programs, while our free photometric design service helps optimize lighting for Washington\'s cloud-heavy climate where artificial lighting plays a larger role year-round.',
+    nearbyLocations: ['oregon', 'california'],
+  },
+  {
+    slug: 'arizona',
+    name: 'Arizona',
+    type: 'state',
+    metaTitle: 'LED Lighting Supplier in Arizona | Commercial LED Lights AZ | Auvolar',
+    metaDescription: 'Arizona commercial LED lighting supplier. Dark Sky compliant fixtures, high-temperature rated. APS & SRP rebates. Ships 2-3 days from California.',
+    keywords: ['Arizona LED lighting', 'LED supplier Arizona', 'commercial lighting AZ', 'Dark Sky Arizona', 'Phoenix LED lighting', 'APS rebate LED', 'SRP LED rebate'],
+    electricityCost: '$0.11-$0.14/kWh',
+    topUtilities: [
+      { name: 'APS (Arizona Public Service)', rebateRange: '$15-$55/fixture' },
+      { name: 'SRP (Salt River Project)', rebateRange: '$15-$50/fixture' },
+      { name: 'TEP (Tucson Electric Power)', rebateRange: '$10-$40/fixture' },
+    ],
+    climate: 'Extreme desert heat — fixtures must be rated for 50°C+ ambient temperatures. Arizona has the strictest Dark Sky lighting laws in the nation. Low humidity is favorable for outdoor fixtures.',
+    lightingNeeds: 'Arizona\'s statewide Dark Sky ordinance requires full cutoff, warm-color fixtures for all outdoor lighting. The state\'s extreme heat demands fixtures with high-temperature rated drivers. Rapid population and commercial growth in Phoenix/Scottsdale drives strong demand.',
+    seoContent: 'Arizona presents unique lighting requirements: statewide Dark Sky ordinances require full cutoff fixtures with warm color temperatures, and extreme desert heat demands fixtures rated for 50°C+ ambient operation. Auvolar ships to Arizona in 2-3 days from our California warehouse. Our full cutoff wall packs and area lights meet Arizona Dark Sky requirements, while all outdoor fixtures feature high-temperature rated drivers for reliable operation in Phoenix summers. APS, SRP, and TEP rebate programs further reduce project costs.',
+    nearbyLocations: ['california', 'nevada', 'new-mexico'],
+  },
+  {
+    slug: 'nevada',
+    name: 'Nevada',
+    type: 'state',
+    metaTitle: 'LED Lighting Supplier in Nevada | Commercial LED Lights NV | Auvolar',
+    metaDescription: 'Nevada commercial LED lighting supplier. Las Vegas hospitality, Reno warehouses. NV Energy rebates. Ships next-day from California.',
+    keywords: ['Nevada LED lighting', 'LED supplier Nevada', 'commercial lighting NV', 'Las Vegas LED lighting', 'NV Energy rebate', 'Reno LED lights', 'casino lighting'],
+    electricityCost: '$0.10-$0.13/kWh',
+    topUtilities: [
+      { name: 'NV Energy', rebateRange: '$15-$55/fixture' },
+    ],
+    climate: 'Desert — extreme heat in summer, cool winters. Low humidity favorable for electronics but dust can accumulate. Las Vegas hospitality sector has unique lighting aesthetic requirements.',
+    lightingNeeds: 'Nevada\'s economy is driven by hospitality (Las Vegas), logistics (Reno distribution), and growing data center and manufacturing sectors. The hospitality industry demands high-quality, dimmable lighting with excellent CRI.',
+    seoContent: 'Nevada\'s diverse commercial lighting needs range from Las Vegas hospitality and entertainment to Reno\'s growing logistics hub. Auvolar serves Nevada with next-day shipping from our California warehouse — the fastest delivery in the region. Our DLC Premium fixtures qualify for NV Energy rebate programs. For Las Vegas hotels and restaurants, we offer warm-white dimmable fixtures. For Reno warehouses and distribution centers, our high bay lights deliver maximum efficiency.',
+    nearbyLocations: ['california', 'arizona'],
+  },
+  {
+    slug: 'oregon',
+    name: 'Oregon',
+    type: 'state',
+    metaTitle: 'LED Lighting Supplier in Oregon | Commercial LED Lights OR | Auvolar',
+    metaDescription: 'Oregon commercial LED lighting supplier. Portland General & Pacific Power rebates. DLC certified for Portland, Eugene, and statewide projects.',
+    keywords: ['Oregon LED lighting', 'LED supplier Oregon', 'commercial lighting OR', 'Portland LED lighting', 'Portland General rebate', 'Pacific Power LED rebate'],
+    electricityCost: '$0.09-$0.12/kWh',
+    topUtilities: [
+      { name: 'Portland General Electric', rebateRange: '$20-$65/fixture' },
+      { name: 'Pacific Power', rebateRange: '$15-$55/fixture' },
+      { name: 'Energy Trust of Oregon', rebateRange: 'Additional incentives' },
+    ],
+    climate: 'Pacific Northwest — wet, mild. Constant moisture requires IP65+ for all outdoor fixtures. Cloudy climate increases reliance on quality artificial lighting.',
+    lightingNeeds: 'Oregon\'s Energy Trust provides additional incentives on top of utility rebates, making it one of the best states for LED upgrade ROI. Strong environmental values drive early adoption of energy-efficient lighting.',
+    seoContent: 'Oregon offers some of the best combined LED rebate programs in the US through Portland General Electric, Pacific Power, and the Energy Trust of Oregon. Auvolar serves Oregon commercial customers with DLC Premium certified fixtures that maximize rebate eligibility. The Pacific Northwest\'s cloudy climate makes quality indoor lighting especially important for productivity and wellbeing.',
+    nearbyLocations: ['washington', 'california'],
+  },
+  {
+    slug: 'colorado',
+    name: 'Colorado',
+    type: 'state',
+    metaTitle: 'LED Lighting Supplier in Colorado | Commercial LED Lights CO | Auvolar',
+    metaDescription: 'Colorado commercial LED lighting supplier. Xcel Energy rebates. Dark Sky compliant fixtures for mountain communities. DLC certified.',
+    keywords: ['Colorado LED lighting', 'LED supplier Colorado', 'commercial lighting CO', 'Xcel Energy LED rebate', 'Denver LED lighting', 'Dark Sky Colorado lighting'],
+    electricityCost: '$0.11-$0.14/kWh',
+    topUtilities: [
+      { name: 'Xcel Energy', rebateRange: '$20-$60/fixture' },
+      { name: 'Colorado Springs Utilities', rebateRange: '$15-$45/fixture' },
+    ],
+    climate: 'High altitude — intense UV degrades fixture housing faster. Cold winters with snow. Many mountain communities have Dark Sky ordinances. Low humidity is favorable for outdoor fixtures.',
+    lightingNeeds: 'Colorado\'s mix of urban commercial (Denver/Boulder tech corridor) and mountain resort communities creates diverse lighting needs. Numerous Dark Sky communities require compliant fixtures.',
+    seoContent: 'Colorado combines a thriving Denver metro commercial sector with mountain communities that have strict Dark Sky lighting requirements. Auvolar serves both markets: high-efficiency DLC-certified fixtures for Denver offices, warehouses, and retail, plus full cutoff Dark Sky compliant outdoor fixtures for Aspen, Vail, Boulder, and other mountain communities. Xcel Energy rebates further improve project ROI.',
+    nearbyLocations: ['arizona', 'nevada'],
+  },
+  // === CITIES ===
+  {
+    slug: 'los-angeles',
+    name: 'Los Angeles',
+    type: 'city',
+    state: 'California',
+    metaTitle: 'LED Lighting Supplier in Los Angeles | Commercial LED Lights LA | Auvolar',
+    metaDescription: 'Los Angeles LED lighting supplier based in City of Industry, CA. Same-day local delivery. LADWP & SCE rebates. Wholesale contractor pricing.',
+    keywords: ['Los Angeles LED lighting', 'LA LED lights', 'commercial lighting Los Angeles', 'LADWP LED rebate', 'SCE rebate Los Angeles', 'LED supplier LA', 'warehouse lighting Los Angeles'],
+    electricityCost: '$0.22-$0.30/kWh',
+    topUtilities: [
+      { name: 'LADWP', rebateRange: 'Custom commercial incentives' },
+      { name: 'SCE (surrounding areas)', rebateRange: '$25-$100/fixture' },
+    ],
+    climate: 'Mediterranean — mild year-round. Excellent solar exposure for outdoor fixtures. Air quality regulations favor energy-efficient equipment.',
+    lightingNeeds: 'Los Angeles is one of the largest commercial/industrial markets in the US, with massive warehouse corridors in the Inland Empire, downtown office towers, and sprawling retail centers.',
+    seoContent: 'Auvolar is located in City of Industry, California — right in the heart of the Greater Los Angeles industrial corridor. We offer same-day pickup and next-day local delivery throughout Los Angeles County, the Inland Empire, Orange County, and the San Fernando Valley. Our proximity means the fastest delivery and lowest shipping costs for LA-area contractors and facility managers. LADWP and SCE rebate programs make LED upgrades especially attractive in Los Angeles, where electricity rates are among the highest in the nation. Contact us for a site visit — we\'re local.',
+    nearbyLocations: ['california', 'san-diego', 'san-francisco'],
+  },
+  {
+    slug: 'san-francisco',
+    name: 'San Francisco Bay Area',
+    type: 'city',
+    state: 'California',
+    metaTitle: 'LED Lighting Supplier in San Francisco | Bay Area LED Lights | Auvolar',
+    metaDescription: 'San Francisco Bay Area LED lighting supplier. PG&E rebates $25-$75/fixture. DLC certified commercial LED for offices, tech campuses, and warehouses.',
+    keywords: ['San Francisco LED lighting', 'Bay Area LED lights', 'commercial lighting San Francisco', 'PG&E LED rebate', 'Silicon Valley LED lighting', 'San Jose LED lights'],
+    electricityCost: '$0.24-$0.32/kWh',
+    topUtilities: [
+      { name: 'PG&E', rebateRange: '$25-$75/fixture' },
+      { name: 'Silicon Valley Power', rebateRange: '$20-$60/fixture' },
+    ],
+    climate: 'Cool, foggy coastal climate with mild temperatures. Coastal moisture and fog require IP65+ for outdoor fixtures.',
+    lightingNeeds: 'The Bay Area\'s tech campuses, office buildings, and logistics centers require modern, efficient lighting. High electricity rates make LED retrofits extremely cost-effective.',
+    seoContent: 'The San Francisco Bay Area has the highest commercial electricity rates in the nation, making LED lighting upgrades the single best ROI investment for Bay Area businesses. Auvolar serves San Francisco, San Jose, Oakland, and the entire Silicon Valley with 1-2 day shipping from our Southern California warehouse. PG&E rebates of $25-$75 per fixture further accelerate payback. We specialize in tech campus lighting, office retrofits, and warehouse upgrades for the Bay Area\'s diverse commercial landscape.',
+    nearbyLocations: ['california', 'los-angeles'],
+  },
+  {
+    slug: 'san-diego',
+    name: 'San Diego',
+    type: 'city',
+    state: 'California',
+    metaTitle: 'LED Lighting Supplier in San Diego | Commercial LED Lights SD | Auvolar',
+    metaDescription: 'San Diego LED lighting supplier. SDG&E rebates $20-$70/fixture. Next-day delivery from City of Industry. DLC certified commercial LED.',
+    keywords: ['San Diego LED lighting', 'commercial lighting San Diego', 'SDG&E LED rebate', 'LED supplier San Diego'],
+    electricityCost: '$0.25-$0.35/kWh',
+    topUtilities: [
+      { name: 'SDG&E', rebateRange: '$20-$70/fixture' },
+    ],
+    climate: 'Mild, sunny year-round. Coastal salt air requires corrosion-resistant outdoor fixtures. Excellent conditions for solar LED options.',
+    lightingNeeds: 'San Diego\'s military bases, biotech industry, hospitality sector, and growing commercial real estate market drive LED demand.',
+    seoContent: 'San Diego businesses face some of the highest electricity rates in the US through SDG&E, making LED upgrades an urgent priority. Auvolar offers next-day delivery to San Diego from our City of Industry warehouse — just 100 miles north. SDG&E rebates of $20-$70 per fixture significantly reduce project costs. We serve San Diego\'s military bases, biotech campuses, hotels, retail centers, and commercial properties with DLC Premium certified LED fixtures.',
+    nearbyLocations: ['california', 'los-angeles'],
+  },
+  {
+    slug: 'houston',
+    name: 'Houston',
+    type: 'city',
+    state: 'Texas',
+    metaTitle: 'LED Lighting Supplier in Houston | Commercial LED Lights Houston TX | Auvolar',
+    metaDescription: 'Houston commercial LED lighting supplier. CenterPoint rebates. Industrial & petrochemical facility LED. DLC certified, wholesale pricing.',
+    keywords: ['Houston LED lighting', 'commercial lighting Houston', 'CenterPoint LED rebate', 'Houston warehouse lighting', 'petrochemical LED lighting', 'industrial lighting Houston'],
+    electricityCost: '$0.10-$0.13/kWh',
+    topUtilities: [
+      { name: 'CenterPoint Energy', rebateRange: '$10-$50/fixture' },
+    ],
+    climate: 'Hot and humid — extreme summer heat requires high-temperature rated drivers. Hurricane risk demands secure mounting. Humidity requires sealed outdoor fixtures.',
+    lightingNeeds: 'Houston\'s petrochemical, logistics, healthcare, and commercial sectors create massive demand for industrial and commercial LED lighting.',
+    seoContent: 'Houston\'s industrial and commercial sectors — from petrochemical refineries to the Texas Medical Center to massive distribution warehouses — require reliable, high-performance LED lighting. Auvolar serves Houston with 3-4 day standard shipping and freight options for large orders. CenterPoint Energy rebates help offset project costs. Our vapor tight and high bay fixtures are especially popular for Houston\'s industrial facilities, rated for the high-temperature, high-humidity conditions common in the Gulf Coast region.',
+    nearbyLocations: ['texas', 'dallas'],
+  },
+  {
+    slug: 'dallas',
+    name: 'Dallas / Fort Worth',
+    type: 'city',
+    state: 'Texas',
+    metaTitle: 'LED Lighting Supplier in Dallas | DFW Commercial LED Lights | Auvolar',
+    metaDescription: 'Dallas-Fort Worth LED lighting supplier. Oncor rebates $15-$60/fixture. DLC certified commercial LED for warehouses, offices, and retail.',
+    keywords: ['Dallas LED lighting', 'DFW LED lights', 'commercial lighting Dallas', 'Oncor LED rebate', 'Fort Worth LED lighting', 'Dallas warehouse lighting'],
+    electricityCost: '$0.09-$0.12/kWh',
+    topUtilities: [
+      { name: 'Oncor', rebateRange: '$15-$60/fixture' },
+    ],
+    climate: 'Hot summers, occasional severe storms. Wide temperature range requires versatile fixture ratings.',
+    lightingNeeds: 'Dallas-Fort Worth is one of the fastest-growing commercial markets in the US, with massive new warehouse construction, office development, and retail expansion.',
+    seoContent: 'The Dallas-Fort Worth metroplex is experiencing explosive commercial growth, with new warehouses, offices, and retail centers being built at record pace. Auvolar serves the DFW market with DLC Premium certified LED fixtures qualifying for Oncor rebate programs. Our high bay lights, troffers, and outdoor fixtures are ideal for the new construction and retrofit projects driving DFW\'s commercial expansion.',
+    nearbyLocations: ['texas', 'houston'],
+  },
+  {
+    slug: 'chicago',
+    name: 'Chicago',
+    type: 'city',
+    state: 'Illinois',
+    metaTitle: 'LED Lighting Supplier in Chicago | Commercial LED Lights Chicago IL | Auvolar',
+    metaDescription: 'Chicago commercial LED lighting supplier. ComEd rebates $20-$60/fixture. Cold-rated fixtures for Midwest winters. DLC certified, wholesale pricing.',
+    keywords: ['Chicago LED lighting', 'commercial lighting Chicago', 'ComEd LED rebate', 'Chicago warehouse lighting', 'Illinois LED supplier'],
+    electricityCost: '$0.12-$0.16/kWh',
+    topUtilities: [
+      { name: 'ComEd', rebateRange: '$20-$60/fixture' },
+    ],
+    climate: 'Cold winters (sub-zero) and hot summers. Fixtures must handle extreme temperature range. Salt and de-icing chemicals affect exterior fixtures.',
+    lightingNeeds: 'Chicago is the logistics capital of North America — massive warehouse and distribution center demand, plus a large office and institutional sector.',
+    seoContent: 'Chicago\'s position as the logistics hub of North America creates enormous demand for warehouse and distribution center LED lighting. Auvolar serves the Chicago metro area with DLC Premium certified high bay lights, troffers, and outdoor fixtures rated for Midwest winters. ComEd rebates of $20-$60 per fixture reduce project costs, and our free photometric layout service optimizes fixture placement for Chicago\'s massive warehouse footprints.',
+    nearbyLocations: ['illinois', 'detroit'],
+  },
+  {
+    slug: 'miami',
+    name: 'Miami',
+    type: 'city',
+    state: 'Florida',
+    metaTitle: 'LED Lighting Supplier in Miami | Commercial LED Lights Miami FL | Auvolar',
+    metaDescription: 'Miami commercial LED lighting supplier. FPL rebates. Hurricane-rated, salt-air resistant fixtures. Hospitality and commercial LED. DLC certified.',
+    keywords: ['Miami LED lighting', 'commercial lighting Miami', 'FPL LED rebate', 'Miami hotel lighting', 'hurricane rated LED', 'South Florida LED supplier'],
+    electricityCost: '$0.13-$0.16/kWh',
+    topUtilities: [
+      { name: 'FPL (Florida Power & Light)', rebateRange: '$15-$45/fixture' },
+    ],
+    climate: 'Tropical — hot, humid year-round with hurricane season. Salt air from ocean proximity accelerates corrosion. IP65+ mandatory for all outdoor applications.',
+    lightingNeeds: 'Miami\'s hospitality, retail, and commercial sectors demand both aesthetic and functional lighting. Tourism-driven economy requires attractive, well-lit properties.',
+    seoContent: 'Miami\'s tropical climate, salt air, and hurricane exposure demand the most durable LED fixtures available. Auvolar serves South Florida with IP65+ rated fixtures featuring corrosion-resistant housings for the coastal environment. Our warm-white dimmable fixtures serve Miami\'s hospitality sector, while industrial-grade high bays and wall packs protect commercial properties. FPL rebates help offset project costs for Miami-Dade commercial LED upgrades.',
+    nearbyLocations: ['florida'],
+  },
+  {
+    slug: 'atlanta',
+    name: 'Atlanta',
+    type: 'city',
+    state: 'Georgia',
+    metaTitle: 'LED Lighting Supplier in Atlanta | Commercial LED Lights Atlanta GA | Auvolar',
+    metaDescription: 'Atlanta commercial LED lighting supplier. Georgia Power rebates. DLC certified fixtures for logistics, offices, and retail. Wholesale pricing.',
+    keywords: ['Atlanta LED lighting', 'commercial lighting Atlanta', 'Georgia Power LED rebate', 'Atlanta warehouse lighting', 'Georgia LED supplier'],
+    electricityCost: '$0.11-$0.14/kWh',
+    topUtilities: [
+      { name: 'Georgia Power', rebateRange: '$15-$40/fixture' },
+    ],
+    climate: 'Hot, humid summers. Mild winters. Occasional ice storms. Outdoor fixtures need IP65+ for humidity.',
+    lightingNeeds: 'Atlanta is a major logistics hub (Hartsfield-Jackson airport, multiple rail corridors) with massive warehouse and distribution operations.',
+    seoContent: 'Atlanta\'s status as a logistics and distribution powerhouse creates strong demand for commercial LED lighting, especially high bay lights for warehouses and area lights for distribution yards. Auvolar serves Atlanta with DLC Premium certified fixtures qualifying for Georgia Power rebate programs. Our free photometric design service helps optimize lighting for Atlanta\'s large-scale logistics facilities.',
+    nearbyLocations: ['florida', 'texas'],
+  },
+  {
+    slug: 'seattle',
+    name: 'Seattle',
+    type: 'city',
+    state: 'Washington',
+    metaTitle: 'LED Lighting Supplier in Seattle | Commercial LED Lights Seattle WA | Auvolar',
+    metaDescription: 'Seattle commercial LED lighting supplier. Seattle City Light rebates $25-$75/fixture. LED for tech campuses, warehouses, port facilities.',
+    keywords: ['Seattle LED lighting', 'commercial lighting Seattle', 'Seattle City Light rebate', 'Seattle warehouse lighting', 'Pacific Northwest LED'],
+    electricityCost: '$0.10-$0.13/kWh',
+    topUtilities: [
+      { name: 'Seattle City Light', rebateRange: '$25-$75/fixture' },
+      { name: 'PSE', rebateRange: '$20-$70/fixture' },
+    ],
+    climate: 'Cool, wet Pacific Northwest climate. Persistent cloud cover increases reliance on artificial lighting. Constant moisture requires IP65+ for outdoor.',
+    lightingNeeds: 'Seattle\'s tech industry, port operations, and growing commercial sector drive demand for modern, efficient LED lighting.',
+    seoContent: 'Seattle\'s cloud-heavy climate makes quality artificial lighting essential for productivity and wellbeing in commercial spaces. Auvolar serves Seattle with DLC Premium fixtures qualifying for Seattle City Light and PSE rebates — among the best combined rebate programs in the nation. Our LED troffers and panels are popular for Seattle\'s tech campuses and office buildings, while high bays serve the port and logistics sector.',
+    nearbyLocations: ['washington', 'oregon'],
+  },
+  {
+    slug: 'phoenix',
+    name: 'Phoenix',
+    type: 'city',
+    state: 'Arizona',
+    metaTitle: 'LED Lighting Supplier in Phoenix | Commercial LED Lights Phoenix AZ | Auvolar',
+    metaDescription: 'Phoenix commercial LED lighting supplier. APS & SRP rebates. High-temperature rated LED, Dark Sky compliant. Ships 2-3 days from California.',
+    keywords: ['Phoenix LED lighting', 'commercial lighting Phoenix', 'APS LED rebate', 'SRP rebate Phoenix', 'Phoenix warehouse lighting', 'Dark Sky Phoenix lighting'],
+    electricityCost: '$0.11-$0.14/kWh',
+    topUtilities: [
+      { name: 'APS', rebateRange: '$15-$55/fixture' },
+      { name: 'SRP', rebateRange: '$15-$50/fixture' },
+    ],
+    climate: 'Extreme desert heat — summer temperatures regularly exceed 115°F. Fixtures must be rated for 50°C+ ambient. Dark Sky ordinances in effect.',
+    lightingNeeds: 'Phoenix is one of the fastest-growing metro areas in the US, with massive new commercial construction requiring energy-efficient lighting.',
+    seoContent: 'Phoenix\'s extreme heat presents a unique lighting challenge — standard fixtures can fail when ambient temperatures exceed 50°C (122°F). Auvolar provides high-temperature rated LED fixtures designed for desert conditions, with drivers rated to 65°C for reliable Phoenix operation. Our full cutoff outdoor fixtures meet Arizona\'s Dark Sky requirements. APS and SRP rebates make LED upgrades cost-effective for Phoenix\'s rapidly growing commercial sector. 2-3 day shipping from our California warehouse.',
+    nearbyLocations: ['arizona', 'nevada', 'california'],
+  },
+]
+
+// Helper functions
+export function getLocation(slug: string): LocationData | undefined {
+  return locations.find(l => l.slug === slug)
+}
+
+export function getAllLocationSlugs(): string[] {
+  return locations.map(l => l.slug)
+}
+
+export function getAllLocations(): LocationData[] {
+  return locations
+}
