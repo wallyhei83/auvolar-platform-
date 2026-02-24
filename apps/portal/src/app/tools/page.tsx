@@ -267,10 +267,10 @@ export default function ToolsPage() {
             </p>
             <div className="mt-6 flex flex-wrap items-center justify-center gap-4">
               <a
-                href="tel:1-888-555-0123"
+                href="tel:+16263428856"
                 className="inline-flex items-center gap-2 rounded-lg border border-gray-300 px-6 py-3 font-medium text-gray-700 hover:border-brand hover:text-brand"
               >
-                Call 1-888-555-0123
+                Call (626) 342-8856
               </a>
               <Link
                 href="/support"

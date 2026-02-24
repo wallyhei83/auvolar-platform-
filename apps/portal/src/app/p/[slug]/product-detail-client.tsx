@@ -425,8 +425,8 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
               <a href="mailto:sales@auvolar.com" className="flex items-center gap-1 text-sm text-yellow-600 hover:underline">
                 <Mail className="w-4 h-4" /> sales@auvolar.com
               </a>
-              <a href="tel:+16268889958" className="flex items-center gap-1 text-sm text-yellow-600 hover:underline">
-                <Phone className="w-4 h-4" /> (626) 888-9958
+              <a href="tel:+16263428856" className="flex items-center gap-1 text-sm text-yellow-600 hover:underline">
+                <Phone className="w-4 h-4" /> (626) 342-8856
               </a>
             </div>
           </div>

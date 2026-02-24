@@ -62,7 +62,7 @@ export default async function LocationPage({
             name: `Auvolar LED Lighting — ${loc.name}`,
             description: loc.metaDescription,
             url: `https://www.auvolar.com/locations/${slug}`,
-            telephone: '+1-626-888-9958',
+            telephone: '+1-626-342-8856',
             email: 'sales@auvolar.com',
             address: {
               '@type': 'PostalAddress',
@@ -244,7 +244,7 @@ export default async function LocationPage({
                 </Link>
                 <div className="mt-4 space-y-2 text-sm">
                   <a href="mailto:sales@auvolar.com" className="block text-yellow-700 hover:underline">📧 sales@auvolar.com</a>
-                  <a href="tel:+16268889958" className="block text-yellow-700 hover:underline">📞 (626) 888-9958</a>
+                  <a href="tel:+16263428856" className="block text-yellow-700 hover:underline">📞 (626) 342-8856</a>
                 </div>
               </div>
 

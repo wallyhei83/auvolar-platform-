@@ -74,7 +74,7 @@ export async function GET() {
     o += `All commercial fixtures are DLC Premium certified (the highest tier), qualifying for maximum utility rebates nationwide. `
     o += `We offer free photometric lighting design, rebate application assistance, and a 5-year warranty on all fixtures.\n\n`
     o += `- **Address**: 17531 Railroad St Ste F, City of Industry, CA 91748\n`
-    o += `- **Phone**: (626) 888-9958\n`
+    o += `- **Phone**: (626) 342-8856\n`
     o += `- **Email**: sales@auvolar.com\n`
     o += `- **Website**: ${baseUrl}\n`
     o += `- **Shipping**: Nationwide from California. Same-day shipping on most in-stock orders.\n`

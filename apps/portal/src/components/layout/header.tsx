@@ -176,9 +176,9 @@ export function Header() {
           <div className="flex items-center gap-6">
             <Link href="/track-order" className="hover:text-brand">Track Order</Link>
             <Link href="/support" className="hover:text-brand">Support</Link>
-            <a href="tel:1-888-555-0123" className="flex items-center gap-1.5 hover:text-brand">
+            <a href="tel:+16263428856" className="flex items-center gap-1.5 hover:text-brand">
               <Phone className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">1-888-555-0123</span>
+              <span className="hidden sm:inline">(626) 342-8856</span>
             </a>
           </div>
         </div>

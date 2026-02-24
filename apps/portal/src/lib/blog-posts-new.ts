@@ -2059,6 +2059,6 @@ Once you've upgraded to LED, consider these additional electricity reductions:
 3. **DLC certified** — maximize utility rebates
 4. **Free photometric designs** — optimal fixture placement
 
-Contact sales@auvolar.com or call (626) 888-9958 for a custom energy savings proposal.`,
+Contact sales@auvolar.com or call (626) 342-8856 for a custom energy savings proposal.`,
   },
 ]

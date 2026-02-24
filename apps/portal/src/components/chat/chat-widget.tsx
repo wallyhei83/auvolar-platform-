@@ -186,7 +186,7 @@ export function ChatWidget() {
         ...prev,
         {
           role: 'assistant',
-          content: "I apologize, I'm having a technical issue. Please email us at sales@auvolar.com or call 1-888-555-0123 and we'll help you right away!",
+          content: "I apologize, I'm having a technical issue. Please email us at sales@auvolar.com or call (626) 342-8856 and we'll help you right away!",
           timestamp: new Date(),
         },
       ])
@@ -391,8 +391,8 @@ export function ChatWidget() {
             sales@auvolar.com
           </a>
           <span className="text-gray-300">•</span>
-          <a href="tel:1-888-555-0123" className="text-[10px] text-gray-400 hover:text-gray-600">
-            1-888-555-0123
+          <a href="tel:+16263428856" className="text-[10px] text-gray-400 hover:text-gray-600">
+            (626) 342-8856
           </a>
         </div>
       </div>

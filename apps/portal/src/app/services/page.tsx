@@ -116,10 +116,10 @@ export default function ServicesPage() {
                 Contact Us
               </Link>
               <a 
-                href="tel:1-888-555-0123" 
+                href="tel:+16263428856" 
                 className="px-8 py-3 border border-gray-300 font-medium rounded-lg hover:bg-gray-100 transition-colors"
               >
-                Call 1-888-555-0123
+                Call (626) 342-8856
               </a>
             </div>
           </div>

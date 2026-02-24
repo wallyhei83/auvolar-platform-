@@ -264,7 +264,7 @@ export default function SpecSheetPage() {
             <div>
               <p className="font-medium text-gray-700">Auvolar</p>
               <p>www.auvolar.com</p>
-              <p>1-888-555-0123</p>
+              <p>(626) 342-8856</p>
             </div>
             <div className="text-right">
               <p>Specifications subject to change without notice.</p>

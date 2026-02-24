@@ -185,7 +185,7 @@ export default function ReturnPolicyPage() {
           <ul className="list-disc pl-6 space-y-2 text-gray-700 mb-4">
             <li>Email <a href="mailto:sales@auvolar.com" className="text-yellow-600 hover:underline">sales@auvolar.com</a> with your order number, product SKU, and reason for return</li>
             <li>Or submit an <Link href="/support/rma" className="text-yellow-600 hover:underline">online RMA request form</Link></li>
-            <li>Or call us at <a href="tel:+16268889958" className="text-yellow-600 hover:underline">(626) 888-9958</a> during business hours</li>
+            <li>Or call us at <a href="tel:+16263428856" className="text-yellow-600 hover:underline">(626) 342-8856</a> during business hours</li>
           </ul>
           <p className="text-gray-700 mb-4">
             <strong>Do not ship returns without an RMA number.</strong> Returns sent without authorization may be refused or delayed.
@@ -297,7 +297,7 @@ export default function ReturnPolicyPage() {
           </p>
           <ul className="list-disc pl-6 space-y-2 text-gray-700 mb-8">
             <li>📧 Email: <a href="mailto:sales@auvolar.com" className="text-yellow-600 hover:underline">sales@auvolar.com</a></li>
-            <li>📞 Phone: <a href="tel:+16268889958" className="text-yellow-600 hover:underline">(626) 888-9958</a></li>
+            <li>📞 Phone: <a href="tel:+16263428856" className="text-yellow-600 hover:underline">(626) 342-8856</a></li>
             <li>💬 Online: <Link href="/support/rma" className="text-yellow-600 hover:underline">Submit an RMA Request</Link></li>
           </ul>
         </div>

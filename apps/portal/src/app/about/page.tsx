@@ -234,7 +234,7 @@ export default function AboutPage() {
               </div>
               <div>
                 <p className="text-sm text-gray-700">Phone</p>
-                <p className="font-semibold text-black">1-888-555-0123</p>
+                <p className="font-semibold text-black">(626) 342-8856</p>
               </div>
             </div>
             

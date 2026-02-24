@@ -310,14 +310,14 @@ function buildConfirmationEmail(type: string, name: string, body: Record<string,
           <ul>
             <li>Our team will review your request within 1 business day</li>
             <li>We'll reach out via email with pricing or any follow-up questions</li>
-            <li>For urgent requests, call us at 1-888-555-0123</li>
+            <li>For urgent requests, call us at (626) 342-8856</li>
           </ul>
           <p>Thank you for choosing Auvolar!</p>
           <p>Best regards,<br>The Auvolar Team</p>
         </div>
         <div class="footer">
           <p>Auvolar - Light Done Right</p>
-          <p>1-888-555-0123 | sales@auvolar.com</p>
+          <p>(626) 342-8856 | sales@auvolar.com</p>
         </div>
       </div>
     </body>

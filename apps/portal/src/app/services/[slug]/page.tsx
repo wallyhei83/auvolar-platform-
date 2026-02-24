@@ -266,9 +266,9 @@ export default function ServicePage() {
                 </div>
               </div>
               <div className="space-y-4">
-                <a href="tel:1-888-555-0123" className="flex items-center gap-3 text-gray-300 hover:text-white">
+                <a href="tel:+16263428856" className="flex items-center gap-3 text-gray-300 hover:text-white">
                   <Phone className="w-5 h-5" />
-                  <span>1-888-555-0123</span>
+                  <span>(626) 342-8856</span>
                 </a>
                 <a href="mailto:services@auvolar.com" className="flex items-center gap-3 text-gray-300 hover:text-white">
                   <Mail className="w-5 h-5" />

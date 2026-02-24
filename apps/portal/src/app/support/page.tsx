@@ -203,7 +203,7 @@ export default function SupportPage() {
                 <Phone className="h-6 w-6 text-black" />
               </div>
               <h3 className="mt-4 font-semibold text-black">Call Us</h3>
-              <p className="mt-1 text-gray-800">1-888-555-0123</p>
+              <p className="mt-1 text-gray-800">(626) 342-8856</p>
               <p className="text-sm text-gray-700">Mon-Fri 8am-6pm CST</p>
             </div>
             

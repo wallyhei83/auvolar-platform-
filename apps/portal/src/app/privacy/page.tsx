@@ -67,7 +67,7 @@ export default function PrivacyPage() {
             <p className="text-gray-600">
               Auvolar<br />
               Email: privacy@auvolar.com<br />
-              Phone: 1-888-555-0123
+              Phone: (626) 342-8856
             </p>
           </div>
         </div>

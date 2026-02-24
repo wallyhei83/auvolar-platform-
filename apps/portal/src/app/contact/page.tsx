@@ -112,8 +112,8 @@ function ContactPageInner() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900">Phone</h3>
-                  <a href="tel:1-888-555-0123" className="text-brand hover:underline">
-                    1-888-555-0123
+                  <a href="tel:+16263428856" className="text-brand hover:underline">
+                    (626) 342-8856
                   </a>
                 </div>
               </div>

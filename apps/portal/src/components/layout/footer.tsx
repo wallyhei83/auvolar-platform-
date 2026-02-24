@@ -105,9 +105,9 @@ export function Footer() {
             
             {/* Contact Info */}
             <div className="mt-6 space-y-2 text-sm">
-              <a href="tel:1-888-555-0123" className="flex items-center gap-2 hover:text-white">
+              <a href="tel:+16263428856" className="flex items-center gap-2 hover:text-white">
                 <Phone className="h-4 w-4 text-brand" />
-                1-888-555-0123
+                (626) 342-8856
               </a>
               <a href="mailto:sales@auvolar.com" className="flex items-center gap-2 hover:text-white">
                 <Mail className="h-4 w-4 text-brand" />

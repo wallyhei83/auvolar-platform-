@@ -74,7 +74,7 @@ export default function InstallGuidePage() {
           </p>
           <p className="text-gray-600 text-sm">
             For technical assistance, please contact our support team at{' '}
-            <a href="tel:1-888-555-0123" className="text-yellow-600 font-medium">1-888-555-0123</a> or 
+            <a href="tel:+16263428856" className="text-yellow-600 font-medium">(626) 342-8856</a> or 
             email <a href="mailto:support@auvolar.com" className="text-yellow-600 font-medium">support@auvolar.com</a>
           </p>
         </div>
