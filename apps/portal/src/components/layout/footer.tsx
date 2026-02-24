@@ -31,10 +31,10 @@ const footerLinks = {
     links: [
       { name: 'Help Center', href: '/support' },
       { name: 'Track Order', href: '/track-order' },
+      { name: 'Returns & Refunds', href: '/support/returns' },
+      { name: 'Warranty', href: '/support/warranty' },
+      { name: 'Shipping Info', href: '/support/shipping' },
       { name: 'Contact Us', href: '/contact' },
-      { name: 'Applications', href: '/applications' },
-      { name: 'Services', href: '/services' },
-      { name: 'About Us', href: '/about' },
     ]
   },
   company: {
