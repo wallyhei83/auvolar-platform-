@@ -2,9 +2,9 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getApplication, getAllApplicationSlugs, type ApplicationData } from '@/lib/applications-data'
-import { getAllProducts, type BCProductFull } from '@/lib/bc-products-server'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
+import { RecommendedProducts } from '@/components/applications/recommended-products'
 import ApplicationPageClient from './application-client'
 
 // Pre-render all application pages at build time
@@ -51,19 +51,6 @@ export default async function ApplicationPage({
   const { slug } = await params
   const app = getApplication(slug)
   if (!app) notFound()
-
-  // Fetch real product data from BigCommerce
-  let bcProducts: BCProductFull[] = []
-  try {
-    const allProducts = await getAllProducts()
-    // Match products by slug from application data
-    const productSlugs = app.recommendedProducts.map(p => p.slug)
-    bcProducts = productSlugs
-      .map(s => allProducts.find(p => p.slug === s))
-      .filter((p): p is BCProductFull => p !== null && p !== undefined)
-  } catch {
-    // Fallback: no real product data
-  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -240,78 +227,12 @@ export default async function ApplicationPage({
           </div>
         </div>
 
-        {/* Recommended Products — real BC data with images & prices */}
-        <div className="max-w-7xl mx-auto px-4 py-16">
-          <h2 className="text-2xl font-bold mb-8">Recommended Products for {app.title}</h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {bcProducts.length > 0
-              ? bcProducts.map((product) => {
-                  const img = product.images.find(i => i.isPrimary)?.url || product.images[0]?.url
-                  const appProduct = app.recommendedProducts.find(p => p.slug === product.slug)
-                  const inStock = product.availability === 'available' || product.inventoryLevel > 0
-                  return (
-                    <Link
-                      key={product.id}
-                      href={`/p/${product.slug}`}
-                      className="bg-white border rounded-xl overflow-hidden hover:shadow-lg transition-shadow group"
-                    >
-                      {/* Product Image */}
-                      <div className="aspect-square bg-gray-50 p-4">
-                        {img ? (
-                          <img src={img} alt={product.name} className="w-full h-full object-contain" />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-gray-300">
-                            <svg className="w-16 h-16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
-                          </div>
-                        )}
-                      </div>
-                      {/* Product Info */}
-                      <div className="p-5">
-                        <h3 className="font-semibold text-gray-900 group-hover:text-yellow-600 transition-colors line-clamp-2 text-sm">
-                          {product.name}
-                        </h3>
-                        <p className="text-xs text-gray-500 mt-1">SKU: {product.sku}</p>
-                        {appProduct && (
-                          <p className="text-sm text-gray-600 mt-2 line-clamp-2">{appProduct.description}</p>
-                        )}
-                        <div className="flex items-center justify-between mt-3">
-                          <span className="text-lg font-bold text-gray-900">${product.price.toFixed(2)}</span>
-                          <span className={`text-xs font-medium px-2 py-1 rounded-full ${inStock ? 'bg-green-50 text-green-700' : 'bg-orange-50 text-orange-700'}`}>
-                            {inStock ? (product.inventoryLevel > 0 ? `${product.inventoryLevel} In Stock` : 'In Stock') : 'Made to Order'}
-                          </span>
-                        </div>
-                        <span className="inline-flex items-center gap-1 mt-3 text-yellow-600 text-sm font-medium">
-                          View Product →
-                        </span>
-                      </div>
-                    </Link>
-                  )
-                })
-              : /* Fallback if BC fetch fails — use static data */
-                app.recommendedProducts.map((product) => (
-                  <Link
-                    key={product.sku}
-                    href={`/p/${product.slug}`}
-                    className="bg-white border rounded-xl p-6 hover:shadow-lg transition-shadow group"
-                  >
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
-                        <svg className="w-5 h-5 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-gray-900 group-hover:text-yellow-600 transition-colors">{product.name}</h3>
-                        <p className="text-xs text-gray-500">{product.sku} • {product.wattage}</p>
-                      </div>
-                    </div>
-                    <p className="text-sm text-gray-600">{product.description}</p>
-                    <span className="inline-flex items-center gap-1 mt-4 text-yellow-600 text-sm font-medium">
-                      View Product →
-                    </span>
-                  </Link>
-                ))
-            }
-          </div>
-        </div>
+        {/* Recommended Products — client component with live BC data */}
+        <RecommendedProducts
+          title={`Recommended Products for ${app.title}`}
+          products={app.recommendedProducts}
+          appSlug={slug}
+        />
 
         {/* Case Study */}
         {app.caseStudy && (
