@@ -35,6 +35,16 @@ const bcCatNames: Record<number, string> = {
   93: 'Corn Bulb', 95: 'Accessory',
 }
 
+// XML-escape special characters
+function xmlEscape(s: string): string {
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;')
+}
+
 interface BCProduct {
   id: number
   name: string
@@ -93,23 +103,25 @@ export async function GET() {
 `
 
     for (const p of products) {
-      const desc = p.description
-        ?.replace(/<[^>]*>/g, '')
+      // Clean description: strip HTML, decode entities, then XML-escape
+      const rawDesc = (p.description || '')
+        .replace(/<[^>]*>/g, ' ')
         .replace(/&nbsp;/g, ' ')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
+        .replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"')
+        .replace(/&#\d+;/g, '')
+        .replace(/&bull;/g, '•')
+        .replace(/&deg;/g, '°')
         .replace(/\s+/g, ' ')
         .trim()
-        .slice(0, 5000) || 'Commercial LED lighting fixture by Auvolar'
+        .slice(0, 5000)
+      const desc = xmlEscape(rawDesc || 'Commercial LED lighting fixture by Auvolar')
 
-      const title = p.name
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
+      const title = xmlEscape(p.name)
 
-      const primaryCat = p.categories[0]
+      const primaryCat = p.categories.find(c => ![23, 25, 42, 63, 64, 65].includes(c)) || p.categories[0]
       const googleCat = googleCategories[primaryCat] || 'Hardware > Electrical Wiring & Connectors > Light Fixtures'
       const productType = bcCatNames[primaryCat] || 'LED Lighting'
 
@@ -118,7 +130,9 @@ export async function GET() {
         || p.images?.[0]?.url_standard
         || ''
 
-      const productUrl = `${baseUrl}/products/${p.id}`
+      // Use /p/[slug] URL for SEO product pages
+      const slug = (p.custom_url?.url || `/${p.id}/`).replace(/^\/|\/$/g, '')
+      const productUrl = `${baseUrl}/p/${slug}`
 
       xml += `
 <item>
@@ -133,7 +147,7 @@ export async function GET() {
   <g:condition>${p.condition === 'Used' ? 'used' : 'new'}</g:condition>
   <g:google_product_category>${googleCat}</g:google_product_category>
   <g:product_type>${productType}</g:product_type>
-  ${p.sku ? `<g:mpn>${p.sku.replace(/&/g, '&amp;')}</g:mpn>` : ''}
+  ${p.sku ? `<g:mpn>${xmlEscape(p.sku)}</g:mpn>` : ''}
   ${p.weight ? `<g:shipping_weight>${p.weight} lb</g:shipping_weight>` : ''}
   <g:custom_label_0>B2B</g:custom_label_0>
   <g:custom_label_1>DLC Certified</g:custom_label_1>
