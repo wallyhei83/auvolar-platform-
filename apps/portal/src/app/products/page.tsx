@@ -142,14 +142,6 @@ export default function ProductsPage() {
                   ))}
                 </div>
 
-                <div className="mt-4 pt-4 border-t">
-                  <Link 
-                    href={`/products/${mainCat.slug}`}
-                    className="text-brand hover:underline font-medium text-sm"
-                  >
-                    View all {mainCat.name} →
-                  </Link>
-                </div>
               </section>
             )
           })}
