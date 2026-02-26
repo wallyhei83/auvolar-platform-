@@ -59,7 +59,7 @@ interface ProductDetailProps {
 const PRODUCT_VIDEOS: Record<string, Array<{ url: string; title: string }>> = {
   'ot-series': [
     { url: 'https://www.youtube.com/watch?v=IJiL0PeGotQ', title: 'OT Series Product Overview' },
-    { url: 'https://youtu.be/jgaDCHmHVH8', title: 'OT Series Installation Guide' },
+    { url: 'https://youtu.be/bMVf9FcBRuk', title: 'OT Series Installation Guide' },
   ],
 }
 
