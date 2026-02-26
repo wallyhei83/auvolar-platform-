@@ -476,9 +476,6 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
         </div>
       </div>
 
-      {/* Features & Benefits Section */}
-      <ProductFeatures slug={product.slug} />
-
       {/* Compatible Accessories Section */}
       <CompatibleAccessories
         accessories={getAccessories(product.slug)}
