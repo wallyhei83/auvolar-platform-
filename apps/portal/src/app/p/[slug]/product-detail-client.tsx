@@ -61,11 +61,17 @@ const PRODUCT_VIDEOS: Record<string, Array<{ url: string; title: string }>> = {
     { url: 'https://www.youtube.com/watch?v=IJiL0PeGotQ', title: 'OT Series Product Overview' },
     { url: 'https://youtu.be/bMVf9FcBRuk', title: 'OT Series Installation Guide' },
   ],
+  'plb-series': [
+    { url: 'https://youtu.be/zwPluiRgN3A', title: 'PLB Series Product Overview' },
+  ],
 }
 
 function getVideos(slug: string) {
   if (slug.includes('ot-series') || slug.includes('aera-lighting-shoebox-ot')) {
     return PRODUCT_VIDEOS['ot-series'] || []
+  }
+  if (slug.includes('plb-series') || slug.includes('area-shoebox-light-plb')) {
+    return PRODUCT_VIDEOS['plb-series'] || []
   }
   return []
 }
