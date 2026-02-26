@@ -61,10 +61,20 @@ const PRODUCT_VIDEOS: Record<string, { url: string; title: string }> = {
   // 'ot-series-s': { url: 'https://youtube.com/watch?v=xxx', title: 'OT Series Installation Guide' },
 }
 
-// Accessory data for products (will be populated when accessories are ready)
+// Accessory data for products
 const PRODUCT_ACCESSORIES: Record<string, Array<{ name: string; sku: string; slug: string; price?: number; image?: string; description: string; category: string }>> = {
-  // OT Series accessories - to be populated with real data
-  'ot-series': [],
+  'ot-series': [
+    { name: 'Bracket A — Slip Fitter', sku: 'OT-BKT-A', slug: '', price: undefined, image: '/docs/accessories/OT-Bracket-A.jpg', description: 'Standard pole mount slip fitter for round/square poles', category: 'Mounting Brackets' },
+    { name: 'Bracket B — Arm Mount with Visor', sku: 'OT-BKT-B', slug: '', price: undefined, image: '/docs/accessories/OT-Bracket-B.jpg', description: 'Adjustable arm mount for 4" round poles, includes visor option', category: 'Mounting Brackets' },
+    { name: 'Bracket C — Wall/Ceiling Mount', sku: 'OT-BKT-C', slug: '', price: undefined, image: '/docs/accessories/OT-Bracket-C.jpg', description: 'Direct wall or ceiling mount with expansion anchors', category: 'Mounting Brackets' },
+    { name: 'Bracket D — Round/Square Pole Adapter', sku: 'OT-BKT-D', slug: '', price: undefined, image: '/docs/accessories/OT-Bracket-D.jpg', description: 'Universal adapter for round and square light poles', category: 'Mounting Brackets' },
+    { name: 'Bracket E — Side-Entry Pole Mount', sku: 'OT-BKT-E', slug: '', price: undefined, image: '/docs/accessories/OT-Bracket-E-1.jpg', description: 'Side-entry mount for 4" round poles with cover', category: 'Mounting Brackets' },
+    { name: 'Bracket F — Extended Arm Adapter', sku: 'OT-BKT-F', slug: '', price: undefined, image: '/docs/accessories/OT-Bracket-F.jpg', description: 'Extended arm adapter for offset mounting on poles', category: 'Mounting Brackets' },
+    { name: 'Bracket G — Trunnion/Yoke Mount', sku: 'OT-BKT-G', slug: '', price: undefined, image: '/docs/accessories/OT-Bracket-G.jpg', description: 'Adjustable trunnion mount for wall or surface installation', category: 'Mounting Brackets' },
+    { name: 'Light Shields (Set)', sku: 'OT-SHIELD', slug: '', price: undefined, image: '/docs/accessories/OT-Light-Shields.jpg', description: 'Glare shields for light control — front, back, left, right', category: 'Shields' },
+    { name: 'Photocell Sensor', sku: 'OT-PHOTOCELL', slug: 'photocell-for-wall-pack-area-light', price: 15, image: '', description: 'Dusk-to-dawn automatic on/off, NEMA twist-lock', category: 'Sensors' },
+    { name: 'Motion/Occupancy Sensor', sku: 'OT-MOTION', slug: 'motion-sensor-for-high-bay', price: 29, image: '', description: 'PIR motion sensor, waterproof, Zhaga compatible', category: 'Sensors' },
+  ],
 }
 
 function getAccessories(slug: string) {
@@ -393,38 +403,37 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
           <div className="mb-6">
             <h3 className="text-sm font-semibold text-gray-900 mb-3">Downloads & Resources</h3>
             <div className="grid grid-cols-2 gap-2">
-              <a
-                href={`/api/docs/spec-sheets/${encodeURIComponent(product.sku)}`}
-                target="_blank"
-                className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm"
-              >
-                <FileText className="w-4 h-4 text-yellow-600" />
-                <span>Spec Sheet</span>
-              </a>
-              <a
-                href={`/api/docs/ies/${encodeURIComponent(product.sku)}`}
-                target="_blank"
-                className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm"
-              >
-                <Download className="w-4 h-4 text-yellow-600" />
-                <span>IES File</span>
-              </a>
-              <a
-                href={`/api/docs/instructions/${encodeURIComponent(product.sku)}`}
-                target="_blank"
-                className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm"
-              >
-                <FileText className="w-4 h-4 text-yellow-600" />
-                <span>Install Guide</span>
-              </a>
-              <a
-                href={`/api/docs/warranty/${encodeURIComponent(product.sku)}`}
-                target="_blank"
-                className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm"
-              >
-                <Shield className="w-4 h-4 text-yellow-600" />
-                <span>Warranty Info</span>
-              </a>
+              {(product.slug.includes('ot-series') || product.slug.includes('aera-lighting-shoebox-ot') || product.slug.includes('area-light')) ? (
+                <>
+                  <a href="/docs/spec-sheets/OT-Series-Spec-Sheet.pdf" target="_blank" className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm">
+                    <FileText className="w-4 h-4 text-yellow-600" /><span>Spec Sheet (PDF)</span>
+                  </a>
+                  <a href="/docs/ies/OT-Series-75W.ies" download className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm">
+                    <Download className="w-4 h-4 text-yellow-600" /><span>IES Files</span>
+                  </a>
+                  <a href="/docs/install-guides/OT-Bracket-A-Install-Guide.pdf" target="_blank" className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm">
+                    <FileText className="w-4 h-4 text-yellow-600" /><span>Install Guides</span>
+                  </a>
+                  <a href="/support/returns" className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm">
+                    <Shield className="w-4 h-4 text-yellow-600" /><span>Warranty Info</span>
+                  </a>
+                </>
+              ) : (
+                <>
+                  <a href={`/api/docs/spec-sheets/${encodeURIComponent(product.sku)}`} target="_blank" className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm">
+                    <FileText className="w-4 h-4 text-yellow-600" /><span>Spec Sheet</span>
+                  </a>
+                  <a href={`/api/docs/ies/${encodeURIComponent(product.sku)}`} target="_blank" className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm">
+                    <Download className="w-4 h-4 text-yellow-600" /><span>IES File</span>
+                  </a>
+                  <a href={`/api/docs/instructions/${encodeURIComponent(product.sku)}`} target="_blank" className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm">
+                    <FileText className="w-4 h-4 text-yellow-600" /><span>Install Guide</span>
+                  </a>
+                  <a href="/support/returns" className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm">
+                    <Shield className="w-4 h-4 text-yellow-600" /><span>Warranty Info</span>
+                  </a>
+                </>
+              )}
             </div>
           </div>
 
@@ -472,22 +481,51 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
         productName={product.name}
       />
 
-      {/* Spec Sheet Download Banner */}
+      {/* Documentation Download Banner */}
       {(product.slug.includes('ot-series') || product.slug.includes('aera-lighting-shoebox-ot') || product.slug.includes('area-light')) && (
         <div className="max-w-7xl mx-auto px-4 pb-12">
-          <div className="bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl p-8 flex flex-col md:flex-row items-center justify-between gap-6">
-            <div>
-              <h3 className="text-xl font-bold text-white">Download Complete Product Documentation</h3>
-              <p className="text-gray-300 mt-1">Spec sheets, IES files, installation guides, and warranty information</p>
+          <div className="bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl p-8">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-6">
+              <div>
+                <h3 className="text-xl font-bold text-white">Complete Documentation Package</h3>
+                <p className="text-gray-300 mt-1">Spec sheets, IES photometric files, installation guides for all 7 bracket types</p>
+              </div>
+              <a
+                href="/docs/spec-sheets/OT-Series-Spec-Sheet.pdf"
+                target="_blank"
+                className="flex items-center gap-2 px-6 py-3 bg-yellow-400 hover:bg-yellow-500 text-black font-semibold rounded-lg transition-colors flex-shrink-0"
+              >
+                <Download className="w-5 h-5" />
+                Product Brochure
+              </a>
             </div>
-            <a
-              href="/docs/spec-sheets/OT-Series-Spec-Sheet.pdf"
-              target="_blank"
-              className="flex items-center gap-2 px-6 py-3 bg-yellow-400 hover:bg-yellow-500 text-black font-semibold rounded-lg transition-colors flex-shrink-0"
-            >
-              <Download className="w-5 h-5" />
-              Download OT Series Brochure
-            </a>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div>
+                <p className="text-yellow-400 text-xs font-semibold mb-2">IES Files</p>
+                <div className="space-y-1">
+                  {['75W','115W','145W','180W','200W','230W','300W','420W'].map(w => (
+                    <a key={w} href={`/docs/ies/OT-Series-${w}.ies`} download className="block text-gray-300 hover:text-white text-xs transition-colors">↓ OT {w}</a>
+                  ))}
+                </div>
+              </div>
+              <div className="col-span-2 sm:col-span-3">
+                <p className="text-yellow-400 text-xs font-semibold mb-2">Installation Guides</p>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-1">
+                  {[
+                    { label: 'Bracket A — Slip Fitter', file: 'OT-Bracket-A-Install-Guide.pdf' },
+                    { label: 'Bracket B — Arm Mount', file: 'OT-Bracket-B-Install-Guide.pdf' },
+                    { label: 'Bracket B — With Visor', file: 'OT-Bracket-B-Visor-Install-Guide.pdf' },
+                    { label: 'Bracket C — Wall/Ceiling', file: 'OT-Bracket-C-Install-Guide.pdf' },
+                    { label: 'Bracket D — Pole Adapter', file: 'OT-Bracket-D-Install-Guide.pdf' },
+                    { label: 'Bracket E — Side Entry', file: 'OT-Bracket-E-Install-Guide.pdf' },
+                    { label: 'Bracket F — Extended Arm', file: 'OT-Bracket-F-Install-Guide.pdf' },
+                    { label: 'Bracket G — Trunnion', file: 'OT-Bracket-G-Install-Guide.pdf' },
+                  ].map(g => (
+                    <a key={g.file} href={`/docs/install-guides/${g.file}`} target="_blank" className="block text-gray-300 hover:text-white text-xs transition-colors py-0.5">↓ {g.label}</a>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}
