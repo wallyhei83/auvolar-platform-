@@ -224,10 +224,38 @@ export default async function ProductPage({
         <div className="bg-white rounded-2xl p-8 mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Product Details</h2>
 
-          <div
-            className="prose prose-gray max-w-none [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:mt-6 [&_h3]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_li]:text-gray-600"
-            dangerouslySetInnerHTML={{ __html: product.description }}
-          />
+          {(product.slug.includes('ot-series') || product.slug.includes('aera-lighting-shoebox-ot') || product.slug.includes('area-light')) ? (
+            <div className="prose prose-gray max-w-none">
+              <h3 className="text-lg font-semibold mt-0 mb-2">A Proven Benchmark in Commercial Parking Lot Lighting</h3>
+              <p>Selected by leading U.S. brands — this parking lot lighting system has been deployed nationwide, serving <strong>CarMax</strong>, <strong>The Home Depot</strong>, <strong>Ontario International Airport (CA)</strong>, and numerous branded automotive dealerships. Its adoption by high-visibility commercial facilities demonstrates its capability to meet strict illumination, reliability, and aesthetic standards.</p>
+
+              <h3 className="text-lg font-semibold mt-6 mb-2">10+ Years of Field Validation</h3>
+              <p>Designed for demanding outdoor environments, this product has accumulated over a decade of continuous real-world operation. It delivers:</p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>High lumen output with uniform light distribution</li>
+                <li>Low glare performance for enhanced visual comfort</li>
+                <li>Stable thermal management for long lifespan</li>
+                <li>Reliable operation in diverse climate conditions</li>
+              </ul>
+              <p>Engineered for commercial-grade durability and long-term ROI.</p>
+
+              <h3 className="text-lg font-semibold mt-6 mb-2">Complete Integrated Parking Lot Lighting System</h3>
+              <p>This is not just a fixture — it is a fully engineered lighting platform, including:</p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>Glare shields for dealership-grade visual control</li>
+                <li>Motion/occupancy sensors for energy optimization</li>
+                <li>Electrical adapters and mounting brackets</li>
+                <li>Dedicated light poles</li>
+                <li>Intelligent control systems</li>
+              </ul>
+              <p>Every component is designed for seamless compatibility, simplifying installation while maximizing long-term system performance.</p>
+            </div>
+          ) : (
+            <div
+              className="prose prose-gray max-w-none [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:mt-6 [&_h3]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_li]:text-gray-600"
+              dangerouslySetInnerHTML={{ __html: product.description }}
+            />
+          )}
         </div>
 
         {/* Specifications Table */}
