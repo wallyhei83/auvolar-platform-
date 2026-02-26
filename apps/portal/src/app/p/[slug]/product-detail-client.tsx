@@ -304,12 +304,54 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
           </div>
 
           {/* Short Description */}
-          {product.plainDescription && (
+          {isOTSeries ? (
+            <div className="mb-6 border rounded-xl overflow-hidden">
+              <div className="p-4 bg-gray-50">
+                <h3 className="font-semibold text-gray-900 text-sm flex items-center gap-2">
+                  <Award className="w-4 h-4 text-yellow-500" />
+                  A Proven Benchmark in Commercial Parking Lot Lighting
+                </h3>
+                <p className="text-gray-600 text-sm mt-1">
+                  Deployed nationwide — serving <strong>CarMax</strong>, <strong>The Home Depot</strong>, <strong>Ontario International Airport (CA)</strong>, and numerous branded automotive dealerships.
+                </p>
+              </div>
+              <details className="group">
+                <summary className="cursor-pointer px-4 py-2 text-yellow-600 hover:text-yellow-700 font-medium text-xs flex items-center gap-1 bg-white border-t">
+                  Learn more
+                  <svg className="w-3 h-3 group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                </summary>
+                <div className="px-4 pb-4 pt-2 space-y-4 text-sm text-gray-600 bg-white">
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-1">10+ Years of Field Validation</h4>
+                    <p className="mb-1">Designed for demanding outdoor environments with over a decade of continuous real-world operation:</p>
+                    <ul className="list-disc pl-5 space-y-0.5 text-xs">
+                      <li>High lumen output with uniform light distribution</li>
+                      <li>Low glare for enhanced visual comfort</li>
+                      <li>Stable thermal management for long lifespan</li>
+                      <li>Reliable in diverse climate conditions</li>
+                    </ul>
+                    <p className="mt-1 text-xs">Engineered for commercial-grade durability and long-term ROI.</p>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-1">Complete Integrated Lighting System</h4>
+                    <p className="mb-1">Not just a fixture — a fully engineered lighting platform:</p>
+                    <ul className="list-disc pl-5 space-y-0.5 text-xs">
+                      <li>Glare shields for dealership-grade visual control</li>
+                      <li>Motion/occupancy sensors for energy optimization</li>
+                      <li>7 mounting brackets and electrical adapters</li>
+                      <li>Dedicated light poles and intelligent controls</li>
+                    </ul>
+                    <p className="mt-1 text-xs">Every component designed for seamless compatibility.</p>
+                  </div>
+                </div>
+              </details>
+            </div>
+          ) : product.plainDescription ? (
             <p className="text-gray-600 mb-6 line-clamp-3">
               {product.plainDescription.slice(0, 200)}
               {product.plainDescription.length > 200 ? '...' : ''}
             </p>
-          )}
+          ) : null}
 
           {/* Variant Selection — independent per dimension */}
           {optionOrder.length > 0 && (
