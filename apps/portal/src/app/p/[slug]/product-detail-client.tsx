@@ -552,25 +552,21 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
                   {/* IES Files */}
                   <details className="group border rounded-lg overflow-hidden">
                     <summary className="flex items-center gap-2 p-3 cursor-pointer hover:bg-gray-50 text-sm list-none [&::-webkit-details-marker]:hidden">
-                      <Download className="w-4 h-4 text-yellow-600" /><span>IES Files <span className="text-[10px] text-gray-400">(12)</span></span>
+                      <Download className="w-4 h-4 text-yellow-600" /><span>IES Files <span className="text-[10px] text-gray-400">(18)</span></span>
                     </summary>
                     <div className="border-t bg-gray-50 p-2">
-                      <p className="text-[10px] font-semibold text-gray-500 px-2 py-1">Type III</p>
-                      <div className="grid grid-cols-3 gap-0.5">
-                        {['75W','100W','150W','200W','240W','300W'].map(w => (
-                          <a key={`t3-${w}`} href={`/docs/ies/PLB-Series-TypeIII-${w}.ies`} download className="flex items-center gap-1 px-2 py-1 text-xs text-gray-700 hover:text-yellow-600 rounded transition-colors">
-                            <Download className="w-3 h-3" /> {w}
-                          </a>
-                        ))}
-                      </div>
-                      <p className="text-[10px] font-semibold text-gray-500 px-2 py-1 mt-1">Type V</p>
-                      <div className="grid grid-cols-3 gap-0.5">
-                        {['75W','100W','150W','200W','240W','300W'].map(w => (
-                          <a key={`t5-${w}`} href={`/docs/ies/PLB-Series-TypeV-${w}.ies`} download className="flex items-center gap-1 px-2 py-1 text-xs text-gray-700 hover:text-yellow-600 rounded transition-colors">
-                            <Download className="w-3 h-3" /> {w}
-                          </a>
-                        ))}
-                      </div>
+                      {['TypeIII','TypeIV','TypeV'].map(type => (
+                        <div key={type}>
+                          <p className="text-[10px] font-semibold text-gray-500 px-2 py-1 mt-1 first:mt-0">{type.replace('Type','Type ')}</p>
+                          <div className="grid grid-cols-3 gap-0.5">
+                            {['75W','100W','150W','200W','240W','300W'].map(w => (
+                              <a key={`${type}-${w}`} href={`/docs/ies/PLB-Series-${type}-${w}.ies`} download className="flex items-center gap-1 px-2 py-1 text-xs text-gray-700 hover:text-yellow-600 rounded transition-colors">
+                                <Download className="w-3 h-3" /> {w}
+                              </a>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </details>
 
