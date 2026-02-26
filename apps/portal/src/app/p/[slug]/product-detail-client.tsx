@@ -64,7 +64,7 @@ const PRODUCT_VIDEOS: Record<string, Array<{ url: string; title: string }>> = {
 }
 
 function getVideos(slug: string) {
-  if (slug.includes('ot-series') || slug.includes('aera-lighting-shoebox-ot') || slug.includes('area-light')) {
+  if (slug.includes('ot-series') || slug.includes('aera-lighting-shoebox-ot')) {
     return PRODUCT_VIDEOS['ot-series'] || []
   }
   return []
@@ -84,11 +84,18 @@ const PRODUCT_ACCESSORIES: Record<string, Array<{ name: string; sku: string; slu
     { name: 'Photocell Sensor', sku: 'OT-PHOTOCELL', slug: 'photocell-for-wall-pack-area-light', price: 15, image: '', description: 'Dusk-to-dawn automatic on/off, NEMA twist-lock', category: 'Sensors' },
     { name: 'Motion/Occupancy Sensor', sku: 'OT-MOTION', slug: 'motion-sensor-for-high-bay', price: 29, image: '', description: 'PIR motion sensor, waterproof, Zhaga compatible', category: 'Sensors' },
   ],
+  'plb-series': [
+    { name: 'Photocell Sensor', sku: 'PLB-PHOTOCELL', slug: 'photocell-for-wall-pack-area-light', price: 15, image: '', description: 'Dusk-to-dawn automatic on/off, NEMA twist-lock', category: 'Sensors' },
+    { name: 'Motion/Occupancy Sensor', sku: 'PLB-MOTION', slug: 'motion-sensor-for-high-bay', price: 29, image: '', description: 'PIR motion sensor, waterproof, Zhaga compatible', category: 'Sensors' },
+  ],
 }
 
 function getAccessories(slug: string) {
-  if (slug.includes('ot-series') || slug.includes('aera-lighting-shoebox-ot') || slug.includes('area-light')) {
+  if (slug.includes('ot-series') || slug.includes('aera-lighting-shoebox-ot')) {
     return PRODUCT_ACCESSORIES['ot-series'] || []
+  }
+  if (slug.includes('plb-series') || slug.includes('area-shoebox-light-plb')) {
+    return PRODUCT_ACCESSORIES['plb-series'] || []
   }
   return []
 }
@@ -170,7 +177,8 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
     return available
   }
 
-  const isOTSeries = product.slug.includes('ot-series') || product.slug.includes('aera-lighting-shoebox-ot') || product.slug.includes('area-light')
+  const isOTSeries = product.slug.includes('ot-series') || product.slug.includes('aera-lighting-shoebox-ot')
+  const isPLBSeries = product.slug.includes('plb-series') || product.slug.includes('area-shoebox-light-plb')
 
   const images = product.images.length > 0
     ? product.images
@@ -346,6 +354,31 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
                 </div>
               </details>
             </div>
+          ) : isPLBSeries ? (
+            <div className="mb-6 border rounded-xl overflow-hidden">
+              <div className="p-4 bg-gray-50">
+                <h3 className="font-semibold text-gray-900 text-sm flex items-center gap-2">
+                  <Award className="w-4 h-4 text-yellow-500" />
+                  Next-Generation Parking Lot Lighting with Tool-Free Maintenance
+                </h3>
+                <p className="text-gray-600 text-sm mt-1">
+                  Engineered for quick lens replacement, professional optical distribution with BUG rating of 0, and 6 mounting bracket options for maximum installation flexibility.
+                </p>
+              </div>
+              <details className="group">
+                <summary className="cursor-pointer px-4 py-2 text-yellow-600 hover:text-yellow-700 font-medium text-xs flex items-center gap-1 bg-white border-t">
+                  Learn more
+                  <svg className="w-3 h-3 group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                </summary>
+                <div className="px-4 pb-4 pt-2 space-y-3 text-sm text-gray-600 bg-white">
+                  <div className="flex gap-2"><span className="text-yellow-500 font-bold">•</span><div><strong className="text-gray-900">Tool-Free Lens Replacement</strong> — Quick and convenient lens replacement for easy maintenance and component recycling.</div></div>
+                  <div className="flex gap-2"><span className="text-yellow-500 font-bold">•</span><div><strong className="text-gray-900">Professional Optical Distribution</strong> — Optimized for parking lots with exceptional uniformity and BUG rating of 0.</div></div>
+                  <div className="flex gap-2"><span className="text-yellow-500 font-bold">•</span><div><strong className="text-gray-900">Premium LED Chips</strong> — High-performance LED sources ensuring reliable output and long-term stability.</div></div>
+                  <div className="flex gap-2"><span className="text-yellow-500 font-bold">•</span><div><strong className="text-gray-900">Pre-Reserved Sensor Positions</strong> — Spacious internal design with dedicated locations for seamless sensor integration.</div></div>
+                  <div className="flex gap-2"><span className="text-yellow-500 font-bold">•</span><div><strong className="text-gray-900">Six Mounting Brackets</strong> — Multiple configurations for installation flexibility across various project requirements.</div></div>
+                </div>
+              </details>
+            </div>
           ) : product.plainDescription ? (
             <p className="text-gray-600 mb-6 line-clamp-3">
               {product.plainDescription.slice(0, 200)}
@@ -506,6 +539,40 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
                   <a href="/support/returns" className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm">
                     <Shield className="w-4 h-4 text-yellow-600" /><span>Warranty Info</span>
                   </a>
+                </div>
+              </div>
+            ) : isPLBSeries ? (
+              <div>
+                <div className="grid grid-cols-2 gap-2">
+                  {/* Spec Sheet */}
+                  <a href="/docs/spec-sheets/PLB-Series-Spec-Sheet.pdf" target="_blank" className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm">
+                    <FileText className="w-4 h-4 text-yellow-600" /><span>Spec Sheet (PDF)</span>
+                  </a>
+
+                  {/* IES Files — placeholder */}
+                  <div className="flex items-center gap-2 p-3 border rounded-lg text-sm text-gray-400">
+                    <Download className="w-4 h-4" /><span>IES Files (Coming Soon)</span>
+                  </div>
+
+                  {/* Install Guides — placeholder */}
+                  <div className="flex items-center gap-2 p-3 border rounded-lg text-sm text-gray-400">
+                    <FileText className="w-4 h-4" /><span>Install Guides (Coming Soon)</span>
+                  </div>
+
+                  {/* Warranty */}
+                  <details className="group border rounded-lg overflow-hidden">
+                    <summary className="flex items-center gap-2 p-3 cursor-pointer hover:bg-gray-50 text-sm list-none [&::-webkit-details-marker]:hidden">
+                      <Shield className="w-4 h-4 text-yellow-600" /><span>Warranty Info</span>
+                    </summary>
+                    <div className="border-t bg-gray-50 p-2">
+                      <a href="/docs/install-guides/PLB-Series-Warranty.pdf" target="_blank" className="flex items-center gap-1 px-2 py-1 text-xs text-gray-700 hover:text-yellow-600 rounded transition-colors">
+                        <Download className="w-3 h-3" /> PLB Series 5-Year Warranty
+                      </a>
+                      <a href="/support/returns" className="flex items-center gap-1 px-2 py-1 text-xs text-gray-700 hover:text-yellow-600 rounded transition-colors">
+                        <Download className="w-3 h-3" /> Return Policy
+                      </a>
+                    </div>
+                  </details>
                 </div>
               </div>
             ) : (
