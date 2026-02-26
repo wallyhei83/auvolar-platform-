@@ -8,6 +8,9 @@ import {
   Phone, Mail, FileText, Download
 } from 'lucide-react'
 import { useCart } from '@/lib/cart-context'
+import { ProductFeatures } from '@/components/products/product-features'
+import { ProductVideo } from '@/components/products/product-video'
+import { CompatibleAccessories } from '@/components/products/compatible-accessories'
 
 interface ProductImage {
   url: string
@@ -50,6 +53,25 @@ interface ProductDetailProps {
     specs: ProductSpec[]
     slug: string
   }
+}
+
+// Product video mapping (add YouTube URLs here)
+const PRODUCT_VIDEOS: Record<string, { url: string; title: string }> = {
+  // Add video URLs as they become available
+  // 'ot-series-s': { url: 'https://youtube.com/watch?v=xxx', title: 'OT Series Installation Guide' },
+}
+
+// Accessory data for products (will be populated when accessories are ready)
+const PRODUCT_ACCESSORIES: Record<string, Array<{ name: string; sku: string; slug: string; price?: number; image?: string; description: string; category: string }>> = {
+  // OT Series accessories - to be populated with real data
+  'ot-series': [],
+}
+
+function getAccessories(slug: string) {
+  if (slug.includes('ot-series') || slug.includes('aera-lighting-shoebox-ot') || slug.includes('area-light')) {
+    return PRODUCT_ACCESSORIES['ot-series'] || []
+  }
+  return []
 }
 
 export default function ProductDetailClient({ product }: ProductDetailProps) {
@@ -217,6 +239,14 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
                 </button>
               ))}
             </div>
+          )}
+
+          {/* Product Video — below thumbnails */}
+          {PRODUCT_VIDEOS[product.slug] && (
+            <ProductVideo
+              videoUrl={PRODUCT_VIDEOS[product.slug].url}
+              videoTitle={PRODUCT_VIDEOS[product.slug].title}
+            />
           )}
         </div>
 
@@ -432,6 +462,35 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
           </div>
         </div>
       </div>
+
+      {/* Features & Benefits Section */}
+      <ProductFeatures slug={product.slug} />
+
+      {/* Compatible Accessories Section */}
+      <CompatibleAccessories
+        accessories={getAccessories(product.slug)}
+        productName={product.name}
+      />
+
+      {/* Spec Sheet Download Banner */}
+      {(product.slug.includes('ot-series') || product.slug.includes('aera-lighting-shoebox-ot') || product.slug.includes('area-light')) && (
+        <div className="max-w-7xl mx-auto px-4 pb-12">
+          <div className="bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div>
+              <h3 className="text-xl font-bold text-white">Download Complete Product Documentation</h3>
+              <p className="text-gray-300 mt-1">Spec sheets, IES files, installation guides, and warranty information</p>
+            </div>
+            <a
+              href="/docs/spec-sheets/OT-Series-Spec-Sheet.pdf"
+              target="_blank"
+              className="flex items-center gap-2 px-6 py-3 bg-yellow-400 hover:bg-yellow-500 text-black font-semibold rounded-lg transition-colors flex-shrink-0"
+            >
+              <Download className="w-5 h-5" />
+              Download OT Series Brochure
+            </a>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
