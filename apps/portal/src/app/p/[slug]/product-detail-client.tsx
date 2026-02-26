@@ -549,10 +549,19 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
                     <FileText className="w-4 h-4 text-yellow-600" /><span>Spec Sheet (PDF)</span>
                   </a>
 
-                  {/* IES Files — placeholder */}
-                  <div className="flex items-center gap-2 p-3 border rounded-lg text-sm text-gray-400">
-                    <Download className="w-4 h-4" /><span>IES Files (Coming Soon)</span>
-                  </div>
+                  {/* IES Files */}
+                  <details className="group border rounded-lg overflow-hidden">
+                    <summary className="flex items-center gap-2 p-3 cursor-pointer hover:bg-gray-50 text-sm list-none [&::-webkit-details-marker]:hidden">
+                      <Download className="w-4 h-4 text-yellow-600" /><span>IES Files <span className="text-[10px] text-gray-400">(6)</span></span>
+                    </summary>
+                    <div className="border-t bg-gray-50 p-2 grid grid-cols-2 gap-0.5">
+                      {['75W','100W','150W','200W','240W','300W'].map(w => (
+                        <a key={w} href={`/docs/ies/PLB-Series-${w}.ies`} download className="flex items-center gap-1 px-2 py-1 text-xs text-gray-700 hover:text-yellow-600 rounded transition-colors">
+                          <Download className="w-3 h-3" /> {w}
+                        </a>
+                      ))}
+                    </div>
+                  </details>
 
                   {/* Install Guides — placeholder */}
                   <div className="flex items-center gap-2 p-3 border rounded-lg text-sm text-gray-400">
