@@ -303,9 +303,7 @@ export default function HomePage() {
               <h2 className="text-2xl font-bold text-gray-900">Shop by Category</h2>
               <p className="mt-2 text-gray-600">Find the right lighting for your application</p>
             </div>
-            <Link href="/products" className="hidden text-sm font-medium text-brand hover:underline sm:block">
-              View All Products →
-            </Link>
+{/* View All Products link removed */}
           </div>
           
           <div className="mt-8 grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
@@ -337,11 +335,7 @@ export default function HomePage() {
             ))}
           </div>
           
-          <div className="mt-6 text-center sm:hidden">
-            <Link href="/products" className="text-sm font-medium text-brand hover:underline">
-              View All Products →
-            </Link>
-          </div>
+{/* View All Products mobile link removed */}
         </div>
       </section>
 
