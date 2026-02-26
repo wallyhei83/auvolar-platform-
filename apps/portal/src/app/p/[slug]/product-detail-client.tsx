@@ -304,7 +304,7 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
           </div>
 
           {/* Short Description */}
-          {product.plainDescription && !isOTSeries && (
+          {product.plainDescription && (
             <p className="text-gray-600 mb-6 line-clamp-3">
               {product.plainDescription.slice(0, 200)}
               {product.plainDescription.length > 200 ? '...' : ''}

@@ -142,7 +142,10 @@ export default async function ProductPage({
   })
 
   const specs = parseSpecs(product.description)
-  const plainDescription = stripHtml(product.description)
+  const isOTProduct = slug.includes('ot-series') || slug.includes('aera-lighting-shoebox-ot') || slug.includes('area-light')
+  const plainDescription = isOTProduct
+    ? 'A proven benchmark in commercial parking lot lighting — deployed nationwide serving CarMax, The Home Depot, Ontario International Airport (CA), and numerous branded automotive dealerships. 10+ years of field validation with high lumen output, low glare, and stable thermal management. A complete integrated lighting platform with glare shields, sensors, mounting brackets, poles, and intelligent controls.'
+    : stripHtml(product.description)
 
   // Find primary category for breadcrumb
   const primaryCatId = product.categories.find(
