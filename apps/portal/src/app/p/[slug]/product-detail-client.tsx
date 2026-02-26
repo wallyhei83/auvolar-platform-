@@ -55,10 +55,19 @@ interface ProductDetailProps {
   }
 }
 
-// Product video mapping (add YouTube URLs here)
-const PRODUCT_VIDEOS: Record<string, { url: string; title: string }> = {
-  // Add video URLs as they become available
-  // 'ot-series-s': { url: 'https://youtube.com/watch?v=xxx', title: 'OT Series Installation Guide' },
+// Product video mapping
+const PRODUCT_VIDEOS: Record<string, Array<{ url: string; title: string }>> = {
+  'ot-series': [
+    { url: 'https://www.youtube.com/watch?v=IJiL0PeGotQ', title: 'OT Series Product Overview' },
+    { url: 'https://youtu.be/jgaDCHmHVH8', title: 'OT Series Installation Guide' },
+  ],
+}
+
+function getVideos(slug: string) {
+  if (slug.includes('ot-series') || slug.includes('aera-lighting-shoebox-ot') || slug.includes('area-light')) {
+    return PRODUCT_VIDEOS['ot-series'] || []
+  }
+  return []
 }
 
 // Accessory data for products
@@ -251,13 +260,8 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
             </div>
           )}
 
-          {/* Product Video — below thumbnails */}
-          {PRODUCT_VIDEOS[product.slug] && (
-            <ProductVideo
-              videoUrl={PRODUCT_VIDEOS[product.slug].url}
-              videoTitle={PRODUCT_VIDEOS[product.slug].title}
-            />
-          )}
+          {/* Product Videos — below thumbnails */}
+          <ProductVideo videos={getVideos(product.slug)} />
         </div>
 
         {/* Product Info */}
@@ -481,54 +485,6 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
         productName={product.name}
       />
 
-      {/* Documentation Download Banner */}
-      {(product.slug.includes('ot-series') || product.slug.includes('aera-lighting-shoebox-ot') || product.slug.includes('area-light')) && (
-        <div className="max-w-7xl mx-auto px-4 pb-12">
-          <div className="bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl p-8">
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-6">
-              <div>
-                <h3 className="text-xl font-bold text-white">Complete Documentation Package</h3>
-                <p className="text-gray-300 mt-1">Spec sheets, IES photometric files, installation guides for all 7 bracket types</p>
-              </div>
-              <a
-                href="/docs/spec-sheets/OT-Series-Spec-Sheet.pdf"
-                target="_blank"
-                className="flex items-center gap-2 px-6 py-3 bg-yellow-400 hover:bg-yellow-500 text-black font-semibold rounded-lg transition-colors flex-shrink-0"
-              >
-                <Download className="w-5 h-5" />
-                Product Brochure
-              </a>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <div>
-                <p className="text-yellow-400 text-xs font-semibold mb-2">IES Files</p>
-                <div className="space-y-1">
-                  {['75W','115W','145W','180W','200W','230W','300W','420W'].map(w => (
-                    <a key={w} href={`/docs/ies/OT-Series-${w}.ies`} download className="block text-gray-300 hover:text-white text-xs transition-colors">↓ OT {w}</a>
-                  ))}
-                </div>
-              </div>
-              <div className="col-span-2 sm:col-span-3">
-                <p className="text-yellow-400 text-xs font-semibold mb-2">Installation Guides</p>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-1">
-                  {[
-                    { label: 'Bracket A — Slip Fitter', file: 'OT-Bracket-A-Install-Guide.pdf' },
-                    { label: 'Bracket B — Arm Mount', file: 'OT-Bracket-B-Install-Guide.pdf' },
-                    { label: 'Bracket B — With Visor', file: 'OT-Bracket-B-Visor-Install-Guide.pdf' },
-                    { label: 'Bracket C — Wall/Ceiling', file: 'OT-Bracket-C-Install-Guide.pdf' },
-                    { label: 'Bracket D — Pole Adapter', file: 'OT-Bracket-D-Install-Guide.pdf' },
-                    { label: 'Bracket E — Side Entry', file: 'OT-Bracket-E-Install-Guide.pdf' },
-                    { label: 'Bracket F — Extended Arm', file: 'OT-Bracket-F-Install-Guide.pdf' },
-                    { label: 'Bracket G — Trunnion', file: 'OT-Bracket-G-Install-Guide.pdf' },
-                  ].map(g => (
-                    <a key={g.file} href={`/docs/install-guides/${g.file}`} target="_blank" className="block text-gray-300 hover:text-white text-xs transition-colors py-0.5">↓ {g.label}</a>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 }
