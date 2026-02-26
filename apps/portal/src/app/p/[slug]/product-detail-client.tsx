@@ -451,69 +451,62 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
           <div className="mb-6">
             <h3 className="text-sm font-semibold text-gray-900 mb-3">Downloads & Resources</h3>
             {isOTSeries ? (
-              <div className="space-y-2">
-                {/* Spec Sheet */}
-                <details className="group border rounded-lg overflow-hidden">
-                  <summary className="flex items-center gap-2 p-3 cursor-pointer hover:bg-gray-50 text-sm">
-                    <FileText className="w-4 h-4 text-yellow-600 flex-shrink-0" />
-                    <span className="font-medium flex-1">Spec Sheet (PDF)</span>
-                    <span className="text-[10px] text-gray-400">1 file</span>
-                    <svg className="w-3 h-3 text-gray-400 group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-                  </summary>
-                  <div className="border-t bg-gray-50 p-2">
-                    <a href="/docs/spec-sheets/OT-Series-Spec-Sheet.pdf" target="_blank" className="flex items-center gap-2 px-3 py-1.5 text-xs text-gray-700 hover:text-yellow-600 hover:bg-white rounded transition-colors">
-                      <Download className="w-3 h-3" /> OT Series Product Brochure
-                    </a>
-                  </div>
-                </details>
-
-                {/* IES Files */}
-                <details className="group border rounded-lg overflow-hidden">
-                  <summary className="flex items-center gap-2 p-3 cursor-pointer hover:bg-gray-50 text-sm">
-                    <Download className="w-4 h-4 text-yellow-600 flex-shrink-0" />
-                    <span className="font-medium flex-1">IES Files</span>
-                    <span className="text-[10px] text-gray-400">8 files</span>
-                    <svg className="w-3 h-3 text-gray-400 group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-                  </summary>
-                  <div className="border-t bg-gray-50 p-2 grid grid-cols-2 gap-1">
-                    {['75W','115W','145W','180W','200W','230W','300W','420W'].map(w => (
-                      <a key={w} href={`/docs/ies/OT-Series-${w}.ies`} download className="flex items-center gap-2 px-3 py-1.5 text-xs text-gray-700 hover:text-yellow-600 hover:bg-white rounded transition-colors">
-                        <Download className="w-3 h-3" /> OT {w}
+              <div>
+                <div className="grid grid-cols-2 gap-2">
+                  {/* Spec Sheet */}
+                  <details className="group border rounded-lg overflow-hidden">
+                    <summary className="flex items-center gap-2 p-3 cursor-pointer hover:bg-gray-50 text-sm list-none [&::-webkit-details-marker]:hidden">
+                      <FileText className="w-4 h-4 text-yellow-600" /><span>Spec Sheet (PDF)</span>
+                    </summary>
+                    <div className="border-t bg-gray-50 p-2">
+                      <a href="/docs/spec-sheets/OT-Series-Spec-Sheet.pdf" target="_blank" className="flex items-center gap-2 px-2 py-1 text-xs text-gray-700 hover:text-yellow-600 rounded transition-colors">
+                        <Download className="w-3 h-3" /> OT Series Brochure
                       </a>
-                    ))}
-                  </div>
-                </details>
+                    </div>
+                  </details>
 
-                {/* Install Guides */}
-                <details className="group border rounded-lg overflow-hidden">
-                  <summary className="flex items-center gap-2 p-3 cursor-pointer hover:bg-gray-50 text-sm">
-                    <FileText className="w-4 h-4 text-yellow-600 flex-shrink-0" />
-                    <span className="font-medium flex-1">Install Guides</span>
-                    <span className="text-[10px] text-gray-400">8 files</span>
-                    <svg className="w-3 h-3 text-gray-400 group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-                  </summary>
-                  <div className="border-t bg-gray-50 p-2 space-y-0.5">
-                    {[
-                      { label: 'Bracket A — Slip Fitter', file: 'OT-Bracket-A-Install-Guide.pdf' },
-                      { label: 'Bracket B — Arm Mount', file: 'OT-Bracket-B-Install-Guide.pdf' },
-                      { label: 'Bracket B — With Visor', file: 'OT-Bracket-B-Visor-Install-Guide.pdf' },
-                      { label: 'Bracket C — Wall/Ceiling', file: 'OT-Bracket-C-Install-Guide.pdf' },
-                      { label: 'Bracket D — Pole Adapter', file: 'OT-Bracket-D-Install-Guide.pdf' },
-                      { label: 'Bracket E — Side Entry', file: 'OT-Bracket-E-Install-Guide.pdf' },
-                      { label: 'Bracket F — Extended Arm', file: 'OT-Bracket-F-Install-Guide.pdf' },
-                      { label: 'Bracket G — Trunnion', file: 'OT-Bracket-G-Install-Guide.pdf' },
-                    ].map(g => (
-                      <a key={g.file} href={`/docs/install-guides/${g.file}`} target="_blank" className="flex items-center gap-2 px-3 py-1.5 text-xs text-gray-700 hover:text-yellow-600 hover:bg-white rounded transition-colors">
-                        <Download className="w-3 h-3" /> {g.label}
-                      </a>
-                    ))}
-                  </div>
-                </details>
+                  {/* IES Files */}
+                  <details className="group border rounded-lg overflow-hidden">
+                    <summary className="flex items-center gap-2 p-3 cursor-pointer hover:bg-gray-50 text-sm list-none [&::-webkit-details-marker]:hidden">
+                      <Download className="w-4 h-4 text-yellow-600" /><span>IES Files <span className="text-[10px] text-gray-400">(8)</span></span>
+                    </summary>
+                    <div className="border-t bg-gray-50 p-2 grid grid-cols-2 gap-0.5">
+                      {['75W','115W','145W','180W','200W','230W','300W','420W'].map(w => (
+                        <a key={w} href={`/docs/ies/OT-Series-${w}.ies`} download className="flex items-center gap-1 px-2 py-1 text-xs text-gray-700 hover:text-yellow-600 rounded transition-colors">
+                          <Download className="w-3 h-3" /> {w}
+                        </a>
+                      ))}
+                    </div>
+                  </details>
 
-                {/* Warranty */}
-                <a href="/support/returns" className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm">
-                  <Shield className="w-4 h-4 text-yellow-600" /><span>Warranty Info</span>
-                </a>
+                  {/* Install Guides */}
+                  <details className="group border rounded-lg overflow-hidden">
+                    <summary className="flex items-center gap-2 p-3 cursor-pointer hover:bg-gray-50 text-sm list-none [&::-webkit-details-marker]:hidden">
+                      <FileText className="w-4 h-4 text-yellow-600" /><span>Install Guides <span className="text-[10px] text-gray-400">(8)</span></span>
+                    </summary>
+                    <div className="border-t bg-gray-50 p-2 space-y-0.5">
+                      {[
+                        { label: 'Bracket A — Slip Fitter', file: 'OT-Bracket-A-Install-Guide.pdf' },
+                        { label: 'Bracket B — Arm Mount', file: 'OT-Bracket-B-Install-Guide.pdf' },
+                        { label: 'Bracket B — With Visor', file: 'OT-Bracket-B-Visor-Install-Guide.pdf' },
+                        { label: 'Bracket C — Wall/Ceiling', file: 'OT-Bracket-C-Install-Guide.pdf' },
+                        { label: 'Bracket D — Pole Adapter', file: 'OT-Bracket-D-Install-Guide.pdf' },
+                        { label: 'Bracket E — Side Entry', file: 'OT-Bracket-E-Install-Guide.pdf' },
+                        { label: 'Bracket F — Extended Arm', file: 'OT-Bracket-F-Install-Guide.pdf' },
+                        { label: 'Bracket G — Trunnion', file: 'OT-Bracket-G-Install-Guide.pdf' },
+                      ].map(g => (
+                        <a key={g.file} href={`/docs/install-guides/${g.file}`} target="_blank" className="flex items-center gap-1 px-2 py-1 text-xs text-gray-700 hover:text-yellow-600 rounded transition-colors">
+                          <Download className="w-3 h-3" /> {g.label}
+                        </a>
+                      ))}
+                    </div>
+                  </details>
+
+                  {/* Warranty */}
+                  <a href="/support/returns" className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm">
+                    <Shield className="w-4 h-4 text-yellow-600" /><span>Warranty Info</span>
+                  </a>
+                </div>
               </div>
             ) : (
               <div className="grid grid-cols-2 gap-2">
