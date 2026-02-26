@@ -570,10 +570,26 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
                     </div>
                   </details>
 
-                  {/* Install Guides — placeholder */}
-                  <div className="flex items-center gap-2 p-3 border rounded-lg text-sm text-gray-400">
-                    <FileText className="w-4 h-4" /><span>Install Guides (Coming Soon)</span>
-                  </div>
+                  {/* Install Guides */}
+                  <details className="group border rounded-lg overflow-hidden">
+                    <summary className="flex items-center gap-2 p-3 cursor-pointer hover:bg-gray-50 text-sm list-none [&::-webkit-details-marker]:hidden">
+                      <FileText className="w-4 h-4 text-yellow-600" /><span>Install Guides <span className="text-[10px] text-gray-400">(6)</span></span>
+                    </summary>
+                    <div className="border-t bg-gray-50 p-2 space-y-0.5">
+                      {[
+                        { label: 'Bracket A — Slip Fitter', file: 'PLB-Bracket-A-Install-Guide.pdf' },
+                        { label: 'Bracket B — Pole Mount', file: 'PLB-Bracket-B-Install-Guide.pdf' },
+                        { label: 'Bracket D — Pole Adapter', file: 'PLB-Bracket-D-Install-Guide.pdf' },
+                        { label: 'Bracket E — Side Entry', file: 'PLB-Bracket-E-Install-Guide.pdf' },
+                        { label: 'Bracket F — Extended Arm', file: 'PLB-Bracket-F-Install-Guide.pdf' },
+                        { label: 'Bracket G — Trunnion', file: 'PLB-Bracket-G-Install-Guide.pdf' },
+                      ].map(g => (
+                        <a key={g.file} href={`/docs/install-guides/${g.file}`} target="_blank" className="flex items-center gap-1 px-2 py-1 text-xs text-gray-700 hover:text-yellow-600 rounded transition-colors">
+                          <Download className="w-3 h-3" /> {g.label}
+                        </a>
+                      ))}
+                    </div>
+                  </details>
 
                   {/* Warranty */}
                   <details className="group border rounded-lg overflow-hidden">
