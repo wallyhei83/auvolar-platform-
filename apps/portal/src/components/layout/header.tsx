@@ -306,11 +306,7 @@ export function Header() {
                       <ChevronRight className="h-4 w-4" />
                     </div>
                   ))}
-                  <div className="mt-4 border-t border-gray-200 px-4 pt-4">
-                    <Link href="/products" className="text-sm font-medium text-brand hover:underline">
-                      View All Products →
-                    </Link>
-                  </div>
+{/* View All Products removed */}
                 </div>
 
                 {/* Level 3 - Subcategories */}
