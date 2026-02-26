@@ -85,6 +85,13 @@ const PRODUCT_ACCESSORIES: Record<string, Array<{ name: string; sku: string; slu
     { name: 'Motion/Occupancy Sensor', sku: 'OT-MOTION', slug: 'motion-sensor-for-high-bay', price: 29, image: '', description: 'PIR motion sensor, waterproof, Zhaga compatible', category: 'Sensors' },
   ],
   'plb-series': [
+    { name: 'Bracket A — Slip Fitter', sku: 'PLB-BKT-A', slug: '', price: undefined, image: '/docs/accessories/PLB-Bracket-A.jpg', description: 'Standard pole mount slip fitter for round poles', category: 'Mounting Brackets' },
+    { name: 'Bracket A2 — Compact Slip Fitter', sku: 'PLB-BKT-A2', slug: '', price: undefined, image: '/docs/accessories/PLB-Bracket-A2.jpg', description: 'Compact slip fitter for smaller diameter poles', category: 'Mounting Brackets' },
+    { name: 'Bracket B — Adjustable Arm Mount', sku: 'PLB-BKT-B', slug: '', price: undefined, image: '/docs/accessories/PLB-Bracket-B.jpg', description: 'Adjustable arm mount with angle dial for round poles', category: 'Mounting Brackets' },
+    { name: 'Bracket D — Pole Adapter', sku: 'PLB-BKT-D', slug: '', price: undefined, image: '/docs/accessories/PLB-Bracket-D.jpg', description: 'Universal adapter for round and square light poles', category: 'Mounting Brackets' },
+    { name: 'Bracket E — Side-Entry Mount', sku: 'PLB-BKT-E', slug: '', price: undefined, image: '/docs/accessories/PLB-Bracket-E.jpg', description: 'Side-entry mount for 4" round poles', category: 'Mounting Brackets' },
+    { name: 'Bracket F — Extended Arm', sku: 'PLB-BKT-F', slug: '', price: undefined, image: '/docs/accessories/PLB-Bracket-F.jpg', description: 'Extended arm adapter for offset mounting', category: 'Mounting Brackets' },
+    { name: 'Bracket G — Junction Box', sku: 'PLB-BKT-G', slug: '', price: undefined, image: '/docs/accessories/PLB-Bracket-G.jpg', description: 'Junction box mount for wall or pole installation', category: 'Mounting Brackets' },
     { name: 'Photocell Sensor', sku: 'PLB-PHOTOCELL', slug: 'photocell-for-wall-pack-area-light', price: 15, image: '', description: 'Dusk-to-dawn automatic on/off, NEMA twist-lock', category: 'Sensors' },
     { name: 'Motion/Occupancy Sensor', sku: 'PLB-MOTION', slug: 'motion-sensor-for-high-bay', price: 29, image: '', description: 'PIR motion sensor, waterproof, Zhaga compatible', category: 'Sensors' },
   ],
