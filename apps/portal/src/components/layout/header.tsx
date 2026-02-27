@@ -275,7 +275,7 @@ export function Header() {
       <nav className="hidden border-b border-gray-100 bg-white lg:block">
         <div className="mx-auto flex max-w-7xl items-center px-4 sm:px-6 lg:px-8">
           {/* Home */}
-          <Link href="/" className="px-4 py-3 text-sm font-medium text-gray-700 hover:text-brand">
+          <Link href="/" className="px-4 py-3 text-sm font-semibold text-gray-900 hover:text-brand">
             Home
           </Link>
 
@@ -285,7 +285,7 @@ export function Header() {
             onMouseEnter={() => setActiveMenu('products')}
             onMouseLeave={() => { setActiveMenu(null); setActiveSubMenu(null); }}
           >
-            <button className="flex items-center gap-1 px-4 py-3 text-sm font-medium text-gray-700 hover:text-brand">
+            <button className="flex items-center gap-1 px-4 py-3 text-sm font-semibold text-gray-900 hover:text-brand">
               Products
               <ChevronDown className="h-4 w-4" />
             </button>
@@ -365,7 +365,7 @@ export function Header() {
             onMouseEnter={() => setActiveMenu('applications')}
             onMouseLeave={() => setActiveMenu(null)}
           >
-            <button className="flex items-center gap-1 px-4 py-3 text-sm font-medium text-gray-700 hover:text-brand">
+            <button className="flex items-center gap-1 px-4 py-3 text-sm font-semibold text-gray-900 hover:text-brand">
               Applications
               <ChevronDown className="h-4 w-4" />
             </button>
@@ -392,32 +392,32 @@ export function Header() {
           </div>
 
           {/* Tailor Purchasing */}
-          <Link href="/tailor-purchasing" className="px-4 py-3 text-sm font-medium text-gray-700 hover:text-brand">
+          <Link href="/tailor-purchasing" className="px-4 py-3 text-sm font-semibold text-gray-900 hover:text-brand">
             Tailor Purchasing
           </Link>
 
           {/* Photometric Simulation */}
-          <Link href="/tools/photometric-simulation" className="px-4 py-3 text-sm font-medium text-gray-700 hover:text-brand">
+          <Link href="/tools/photometric-simulation" className="px-4 py-3 text-sm font-semibold text-gray-900 hover:text-brand">
             Simulation
           </Link>
 
           {/* Product Design Lab */}
-          <Link href="/tools/product-design" className="px-4 py-3 text-sm font-medium text-gray-700 hover:text-brand">
+          <Link href="/tools/product-design" className="px-4 py-3 text-sm font-semibold text-gray-900 hover:text-brand">
             Design Lab
           </Link>
 
           {/* LightSpec AI */}
-          <Link href="/tools/lightspec-ai" className="px-4 py-3 text-sm font-medium text-gray-700 hover:text-brand">
+          <Link href="/tools/lightspec-ai" className="px-4 py-3 text-sm font-semibold text-gray-900 hover:text-brand">
             LightSpec AI
           </Link>
 
           {/* Partner */}
-          <Link href="/partner" className="px-4 py-3 text-sm font-medium text-gray-700 hover:text-brand">
+          <Link href="/partner" className="px-4 py-3 text-sm font-semibold text-gray-900 hover:text-brand">
             Partner
           </Link>
 
           {/* Investor */}
-          <Link href="/investor" className="px-4 py-3 text-sm font-medium text-gray-700 hover:text-brand">
+          <Link href="/investor" className="px-4 py-3 text-sm font-semibold text-gray-900 hover:text-brand">
             Investor
           </Link>
 
@@ -427,7 +427,7 @@ export function Header() {
             onMouseEnter={() => setActiveMenu('service')}
             onMouseLeave={() => setActiveMenu(null)}
           >
-            <button className="flex items-center gap-1 px-4 py-3 text-sm font-medium text-gray-700 hover:text-brand">
+            <button className="flex items-center gap-1 px-4 py-3 text-sm font-semibold text-gray-900 hover:text-brand">
               Service
               <ChevronDown className="h-4 w-4" />
             </button>
