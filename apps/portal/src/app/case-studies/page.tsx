@@ -143,6 +143,7 @@ const caseStudies: CaseStudy[] = [
     images: [
       '/images/case-studies/auto-dealerships/dealership-1-castle-cdjr.jpg',
       '/images/case-studies/auto-dealerships/dealership-2-chevrolet-naperville.jpg',
+      '/images/case-studies/auto-dealerships/dealership-3-castle-cdjr-daytime.jpg',
     ],
     stats: [
       { label: 'Dealerships', value: '100+' },
