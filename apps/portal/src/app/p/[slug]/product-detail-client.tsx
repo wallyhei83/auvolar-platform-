@@ -216,11 +216,13 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
     else if (voltage.includes('480') || voltage.includes('347')) voltCode = 'HV'
     else if (voltage) voltCode = 'NV'
 
-    // Beam angle: "Type III" → "III", "Type IV" → "IV", "Type V" → "V"
-    // Also handle "Tpye" typo in BC data
-    const beamCode = beam
-      .replace(/^(Type|Tpye)\s*/i, '')
-      .trim()
+    // Beam angle: Type III → T3, Type IV → T4, Type V → T5
+    const beamMap: Record<string, string> = {
+      'Type III': 'T3', 'Type IV': 'T4', 'Type V': 'T5',
+      'TpyeIII': 'T3', 'TpyeIV': 'T4', 'TpyeV': 'T5',
+      'Tpye III': 'T3', 'Tpye IV': 'T4', 'Tpye V': 'T5',
+    }
+    const beamCode = beamMap[beam] || beam.replace(/^(Type|Tpye)\s*/i, 'T').replace(/\s/g, '')
 
     // CCT: "3000K" → "30", "4000K" → "40", "5000K" → "50", "5700K" → "57"
     const cctMap: Record<string, string> = {
