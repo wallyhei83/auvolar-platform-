@@ -8,13 +8,12 @@ import {
 } from 'lucide-react'
 
 const wattageOptions = [
-  { watt: 200, lumens: '28,000', replaces: '500W MH', price: 299, sku: 'ISF-200W' },
-  { watt: 300, lumens: '42,000', replaces: '750W MH', price: 399, sku: 'ISF-300W' },
   { watt: 400, lumens: '56,000', replaces: '1000W MH', price: 499, sku: 'ISF-400W' },
   { watt: 600, lumens: '84,000', replaces: '1500W MH', price: 699, sku: 'ISF-600W' },
   { watt: 800, lumens: '112,000', replaces: '2000W MH', price: 899, sku: 'ISF-800W' },
-  { watt: 1000, lumens: '140,000', replaces: '2500W MH', price: 1099, sku: 'ISF-1000W' },
-  { watt: 1200, lumens: '192,000', replaces: '3000W MH', price: 1299, sku: 'ISF-1200W' },
+  { watt: 1200, lumens: '168,000', replaces: '3000W MH', price: 1299, sku: 'ISF-1200W' },
+  { watt: 1500, lumens: '210,000', replaces: '4000W MH', price: 1599, sku: 'ISF-1500W' },
+  { watt: 1800, lumens: '252,000', replaces: '5000W MH', price: 1899, sku: 'ISF-1800W' },
 ]
 
 const cctOptions = [
@@ -24,14 +23,11 @@ const cctOptions = [
 ]
 
 const beamOptions = [
-  { value: '10°', label: '10° Spot', use: 'Long-throw, high mast' },
-  { value: '25°', label: '25° Narrow', use: 'Stadium side throw' },
-  { value: '40°', label: '40° Medium', use: 'General sports field' },
-  { value: '60°', label: '60° Wide', use: 'Area coverage' },
-  { value: '90°', label: '90° Very Wide', use: 'Broad area' },
-  { value: '120°', label: '120° Flood', use: 'Maximum spread' },
-  { value: '10°×40°', label: '10°×40° Asymmetric', use: 'Sideline throw' },
-  { value: '25°×60°', label: '25°×60° Asymmetric', use: 'Field edge' },
+  { value: '15°', label: '15° Spot', use: 'Long-throw, high mast' },
+  { value: '30°', label: '30° Narrow', use: 'Stadium focused throw' },
+  { value: '20°×30°', label: '20°×30° Asymmetric', use: 'Sideline throw' },
+  { value: '35°×85°', label: '35°×85° Asymmetric', use: 'Wide field coverage' },
+  { value: 'PG60°', label: 'PG 60° Playground', use: 'Recreational fields' },
 ]
 
 const features = [
@@ -297,6 +293,38 @@ export function ISFSeriesClient() {
               </tbody>
             </table>
           </div>
+        </div>
+      </section>
+
+      {/* Downloads */}
+      <section className="border-t bg-gray-50 py-12">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <h2 className="text-2xl font-bold text-gray-900">Downloads &amp; Resources</h2>
+          <p className="mt-2 text-gray-500">IES photometric files for lighting design and simulation</p>
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              { angle: '15°', folder: '15D', desc: 'Spot beam — high mast, long throw' },
+              { angle: '30°', folder: '30D', desc: 'Narrow beam — stadium focused' },
+              { angle: '20°×30°', folder: '2030D', desc: 'Asymmetric — sideline throw' },
+              { angle: '35°×85°', folder: '3585D', desc: 'Asymmetric — wide field coverage' },
+              { angle: 'PG 60°', folder: 'PG60D', desc: 'Playground — recreational fields' },
+            ].map((item) => (
+              <div key={item.folder} className="rounded-lg border border-gray-200 bg-white p-4">
+                <div className="flex items-center gap-2">
+                  <Download className="h-5 w-5 text-brand" />
+                  <h3 className="font-semibold text-gray-900">{item.angle} Beam IES Files</h3>
+                </div>
+                <p className="mt-1 text-sm text-gray-500">{item.desc}</p>
+                <p className="mt-2 text-xs text-gray-400">400W / 600W / 800W / 1200W — With & Without Visor</p>
+                <p className="mt-1 text-xs text-gray-400">HV (277V/480V) & NV (120V/277V) versions</p>
+              </div>
+            ))}
+          </div>
+          <p className="mt-4 text-sm text-gray-500">
+            Need specific IES files? Contact us at{' '}
+            <a href="mailto:sales@auvolar.com" className="text-brand hover:underline">sales@auvolar.com</a>
+            {' '}with your project requirements and we&apos;ll send the right files.
+          </p>
         </div>
       </section>
 
