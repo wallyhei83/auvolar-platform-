@@ -63,9 +63,8 @@ export default function AboutPage() {
               Light Done Right
             </h1>
             <p className="mt-6 text-xl text-gray-300">
-              Auvolar is your partner for commercial and industrial LED lighting. 
-              We combine quality products, competitive pricing, and expert support to help 
-              contractors and facility managers complete projects successfully.
+              More than a supplier — a smarter platform for contractors, electricians, 
+              and project teams. Dependable products, practical tools, faster projects.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Link
@@ -105,27 +104,46 @@ export default function AboutPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
             <div>
-              <h2 className="text-3xl font-bold text-gray-900">Our Story</h2>
+              <h2 className="text-3xl font-bold text-gray-900">About Auvolar</h2>
               <div className="mt-6 space-y-4 text-gray-600">
                 <p>
-                  Auvolar was founded with a simple mission: make commercial LED lighting 
-                  accessible, affordable, and easy to source for the professionals who need it most.
+                  Auvolar is more than a commercial LED supplier. We&apos;re building a smarter platform 
+                  for contractors, electricians, and project teams — combining dependable lighting 
+                  products with practical digital tools that streamline every stage of the job.
                 </p>
                 <p>
-                  After years of working in the electrical contracting industry, our founders saw 
-                  firsthand the challenges of sourcing quality LED products—inconsistent availability, 
-                  confusing specifications, and suppliers who didn't understand the realities of 
-                  commercial projects.
+                  Our founders come from the electrical contracting industry. We understand the 
+                  pressure of tight timelines, strict specifications, and competitive bids. 
+                  Sourcing materials shouldn&apos;t slow projects down. That&apos;s why Auvolar brings together:
+                </p>
+                <ul className="ml-4 space-y-2">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-brand" />
+                    <span>Professionally vetted, UL &amp; DLC listed products</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-brand" />
+                    <span>Real-time U.S. inventory visibility</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-brand" />
+                    <span>Competitive bulk pricing</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-brand" />
+                    <span>AI-powered project tools designed for contractors</span>
+                  </li>
+                </ul>
+                <p>
+                  From product selection and photometric planning to quoting and procurement, 
+                  our platform helps you move from bid to completion faster — with fewer headaches.
                 </p>
                 <p>
-                  We built Auvolar to be different. Every product in our catalog is carefully 
-                  vetted for quality and performance. Our inventory is accurate and updated in real-time. 
-                  And our team includes lighting specialists who can help you find the right solution 
-                  for any application.
+                  Thousands of professionals across the United States trust Auvolar to keep 
+                  their projects on schedule and on budget.
                 </p>
-                <p>
-                  Today, we serve thousands of contractors, electricians, and facility managers 
-                  across the United States, helping them complete projects on time and on budget.
+                <p className="text-lg font-semibold text-gray-900">
+                  Lighting done right. Projects done smarter.
                 </p>
               </div>
             </div>
