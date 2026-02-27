@@ -129,7 +129,7 @@ const caseStudies: CaseStudy[] = [
     subtitle: 'Major auto dealerships trust us for showroom-quality lot lighting',
     description: 'Leading automotive dealerships across the U.S. rely on our OT Series for their outdoor lot lighting. Auto dealers require exceptional color rendering to showcase vehicle finishes, uniform illumination to eliminate dark spots, and energy efficiency to manage large outdoor lighting footprints. Our fixtures deliver all three.',
     highlights: [
-      'BMW, Mercedes-Benz, Toyota, Honda dealerships',
+      'Castle CDJR, Naperville Chevrolet, Mercedes-Benz of Naperville, and more',
       'High CRI for true vehicle color representation',
       '0-10V dimming for after-hours energy savings',
       'Type V distribution for uniform lot coverage',
@@ -138,9 +138,12 @@ const caseStudies: CaseStudy[] = [
     ],
     product: 'OT Series LED Parking Lot Light',
     productSlug: 'aera-lighting-shoebox-ot-series-led-parking-lot-light-75w-420w',
-    clients: ['BMW Dealerships', 'Mercedes-Benz Dealerships', 'Toyota Dealerships', 'Honda Dealerships'],
+    clients: ['Castle CDJR', 'Naperville Chevrolet', 'Mercedes-Benz of Naperville', 'BMW Dealerships', 'Toyota Dealerships'],
     location: 'Nationwide, USA',
-    images: [],
+    images: [
+      '/images/case-studies/auto-dealerships/dealership-1-castle-cdjr.jpg',
+      '/images/case-studies/auto-dealerships/dealership-2-chevrolet-naperville.jpg',
+    ],
     stats: [
       { label: 'Dealerships', value: '100+' },
       { label: 'Avg Savings', value: '$15K/yr' },
