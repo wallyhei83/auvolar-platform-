@@ -292,7 +292,7 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
           <h1 className="text-3xl font-bold text-gray-900 mb-2">{product.name}</h1>
 
           <div className="flex items-center gap-4 mb-4">
-            <span className="text-sm text-gray-500">SKU: {product.sku}</span>
+            <span className="text-sm text-gray-500">SKU: {selectedVariant?.sku || product.sku}</span>
             <span className="text-sm text-gray-300">|</span>
             <div className="flex items-center gap-1">
               {product.inStock ? (
