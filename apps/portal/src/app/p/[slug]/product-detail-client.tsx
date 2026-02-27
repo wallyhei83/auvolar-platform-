@@ -192,16 +192,22 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
 
   const isOTSeries = product.slug.includes('ot-series') || product.slug.includes('aera-lighting-shoebox-ot')
   const isPLBSeries = product.slug.includes('plb-series') || product.slug.includes('area-shoebox-light-plb')
+  const isISFSeries = product.slug.includes('stadium-light-isf') || product.slug.includes('isf-series')
+  const isINSSeries = product.slug.includes('sports-flood-light-ins') || product.slug.includes('ins-series') || product.slug.includes('ins-sports')
+  const hasAOKSku = isOTSeries || isPLBSeries || isISFSeries || isINSSeries
 
   // Generate AOK ordering code SKU from selected options
-  // Format per ordering chart: AOK-[Series]-[Watt]-[Voltage]-[BeamAngle]-[CCT]-([Color])
-  // Rules: Wattage=full value, Voltage: 100-277VAC→NV / 277-480VAC→HV,
-  //   Beam: Type III→III / Type IV→IV / Type V→V,
-  //   CCT: 3000K→30 / 4000K→40 / 5000K→50,
-  //   Color: Silver→S / White→W / Black→B / Bronze→BZ
+  // OT/PLB format: AOK-[Series]-[Watt]-[Voltage]-[BeamAngle]-[CCT]-([Color])
+  // ISF format: AOK-ISF-[Watt]-[Voltage]-[BeamAngle]-[CCT]-[Mounting]
+  // INS format: AOK-INS-[Watt]-[Voltage]-[BeamAngle]-[CCT]-[Mounting]
   const generateAOKSku = (selections: Record<string, string>): string | null => {
-    if (!isOTSeries && !isPLBSeries) return null
-    const series = isOTSeries ? 'OT' : 'PLB'
+    if (!hasAOKSku) return null
+
+    let series = ''
+    if (isOTSeries) series = 'OT'
+    else if (isPLBSeries) series = 'PLB'
+    else if (isISFSeries) series = 'ISF'
+    else if (isINSSeries) series = 'INS'
 
     // Map option names — try common BC option name variants
     const watt = selections['Wattage'] || ''
@@ -209,24 +215,32 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
     const beam = selections['Beam Angle'] || selections['Distribution'] || ''
     const cct = selections['CCT'] || selections['Color Temperature'] || ''
     const color = selections['Color'] || selections['Housing Color'] || ''
+    const mounting = selections['Mounting'] || ''
 
-    // Voltage: 100-277VAC → NV, 277-480VAC / 347VAC / 480VAC → HV, Without Driver → WD
+    // Voltage: 100-277V / 120-277V → NV, 277-480V / 220-400V → HV, Without Driver → WD
     let voltCode = ''
     if (voltage.toLowerCase().includes('without')) voltCode = 'WD'
-    else if (voltage.includes('480') || voltage.includes('347')) voltCode = 'HV'
+    else if (voltage.includes('480') || voltage.includes('347') || voltage.includes('400')) voltCode = 'HV'
     else if (voltage) voltCode = 'NV'
 
-    // Beam angle: Type III → T3, Type IV → T4, Type V → T5
+    // Beam angle mapping
     const beamMap: Record<string, string> = {
+      // OT/PLB beam types
       'Type III': 'T3', 'Type IV': 'T4', 'Type V': 'T5',
       'TpyeIII': 'T3', 'TpyeIV': 'T4', 'TpyeV': 'T5',
       'Tpye III': 'T3', 'Tpye IV': 'T4', 'Tpye V': 'T5',
+      // ISF/INS beam angles — keep as-is (15D, 30D, 60D, 120D, 20*30D, 35*85D, PG30D, PG60D)
     }
-    const beamCode = beamMap[beam] || beam.replace(/^(Type|Tpye)\s*/i, 'T').replace(/\s/g, '')
+    let beamCode = beamMap[beam] || ''
+    if (!beamCode && beam) {
+      // For ISF/INS: keep the D-suffix angle format as-is
+      beamCode = beam
+    }
 
     // CCT: "3000K" → "30", "4000K" → "40", "5000K" → "50", "5700K" → "57"
     const cctMap: Record<string, string> = {
       '3000K': '30', '4000K': '40', '5000K': '50', '5700K': '57', '6500K': '65',
+      'Customized': 'CUS',
     }
     const cctCode = cctMap[cct] || cct.replace('K', '').replace('00', '')
 
@@ -236,18 +250,27 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
       'silver': 'S', 'white': 'W', 'black': 'B', 'bronze': 'BZ',
       'Red': 'R', 'Blue': 'BL', 'red': 'R', 'blue': 'BL',
     }
-    const colorCode = colorMap[color] || color.charAt(0).toUpperCase()
+    const colorCode = colorMap[color] || (color ? color.charAt(0).toUpperCase() : '')
 
-    // Build: AOK-OT-145W-NV-V-40-(S)
-    const parts = [`AOK-${series}`, watt, voltCode, beamCode, cctCode].filter(Boolean)
-    // If we only got the prefix with no actual options, return null to fallback
-    if (parts.length <= 1) return null
-    const sku = parts.join('-')
-    return color ? `${sku}-(${colorCode})` : sku
+    // Mounting: Type-A → A, Type-B → B, Type-C → C, Type-D → D
+    const mountCode = mounting.replace('Type-', '')
+
+    if (isISFSeries || isINSSeries) {
+      // Build: AOK-ISF-400W-NV-15D-40-A or AOK-INS-315W-NV-30D-50-B
+      const parts = [`AOK-${series}`, watt, voltCode, beamCode, cctCode, mountCode].filter(Boolean)
+      if (parts.length <= 1) return null
+      return parts.join('-')
+    } else {
+      // OT/PLB: AOK-OT-145W-NV-T5-40-(S)
+      const parts = [`AOK-${series}`, watt, voltCode, beamCode, cctCode].filter(Boolean)
+      if (parts.length <= 1) return null
+      const sku = parts.join('-')
+      return colorCode ? `${sku}-(${colorCode})` : sku
+    }
   }
 
-  // Use AOK SKU for OT/PLB, fallback to BC variant SKU
-  const displaySku = (isOTSeries || isPLBSeries)
+  // Use AOK SKU for all AOK series, fallback to BC variant SKU
+  const displaySku = hasAOKSku
     ? (generateAOKSku(selectedOptions) || selectedVariant?.sku || product.sku)
     : (selectedVariant?.sku || product.sku)
 
