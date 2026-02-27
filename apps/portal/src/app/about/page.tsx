@@ -107,43 +107,40 @@ export default function AboutPage() {
               <h2 className="text-3xl font-bold text-gray-900">About Auvolar</h2>
               <div className="mt-6 space-y-4 text-gray-600">
                 <p>
-                  Auvolar is more than a commercial LED supplier. We&apos;re building a smarter platform 
-                  for contractors, electricians, and project teams — combining dependable lighting 
-                  products with practical digital tools that streamline every stage of the job.
+                  Auvolar is more than a commercial LED supplier. We&apos;re the smart platform built to 
+                  get your projects from bid to completion—faster. Created for contractors, electricians, 
+                  and project teams, Auvolar brings together dependable product supply with practical 
+                  digital tools, including AI-driven subscriptions. We give you the control and confidence 
+                  to execute flawlessly.
                 </p>
                 <p>
-                  Our founders come from the electrical contracting industry. We understand the 
-                  pressure of tight timelines, strict specifications, and competitive bids. 
-                  Sourcing materials shouldn&apos;t slow projects down. That&apos;s why Auvolar brings together:
+                  Our founders have deep roots in electrical contracting. We know the reality of the 
+                  jobsite: tight margins, strict specs, and unforgiving schedules. Sourcing materials 
+                  shouldn&apos;t be a bottleneck, and it definitely shouldn&apos;t cause rework. That&apos;s why 
+                  Auvolar delivers a true end-to-end, contractor-ready solution:
                 </p>
-                <ul className="ml-4 space-y-2">
+                <ul className="ml-4 space-y-3">
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-brand" />
-                    <span>Professionally vetted, UL &amp; DLC listed products</span>
+                    <span><strong>Spec-Grade Products &amp; Turnkey Systems:</strong> Fully compliant (UL/ETL, DLC) with verified performance. From fixtures to mounting hardware, sensors, and control systems, we supply everything you need for complete system configurations in one place.</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-brand" />
-                    <span>Real-time U.S. inventory visibility</span>
+                    <span><strong>Real-Time U.S. Inventory:</strong> Stop guessing. Our continuously updated inventory gives you the visibility to manage lead times and lock in decisions early.</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-brand" />
-                    <span>Competitive bulk pricing</span>
+                    <span><strong>Contractor-First Pricing:</strong> Built for the way you buy. Unlock volume pricing and streamlined project quoting instantly, eliminating endless back-and-forth.</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-brand" />
-                    <span>AI-powered project tools designed for contractors</span>
+                    <span><strong>AI-Powered Project Tools:</strong> Spend less time chasing details. Our subscription-based AI helps you match products, compare specs, manage BOMs, organize photometrics, and collaborate on quotes—keeping your team focused on moving the job forward.</span>
                   </li>
                 </ul>
                 <p>
-                  From product selection and photometric planning to quoting and procurement, 
-                  our platform helps you move from bid to completion faster — with fewer headaches.
-                </p>
-                <p>
-                  Thousands of professionals across the United States trust Auvolar to keep 
-                  their projects on schedule and on budget.
-                </p>
-                <p className="text-lg font-semibold text-gray-900">
-                  Lighting done right. Projects done smarter.
+                  From spec to site, Auvolar eliminates procurement friction. Today, top contractors 
+                  and facility teams across the U.S. trust Auvolar to keep their commercial lighting 
+                  projects on time and on budget.
                 </p>
               </div>
             </div>
