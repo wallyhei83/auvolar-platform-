@@ -210,8 +210,11 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
     const cct = selections['CCT'] || selections['Color Temperature'] || ''
     const color = selections['Color'] || selections['Housing Color'] || ''
 
-    // Voltage: 100-277VAC → NV, 277-480VAC / 347VAC / 480VAC → HV
-    const voltCode = (voltage.includes('480') || voltage.includes('347')) ? 'HV' : (voltage ? 'NV' : '')
+    // Voltage: 100-277VAC → NV, 277-480VAC / 347VAC / 480VAC → HV, Without Driver → WD
+    let voltCode = ''
+    if (voltage.toLowerCase().includes('without')) voltCode = 'WD'
+    else if (voltage.includes('480') || voltage.includes('347')) voltCode = 'HV'
+    else if (voltage) voltCode = 'NV'
 
     // Beam angle: "Type III" → "III", "Type IV" → "IV", "Type V" → "V"
     // Also handle "Tpye" typo in BC data
