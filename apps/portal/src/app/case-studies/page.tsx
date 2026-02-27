@@ -292,7 +292,7 @@ export default function CaseStudiesPage() {
               </div>
 
               <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-                {cases.map(cs => (
+                {cases.map(({ categoryIcon, ...cs }) => (
                   <CaseStudyCard key={cs.id} {...cs} />
                 ))}
               </div>
