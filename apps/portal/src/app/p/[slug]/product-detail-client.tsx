@@ -455,8 +455,8 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
             <div className="space-y-4 mb-6">
               {((isOTSeries || isPLBSeries)
                 ? // Force order for OT/PLB: Wattage → AC Input → Beam Angle → CCT → Color
-                  ['Wattage', 'AC Input', 'Beam Angle', 'CCT', 'Color'].filter(name => optionGroups[name])
-                  .concat(optionOrder.filter(name => !['Wattage', 'AC Input', 'Beam Angle', 'CCT', 'Color'].includes(name)))
+                  ['Wattage', 'AC Input', 'CCT', 'Beam Angle', 'Color'].filter(name => optionGroups[name])
+                  .concat(optionOrder.filter(name => !['Wattage', 'AC Input', 'CCT', 'Beam Angle', 'Color'].includes(name)))
                 : optionOrder
               ).map(optName => {
                 const values = optionGroups[optName]
