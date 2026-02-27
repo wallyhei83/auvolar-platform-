@@ -214,8 +214,9 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
     const voltCode = (voltage.includes('480') || voltage.includes('347')) ? 'HV' : (voltage ? 'NV' : '')
 
     // Beam angle: "Type III" → "III", "Type IV" → "IV", "Type V" → "V"
+    // Also handle "Tpye" typo in BC data
     const beamCode = beam
-      .replace(/^Type\s*/i, '')
+      .replace(/^(Type|Tpye)\s*/i, '')
       .trim()
 
     // CCT: "3000K" → "30", "4000K" → "40", "5000K" → "50", "5700K" → "57"
@@ -452,7 +453,12 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
           {/* Variant Selection — independent per dimension */}
           {optionOrder.length > 0 && (
             <div className="space-y-4 mb-6">
-              {optionOrder.map(optName => {
+              {((isOTSeries || isPLBSeries)
+                ? // Force order for OT/PLB: Wattage → AC Input → Beam Angle → CCT → Color
+                  ['Wattage', 'AC Input', 'Beam Angle', 'CCT', 'Color'].filter(name => optionGroups[name])
+                  .concat(optionOrder.filter(name => !['Wattage', 'AC Input', 'Beam Angle', 'CCT', 'Color'].includes(name)))
+                : optionOrder
+              ).map(optName => {
                 const values = optionGroups[optName]
                 const availableValues = getAvailableValues(optName)
                 return (
