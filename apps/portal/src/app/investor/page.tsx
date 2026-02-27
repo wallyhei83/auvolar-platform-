@@ -4,95 +4,172 @@ import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import {
   TrendingUp, Globe, Cpu, Lightbulb, BarChart3, Users, ArrowRight, DollarSign,
-  Building2, Sparkles
+  Building2, Sparkles, Target, ShieldCheck, Zap, Calendar, Mail, ChevronRight,
+  Award, Layers, Factory
 } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Investor Relations | Auvolar LED Lighting',
-  description: 'Invest in the future of intelligent commercial lighting. Auvolar combines AI technology with LED manufacturing to transform a $100B+ industry.',
+  description: 'Invest in the future of intelligent commercial lighting. Auvolar combines AI technology with LED manufacturing to transform a $100B+ global industry.',
 }
 
-const highlights = [
-  { icon: DollarSign, value: '$100B+', label: 'Global LED lighting market by 2030' },
-  { icon: TrendingUp, value: '12%', label: 'Industry CAGR through 2030' },
-  { icon: Building2, value: '70%', label: 'Energy savings vs traditional lighting' },
-  { icon: Globe, value: '50 States', label: 'Nationwide coverage from CA warehouse' },
+const marketStats = [
+  { value: '$130B+', label: 'Global LED Market Size by 2030', icon: Globe },
+  { value: '13.2%', label: 'Industry CAGR (2024-2030)', icon: TrendingUp },
+  { value: '70%', label: 'Energy Savings vs Legacy Lighting', icon: Zap },
+  { value: '$4.5B', label: 'Annual U.S. Utility Rebates for LED', icon: DollarSign },
 ]
 
-const pillars = [
+const investmentHighlights = [
   {
-    icon: Lightbulb,
-    title: 'DLC-Certified Product Portfolio',
-    desc: 'A comprehensive catalog of commercial and industrial LED fixtures — all DLC and UL certified, qualifying for utility rebates nationwide.',
+    icon: Target,
+    title: 'Massive Addressable Market',
+    desc: 'The global commercial LED lighting market exceeds $130 billion by 2030, driven by energy regulations, sustainability mandates, and the ongoing transition from legacy fixtures. Less than 40% of U.S. commercial buildings have converted to LED — the retrofit wave is just beginning.',
   },
   {
     icon: Cpu,
-    title: 'AI-Powered Platform',
-    desc: 'From photometric simulation to intelligent product selection (LightSpec AI) to AI-assisted product design — we\'re building the operating system for commercial lighting.',
+    title: 'AI-First Platform Strategy',
+    desc: 'We\'re not just a lighting company — we\'re building an AI-powered platform. Photometric simulation, intelligent product selection (LightSpec AI), and generative product design create recurring revenue streams and deep customer lock-in beyond hardware sales.',
+  },
+  {
+    icon: Layers,
+    title: 'Vertical Integration & Margins',
+    desc: 'Direct relationships with top-tier LED chip and driver manufacturers (Lumileds, Seoul Semi, Inventronics) eliminate middlemen. In-house engineering and quality control enable DLC/UL certified products at 30-50% below competitors with healthy gross margins.',
   },
   {
     icon: Users,
-    title: 'Partner Ecosystem',
-    desc: 'A growing network of contractors, engineers, distributors, and property owners — creating a flywheel of referrals, co-development, and recurring revenue.',
+    title: 'Partner-Driven Distribution',
+    desc: 'A growing ecosystem of contractors, engineers, distributors, and property owners creates a capital-efficient, referral-driven distribution model. Each partner type amplifies the network — contractors need fixtures, property owners need contractors, engineers spec our products.',
   },
   {
-    icon: BarChart3,
-    title: 'Vertical Integration',
-    desc: 'Direct manufacturing relationships and in-house engineering eliminate middlemen, enabling competitive pricing with healthy margins.',
+    icon: ShieldCheck,
+    title: 'Moats & Competitive Advantages',
+    desc: 'DLC & UL certifications (12-18 month process) create barriers to entry. A growing library of 500+ IES photometric files powers our AI tools. Partner relationships and co-development IP build switching costs. AI platform capabilities are compounding assets.',
   },
+  {
+    icon: Factory,
+    title: 'Asset-Light Manufacturing',
+    desc: 'Strategic OEM partnerships in Shenzhen and Xiamen provide flexible manufacturing capacity without capital-intensive factory ownership. This allows rapid product expansion while maintaining quality through our engineering oversight and QC protocols.',
+  },
+]
+
+const milestones = [
+  { year: '2024', event: 'Company founded, initial product catalog launched' },
+  { year: '2025 Q1', event: 'DLC & UL certification for core product lines' },
+  { year: '2025 Q2', event: 'E-commerce platform live, first contractor partnerships' },
+  { year: '2025 Q3', event: 'AI Tools platform (Simulation, Design Lab, LightSpec AI) beta launch' },
+  { year: '2025 Q4', event: 'Partner program expansion, 100+ active partners' },
+  { year: '2026', event: 'Series A fundraising, national distribution rollout' },
+]
+
+const teamPlaceholders = [
+  { name: 'Founding Team', role: 'Leadership', desc: 'Deep expertise in LED technology, global supply chain, and AI/ML — bridging hardware manufacturing with intelligent software.' },
+  { name: 'Engineering', role: 'R&D', desc: 'Optical, thermal, and electrical engineers delivering DLC-certified products that meet or exceed industry performance benchmarks.' },
+  { name: 'AI & Software', role: 'Technology', desc: 'Building the AI platform powering photometric simulation, product design, and intelligent selection — the brains behind the brand.' },
 ]
 
 export default function InvestorPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       <Header />
 
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-black py-24">
-        <div className="absolute inset-0 opacity-10">
+      <section className="relative overflow-hidden bg-gradient-to-br from-gray-950 via-gray-900 to-black py-24">
+        <div className="absolute inset-0 opacity-5">
           <div className="h-full w-full" style={{ backgroundImage: 'radial-gradient(circle at 70% 30%, #facc15 0%, transparent 40%)' }} />
         </div>
         <div className="relative mx-auto max-w-4xl px-4 text-center">
-          <h1 className="mb-6 text-4xl font-bold text-white md:text-5xl">
-            Invest in the Future of <span className="text-yellow-400">Intelligent Lighting</span>
-          </h1>
-          <p className="mx-auto max-w-2xl text-lg text-gray-300">
-            Auvolar is reimagining commercial lighting with AI-powered tools, vertical integration, and a partner-first ecosystem. We&apos;re not just selling fixtures — we&apos;re building a platform.
-          </p>
-        </div>
-      </section>
-
-      {/* Market Highlights */}
-      <section className="mx-auto max-w-5xl px-4 py-16">
-        <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-          {highlights.map((h) => (
-            <div key={h.label} className="rounded-2xl border border-gray-200 bg-white p-6 text-center">
-              <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-yellow-50 text-yellow-600">
-                <h.icon className="h-6 w-6" />
-              </div>
-              <div className="text-2xl font-black text-gray-900">{h.value}</div>
-              <div className="mt-1 text-xs text-gray-500">{h.label}</div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Strategic Pillars */}
-      <section className="bg-white py-16">
-        <div className="mx-auto max-w-5xl px-4">
-          <div className="mb-10 text-center">
-            <h2 className="mb-2 text-3xl font-bold text-gray-900">Strategic Pillars</h2>
-            <p className="text-gray-500">Four pillars driving sustainable growth and competitive moats</p>
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-yellow-400/20 bg-yellow-400/5 px-5 py-2 text-sm font-medium text-yellow-400">
+            <Sparkles className="h-4 w-4" />
+            Investor Relations
           </div>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            {pillars.map((p) => (
-              <div key={p.title} className="flex gap-4 rounded-2xl border border-gray-200 p-6">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-yellow-50 text-yellow-600">
-                  <p.icon className="h-6 w-6" />
+          <h1 className="mb-6 text-4xl font-bold leading-tight text-white md:text-6xl">
+            Illuminating the Future of<br />
+            <span className="text-yellow-400">Commercial Lighting</span>
+          </h1>
+          <p className="mx-auto max-w-2xl text-lg leading-relaxed text-gray-400">
+            Auvolar is building the first AI-powered commercial lighting platform — combining certified LED products, intelligent design tools, and a nationwide partner ecosystem to capture a $130B+ global market.
+          </p>
+          <div className="mt-10 flex flex-wrap justify-center gap-4">
+            <Link
+              href="/contact?subject=Investor+Meeting+Request"
+              className="inline-flex items-center gap-2 rounded-lg bg-yellow-400 px-8 py-3.5 font-semibold text-black transition-colors hover:bg-yellow-500"
+            >
+              Schedule a Meeting
+              <ArrowRight className="h-5 w-5" />
+            </Link>
+            <Link
+              href="/about"
+              className="inline-flex items-center gap-2 rounded-lg border border-gray-600 px-8 py-3.5 font-semibold text-white transition-colors hover:bg-white/5"
+            >
+              Company Overview
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Market Opportunity */}
+      <section className="border-b border-gray-100 py-16">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="mb-10 text-center">
+            <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-yellow-600">Market Opportunity</p>
+            <h2 className="text-3xl font-bold text-gray-900">A Massive Market in Transition</h2>
+          </div>
+          <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+            {marketStats.map((s) => (
+              <div key={s.label} className="rounded-2xl border border-gray-100 bg-gray-50 p-6 text-center">
+                <s.icon className="mx-auto mb-3 h-6 w-6 text-yellow-500" />
+                <div className="text-3xl font-black text-gray-900">{s.value}</div>
+                <div className="mt-2 text-xs leading-tight text-gray-500">{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Investment Highlights */}
+      <section className="py-20">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="mb-12 text-center">
+            <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-yellow-600">Investment Thesis</p>
+            <h2 className="mb-3 text-3xl font-bold text-gray-900">Why Auvolar</h2>
+            <p className="mx-auto max-w-2xl text-gray-500">
+              Six strategic pillars that position Auvolar for outsized growth in a massive, fragmented market.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {investmentHighlights.map((h) => (
+              <div key={h.title} className="rounded-2xl border border-gray-100 p-8 transition-shadow hover:shadow-lg">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-yellow-50 text-yellow-600">
+                  <h.icon className="h-6 w-6" />
                 </div>
-                <div>
-                  <h3 className="mb-2 font-bold text-gray-900">{p.title}</h3>
-                  <p className="text-sm text-gray-500">{p.desc}</p>
+                <h3 className="mb-3 text-lg font-bold text-gray-900">{h.title}</h3>
+                <p className="text-sm leading-relaxed text-gray-500">{h.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Milestones / Timeline */}
+      <section className="border-t border-gray-100 bg-gray-50 py-20">
+        <div className="mx-auto max-w-4xl px-4">
+          <div className="mb-12 text-center">
+            <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-yellow-600">Company Timeline</p>
+            <h2 className="text-3xl font-bold text-gray-900">Key Milestones</h2>
+          </div>
+          <div className="space-y-0">
+            {milestones.map((m, i) => (
+              <div key={m.year} className="flex gap-6">
+                <div className="flex flex-col items-center">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-yellow-400 text-xs font-bold text-black">
+                    {i + 1}
+                  </div>
+                  {i < milestones.length - 1 && <div className="h-full w-px bg-yellow-200" />}
+                </div>
+                <div className="pb-8">
+                  <span className="text-sm font-bold text-yellow-600">{m.year}</span>
+                  <p className="mt-1 text-gray-700">{m.event}</p>
                 </div>
               </div>
             ))}
@@ -100,29 +177,71 @@ export default function InvestorPage() {
         </div>
       </section>
 
-      {/* Vision */}
-      <section className="mx-auto max-w-3xl px-4 py-16 text-center">
-        <Sparkles className="mx-auto mb-4 h-8 w-8 text-yellow-400" />
-        <h2 className="mb-4 text-3xl font-bold text-gray-900">Our Vision</h2>
-        <p className="mb-6 text-lg text-gray-500">
-          To become the leading AI-powered commercial lighting platform — where every project, from a single retrofit to a stadium build-out, is designed, specified, and fulfilled through intelligent software and a world-class product catalog.
-        </p>
+      {/* Team */}
+      <section className="py-20">
+        <div className="mx-auto max-w-5xl px-4">
+          <div className="mb-12 text-center">
+            <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-yellow-600">Our Team</p>
+            <h2 className="text-3xl font-bold text-gray-900">Built by Industry Veterans</h2>
+          </div>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            {teamPlaceholders.map((t) => (
+              <div key={t.name} className="rounded-2xl border border-gray-100 p-8 text-center">
+                <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-gray-100">
+                  <Users className="h-8 w-8 text-gray-400" />
+                </div>
+                <h3 className="font-bold text-gray-900">{t.name}</h3>
+                <p className="mb-3 text-sm text-yellow-600">{t.role}</p>
+                <p className="text-sm text-gray-500">{t.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
 
-      {/* CTA */}
-      <section className="bg-gradient-to-br from-gray-900 to-black py-16">
+      {/* Contact IR */}
+      <section className="border-t border-gray-100 bg-gradient-to-br from-gray-950 to-black py-20">
         <div className="mx-auto max-w-3xl px-4 text-center">
-          <h2 className="mb-4 text-3xl font-bold text-white">Interested in Investing?</h2>
-          <p className="mb-8 text-gray-400">
-            We welcome conversations with investors who share our vision for the future of intelligent lighting. Schedule a meeting with our founding team.
+          <Mail className="mx-auto mb-6 h-10 w-10 text-yellow-400" />
+          <h2 className="mb-4 text-3xl font-bold text-white">Get in Touch</h2>
+          <p className="mb-8 text-lg text-gray-400">
+            Interested in learning more about Auvolar&apos;s growth story? We welcome conversations with investors, analysts, and strategic partners who share our vision.
           </p>
-          <Link
-            href="/contact?subject=Investor+Inquiry"
-            className="inline-flex items-center gap-2 rounded-lg bg-yellow-400 px-8 py-3 font-semibold text-black hover:bg-yellow-500"
-          >
-            Schedule a Meeting
-            <ArrowRight className="h-5 w-5" />
-          </Link>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link
+              href="/contact?subject=Investor+Meeting+Request"
+              className="inline-flex items-center gap-2 rounded-lg bg-yellow-400 px-8 py-3.5 font-semibold text-black hover:bg-yellow-500"
+            >
+              <Calendar className="h-5 w-5" />
+              Schedule a Meeting
+            </Link>
+            <a
+              href="mailto:invest@auvolar.com"
+              className="inline-flex items-center gap-2 rounded-lg border border-gray-600 px-8 py-3.5 font-semibold text-white hover:bg-white/5"
+            >
+              <Mail className="h-5 w-5" />
+              invest@auvolar.com
+            </a>
+          </div>
+          <div className="mt-10 flex flex-wrap justify-center gap-8 text-sm text-gray-500">
+            <div className="flex items-center gap-2">
+              <Building2 className="h-4 w-4 text-gray-600" />
+              17531 Railroad St Ste F, City of Industry, CA 91748
+            </div>
+            <div className="flex items-center gap-2">
+              <Globe className="h-4 w-4 text-gray-600" />
+              www.auvolar.com
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Disclaimer */}
+      <section className="bg-gray-50 py-8">
+        <div className="mx-auto max-w-4xl px-4">
+          <p className="text-center text-xs leading-relaxed text-gray-400">
+            <strong>Forward-Looking Statements:</strong> This page contains forward-looking statements regarding Auvolar&apos;s business outlook, market opportunity, product roadmap, and growth strategy. These statements involve risks and uncertainties, and actual results may differ materially. Market data and projections are based on industry research and management estimates. This page does not constitute an offer to sell or a solicitation of an offer to buy any securities.
+          </p>
         </div>
       </section>
 
