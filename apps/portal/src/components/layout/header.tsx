@@ -396,6 +396,41 @@ export function Header() {
             Tailor Purchasing
           </Link>
 
+          {/* AI Tools Dropdown */}
+          <div
+            className="relative"
+            onMouseEnter={() => setActiveMenu('ai-tools')}
+            onMouseLeave={() => setActiveMenu(null)}
+          >
+            <button className="flex items-center gap-1 px-4 py-3 text-sm font-medium text-gray-700 hover:text-brand">
+              AI Tools
+              <ChevronDown className="h-4 w-4" />
+            </button>
+            {activeMenu === 'ai-tools' && (
+              <div className="absolute left-0 top-full z-50 w-80 rounded-b-xl border border-t-0 border-gray-200 bg-white p-4 shadow-xl">
+                <div className="space-y-1">
+                  <Link href="/tools/photometric-simulation" className="block rounded-lg px-3 py-2 hover:bg-gray-50">
+                    <span className="font-medium text-gray-900">Photometric Simulation</span>
+                    <span className="block text-xs text-gray-500">AI-powered indoor & outdoor lighting simulation</span>
+                  </Link>
+                  <Link href="/tools/product-design" className="block rounded-lg px-3 py-2 hover:bg-gray-50">
+                    <span className="font-medium text-gray-900">Product Design Lab</span>
+                    <span className="block text-xs text-gray-500">Design your own LED fixture with AI</span>
+                  </Link>
+                  <Link href="/tools/lightspec-ai" className="block rounded-lg px-3 py-2 hover:bg-gray-50">
+                    <span className="font-medium text-gray-900">LightSpec AI</span>
+                    <span className="block text-xs text-gray-500">Intelligent product selection & configuration</span>
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Partner */}
+          <Link href="/partner" className="px-4 py-3 text-sm font-medium text-gray-700 hover:text-brand">
+            Partner
+          </Link>
+
           {/* Service Dropdown */}
           <div
             className="relative"
@@ -499,6 +534,21 @@ export function Header() {
               {/* Tailor Purchasing */}
               <Link href="/tailor-purchasing" className="block py-2 font-medium text-gray-900">
                 Tailor Purchasing
+              </Link>
+
+              {/* AI Tools */}
+              <div>
+                <div className="mb-2 py-2 font-medium text-gray-900">AI Tools</div>
+                <div className="ml-4 space-y-1">
+                  <Link href="/tools/photometric-simulation" className="block py-1 text-sm text-gray-600">Photometric Simulation</Link>
+                  <Link href="/tools/product-design" className="block py-1 text-sm text-gray-600">Product Design Lab</Link>
+                  <Link href="/tools/lightspec-ai" className="block py-1 text-sm text-gray-600">LightSpec AI</Link>
+                </div>
+              </div>
+
+              {/* Partner */}
+              <Link href="/partner" className="block py-2 font-medium text-gray-900">
+                Partner
               </Link>
 
               {/* Service */}
