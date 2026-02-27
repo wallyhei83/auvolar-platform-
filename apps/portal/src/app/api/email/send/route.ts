@@ -127,7 +127,7 @@ export async function POST(request: NextRequest) {
         phone: (data.phone as string) || undefined,
         company: (data.company as string) || undefined,
         lead_source: type,
-        notes: (data.message as string) || (data.notes as string) || undefined,
+        message: (data.message as string) || (data.notes as string) || undefined,
       }).catch(err => {
         console.error('HubSpot sync error:', err)
       })
