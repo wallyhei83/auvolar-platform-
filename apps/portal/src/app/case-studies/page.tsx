@@ -10,7 +10,7 @@ import {
 
 export const metadata: Metadata = {
   title: 'Case Studies | Real-World LED Lighting Projects | Auvolar',
-  description: 'See how Auvolar LED fixtures are lighting up CarMax, Home Depot, Ontario Airport, and major commercial facilities nationwide. Real projects, real results.',
+  description: 'See how our LED fixtures are lighting up CarMax, Home Depot, Ontario Airport, and major commercial facilities nationwide. Real projects, real results.',
 }
 
 interface CaseStudy {
@@ -37,15 +37,16 @@ const caseStudies: CaseStudy[] = [
     category: 'Parking Lot Lighting',
     categoryIcon: ParkingCircle,
     title: 'CarMax — Nationwide Parking Lot Retrofit',
-    subtitle: 'All U.S. CarMax locations powered by Auvolar OT Series',
-    description: 'CarMax, the nation\'s largest retailer of used cars with 240+ locations, selected Auvolar\'s OT Series LED Parking Lot Lights for a complete nationwide retrofit. The project replaced aging HID fixtures across all locations, delivering dramatically improved light uniformity, reduced energy costs, and enhanced nighttime security for customers and inventory.',
+    subtitle: 'All U.S. CarMax locations powered by our OT Series',
+    description: 'CarMax, the nation\'s largest retailer of used cars with 240+ locations, selected our OT Series LED Parking Lot Lights for a complete nationwide retrofit. Originally installed in 2017–2018, these fixtures have been operating flawlessly for over 7 years with near-zero failure rates — a testament to the exceptional build quality and long-term reliability of our OT Series. The project replaced aging HID fixtures across all locations, delivering dramatically improved light uniformity, reduced energy costs, and enhanced nighttime security for customers and inventory.',
     highlights: [
       'All 240+ CarMax locations nationwide',
+      'Installed in 2017–2018 — still performing flawlessly after 7+ years',
+      'Near-zero failure rate across all locations',
       'Replaced 1000W Metal Halide with 300W OT Series',
       '70% energy reduction per fixture',
       'Improved light uniformity from 3:1 to 2:1 max/min ratio',
       'Enhanced security camera visibility at night',
-      'Zero maintenance in first 3 years',
     ],
     product: 'OT Series LED Parking Lot Light',
     productSlug: 'aera-lighting-shoebox-ot-series-led-parking-lot-light-75w-420w',
@@ -61,9 +62,9 @@ const caseStudies: CaseStudy[] = [
     ],
     stats: [
       { label: 'Locations', value: '240+' },
+      { label: 'In Service', value: '7+ Years' },
       { label: 'Energy Savings', value: '70%' },
-      { label: 'Payback', value: '<2 Years' },
-      { label: 'Warranty', value: '10 Years' },
+      { label: 'Failure Rate', value: '~0%' },
     ],
   },
   {
@@ -71,8 +72,8 @@ const caseStudies: CaseStudy[] = [
     category: 'Parking Lot Lighting',
     categoryIcon: ParkingCircle,
     title: 'The Home Depot — Parking Lot LED Upgrade',
-    subtitle: 'Major Home Depot locations upgraded to Auvolar OT Series',
-    description: 'The Home Depot partnered with Auvolar to upgrade parking lot lighting at locations across the United States. The OT Series fixtures provide superior illumination for the massive parking areas typical of Home Depot stores, enhancing customer safety during evening hours and early morning contractor visits.',
+    subtitle: 'Major Home Depot locations upgraded to our OT Series',
+    description: 'The Home Depot partnered with us to upgrade parking lot lighting at locations across the United States. The OT Series fixtures provide superior illumination for the massive parking areas typical of Home Depot stores, enhancing customer safety during evening hours and early morning contractor visits.',
     highlights: [
       'Multiple Home Depot locations across the U.S.',
       'Type III and Type V distributions for full-coverage layouts',
@@ -98,8 +99,8 @@ const caseStudies: CaseStudy[] = [
     category: 'Parking Lot Lighting',
     categoryIcon: Plane,
     title: 'Ontario International Airport (ONT)',
-    subtitle: 'Airport parking facility lit by Auvolar OT Series',
-    description: 'Ontario International Airport in Southern California — one of the fastest-growing airports in the U.S. — chose Auvolar\'s OT Series for its parking facility lighting upgrade. The project demanded fixtures capable of 24/7 operation, exceptional color rendering for security camera integration, and compliance with FAA lighting standards near active runways.',
+    subtitle: 'Airport parking facility lit by our OT Series',
+    description: 'Ontario International Airport in Southern California — one of the fastest-growing airports in the U.S. — chose our OT Series for its parking facility lighting upgrade. The project demanded fixtures capable of 24/7 operation, exceptional color rendering for security camera integration, and compliance with FAA lighting standards near active runways.',
     highlights: [
       'Ontario International Airport (ONT), California',
       '24/7 continuous operation, 5000K daylight CCT',
@@ -125,8 +126,8 @@ const caseStudies: CaseStudy[] = [
     category: 'Auto Dealership Lighting',
     categoryIcon: Car,
     title: 'Premium Auto Dealerships',
-    subtitle: 'Major auto dealerships trust Auvolar for showroom-quality lot lighting',
-    description: 'Leading automotive dealerships across the U.S. rely on Auvolar OT Series for their outdoor lot lighting. Auto dealers require exceptional color rendering to showcase vehicle finishes, uniform illumination to eliminate dark spots, and energy efficiency to manage large outdoor lighting footprints. Our fixtures deliver all three.',
+    subtitle: 'Major auto dealerships trust us for showroom-quality lot lighting',
+    description: 'Leading automotive dealerships across the U.S. rely on our OT Series for their outdoor lot lighting. Auto dealers require exceptional color rendering to showcase vehicle finishes, uniform illumination to eliminate dark spots, and energy efficiency to manage large outdoor lighting footprints. Our fixtures deliver all three.',
     highlights: [
       'BMW, Mercedes-Benz, Toyota, Honda dealerships',
       'High CRI for true vehicle color representation',
@@ -154,7 +155,7 @@ const caseStudies: CaseStudy[] = [
     categoryIcon: ShoppingCart,
     title: 'Retail Shopping Plazas',
     subtitle: 'PLB Series lighting up retail centers across California',
-    description: 'Multiple retail shopping plazas in Southern California upgraded their parking and walkway lighting to Auvolar\'s PLB Series. The compact form factor, multiple mounting options, and DLC qualification made the PLB an ideal replacement for aging 250W-400W HID fixtures in retail environments.',
+    description: 'Multiple retail shopping plazas in Southern California upgraded their parking and walkway lighting to our PLB Series. The compact form factor, multiple mounting options, and DLC qualification made the PLB an ideal replacement for aging 250W-400W HID fixtures in retail environments.',
     highlights: [
       'Shopping plazas and strip malls across SoCal',
       'Compact PLB replaces bulky legacy fixtures',
@@ -182,7 +183,7 @@ const caseStudies: CaseStudy[] = [
     categoryIcon: Trophy,
     title: 'Municipal Sports Complexes',
     subtitle: 'ISF Series delivering professional-grade sports field illumination',
-    description: 'Municipal sports complexes and private athletic facilities are upgrading to Auvolar\'s ISF Series LED Stadium Lights. These high-output fixtures (400W-1800W) deliver the foot-candle levels and uniformity required for competitive sports, with dramatically reduced energy costs compared to legacy metal halide systems.',
+    description: 'Municipal sports complexes and private athletic facilities are upgrading to our ISF Series LED Stadium Lights. These high-output fixtures (400W-1800W) deliver the foot-candle levels and uniformity required for competitive sports, with dramatically reduced energy costs compared to legacy metal halide systems.',
     highlights: [
       'Football, soccer, baseball, and multi-use fields',
       'Meets IES RP-6 illumination standards',
@@ -210,7 +211,7 @@ const caseStudies: CaseStudy[] = [
     categoryIcon: Warehouse,
     title: 'Distribution Centers & Warehouses',
     subtitle: 'High bay LED solutions for logistics and fulfillment operations',
-    description: 'Major distribution centers and e-commerce fulfillment warehouses across the U.S. use Auvolar high bay fixtures to illuminate massive floor areas. High ceilings (30-45ft), 24/7 operations, and demanding safety requirements make these some of the most challenging lighting environments — and Auvolar delivers.',
+    description: 'Major distribution centers and e-commerce fulfillment warehouses across the U.S. use our high bay fixtures to illuminate massive floor areas. High ceilings (30-45ft), 24/7 operations, and demanding safety requirements make these some of the most challenging lighting environments — and we deliver.',
     highlights: [
       'Ceiling heights from 20ft to 45ft',
       '24/7 operation with occupancy sensor integration',
@@ -251,7 +252,7 @@ export default function CaseStudiesPage() {
             Proven Results. <span className="text-yellow-400">Real Projects.</span>
           </h1>
           <p className="mx-auto max-w-2xl text-lg text-gray-400">
-            From CarMax to Home Depot, from Ontario Airport to premium auto dealerships — see how Auvolar LED fixtures are transforming commercial lighting across the nation.
+            From CarMax to Home Depot, from Ontario Airport to premium auto dealerships — see how our LED fixtures are transforming commercial lighting across the nation.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-sm font-medium text-gray-400">
             <span className="flex items-center gap-1.5"><CheckCircle2 className="h-4 w-4 text-yellow-400" /> 500+ Projects Completed</span>
@@ -305,7 +306,7 @@ export default function CaseStudiesPage() {
         <div className="mx-auto max-w-3xl px-4 text-center">
           <h2 className="mb-4 text-3xl font-bold text-white">Have a Project?</h2>
           <p className="mb-8 text-gray-400">
-            Join CarMax, Home Depot, and hundreds of businesses that trust Auvolar for their commercial lighting. Let&apos;s discuss your project.
+            Join CarMax, Home Depot, and hundreds of businesses that trust us for their commercial lighting. Let&apos;s discuss your project.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link
