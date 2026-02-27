@@ -233,8 +233,10 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
     }
     const colorCode = colorMap[color] || color.charAt(0).toUpperCase()
 
-    // Build: AOK-OT-145W-NV-V-50-(S)
+    // Build: AOK-OT-145W-NV-V-40-(S)
     const parts = [`AOK-${series}`, watt, voltCode, beamCode, cctCode].filter(Boolean)
+    // If we only got the prefix with no actual options, return null to fallback
+    if (parts.length <= 1) return null
     const sku = parts.join('-')
     return color ? `${sku}-(${colorCode})` : sku
   }
