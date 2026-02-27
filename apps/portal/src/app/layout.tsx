@@ -89,6 +89,12 @@ export default function RootLayout({
             });
           `}
         </Script>
+        {/* HubSpot Tracking Code */}
+        <Script
+          id="hs-script-loader"
+          src="//js-na2.hs-scripts.com/245352215.js"
+          strategy="afterInteractive"
+        />
       </head>
       <body className={inter.className}>
         <OrganizationJsonLd />

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
 import { db } from '@/lib/db'
+import { upsertHubSpotContact } from '@/lib/hubspot'
 
 export async function POST(request: NextRequest) {
   try {
@@ -40,6 +41,17 @@ export async function POST(request: NextRequest) {
         phone,
         role: 'CUSTOMER',
       },
+    })
+
+    // Sync new user to HubSpot CRM (non-blocking)
+    upsertHubSpotContact({
+      email,
+      firstname: name,
+      phone: phone || undefined,
+      company: companyName,
+      lead_source: 'registration',
+    }).catch(err => {
+      console.error('HubSpot sync error on registration:', err)
     })
 
     return NextResponse.json({

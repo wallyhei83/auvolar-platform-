@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import nodemailer from 'nodemailer'
+import { upsertHubSpotContact } from '@/lib/hubspot'
 
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL || 'sales@auvolar.com'
 
@@ -115,6 +116,21 @@ export async function POST(request: NextRequest) {
         html: confirmationHtml,
       }).catch(err => {
         console.error('Failed to send confirmation email:', err)
+      })
+    }
+
+    // Sync contact to HubSpot CRM (non-blocking)
+    if (customerEmail) {
+      upsertHubSpotContact({
+        email: customerEmail,
+        firstname: customerName || undefined,
+        phone: (data.phone as string) || undefined,
+        company: (data.company as string) || undefined,
+        lead_source: type,
+        project_name: (data.projectName as string) || undefined,
+        notes: (data.message as string) || (data.notes as string) || undefined,
+      }).catch(err => {
+        console.error('HubSpot sync error:', err)
       })
     }
 
