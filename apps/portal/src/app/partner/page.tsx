@@ -115,7 +115,7 @@ export default function PartnerPage() {
                 ))}
               </ul>
               <Link
-                href={`/contact?subject=${encodeURIComponent('Partner Application: ' + p.title)}`}
+                href="/partner/register"
                 className="flex items-center justify-center gap-2 rounded-lg border border-yellow-400 bg-yellow-50 px-4 py-2.5 text-sm font-semibold text-yellow-700 hover:bg-yellow-100"
               >
                 {p.cta}

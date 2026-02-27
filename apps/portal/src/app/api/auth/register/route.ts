@@ -2,9 +2,20 @@ import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
 import { db } from '@/lib/db'
 import { syncContactToHubSpot } from '@/lib/hubspot'
+import { rateLimit, getClientIP } from '@/lib/rate-limit'
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limit: 5 registration attempts per IP per 15 minutes
+    const ip = getClientIP(request)
+    const limiter = rateLimit(`register:${ip}`, { maxRequests: 5, windowMs: 15 * 60 * 1000 })
+    if (!limiter.success) {
+      return NextResponse.json(
+        { message: 'Too many registration attempts. Please try again later.' },
+        { status: 429 }
+      )
+    }
+
     const body = await request.json()
     const { email, password, name, companyName, phone } = body
 

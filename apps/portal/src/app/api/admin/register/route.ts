@@ -1,10 +1,18 @@
 import { NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
 import bcrypt from 'bcryptjs'
 import { db } from '@/lib/db'
 import { UserRole } from '@prisma/client'
 
 export async function POST(req: Request) {
   try {
+    // SECURITY: Only SUPER_ADMIN can create admin accounts
+    const session = await getServerSession(authOptions)
+    if (!session || session.user.role !== 'SUPER_ADMIN') {
+      return NextResponse.json({ message: 'Unauthorized. Only SUPER_ADMIN can register admin accounts.' }, { status: 403 })
+    }
+
     const body = await req.json()
     const { email, password, name, companyName, phone } = body
 
@@ -23,7 +31,7 @@ export async function POST(req: Request) {
     }
 
     // 3. 哈希密码
-    const hashedPassword = await bcrypt.hash(password, 10)
+    const hashedPassword = await bcrypt.hash(password, 12)
 
     // 4. 创建新用户 (默认角色为 ADMIN)
     const newUser = await db.user.create({
@@ -33,7 +41,7 @@ export async function POST(req: Request) {
         name: name || '',
         companyName: companyName || '',
         phone: phone || '',
-        role: UserRole.ADMIN, // 注册为 ADMIN 角色
+        role: UserRole.ADMIN,
       },
     })
 
