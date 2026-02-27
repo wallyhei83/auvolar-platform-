@@ -194,42 +194,45 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
   const isPLBSeries = product.slug.includes('plb-series') || product.slug.includes('area-shoebox-light-plb')
 
   // Generate AOK ordering code SKU from selected options
-  // Format: AOK-[Series]-[Watt]-[Voltage]-[BeamAngle]-[CCT]-([Color])
+  // Format per ordering chart: AOK-[Series]-[Watt]-[Voltage]-[BeamAngle]-[CCT]-([Color])
+  // Rules: Wattage=full value, Voltage: 100-277VAC→NV / 277-480VAC→HV,
+  //   Beam: Type III→III / Type IV→IV / Type V→V,
+  //   CCT: 3000K→30 / 4000K→40 / 5000K→50,
+  //   Color: Silver→S / White→W / Black→B / Bronze→BZ
   const generateAOKSku = (selections: Record<string, string>): string | null => {
     if (!isOTSeries && !isPLBSeries) return null
     const series = isOTSeries ? 'OT' : 'PLB'
 
-    // Map option names to short codes
+    // Map option names — try common BC option name variants
     const watt = selections['Wattage'] || ''
     const voltage = selections['AC Input'] || ''
     const beam = selections['Beam Angle'] || selections['Distribution'] || ''
     const cct = selections['CCT'] || selections['Color Temperature'] || ''
     const color = selections['Color'] || selections['Housing Color'] || ''
 
-    // Voltage code: "100-277VAC" → "NV", "347VAC" → "HV347", "480VAC" → "HV480"
-    let voltCode = ''
-    if (voltage.includes('480')) voltCode = 'HV480'
-    else if (voltage.includes('347')) voltCode = 'HV347'
-    else if (voltage) voltCode = 'NV'
+    // Voltage: 100-277VAC → NV, 277-480VAC / 347VAC / 480VAC → HV
+    const voltCode = (voltage.includes('480') || voltage.includes('347')) ? 'HV' : (voltage ? 'NV' : '')
 
-    // Beam angle code: "Type III" → "T3", "Type IV" → "T4", "Type V" → "T5"
-    let beamCode = beam
-      .replace('Type III', 'T3')
-      .replace('Type IV', 'T4')
-      .replace('Type V', 'T5')
-      .replace('Type ', 'T')
-      .replace(/\s/g, '')
+    // Beam angle: "Type III" → "III", "Type IV" → "IV", "Type V" → "V"
+    const beamCode = beam
+      .replace(/^Type\s*/i, '')
+      .trim()
 
-    // Color code: first letter or abbreviation
+    // CCT: "3000K" → "30", "4000K" → "40", "5000K" → "50", "5700K" → "57"
+    const cctMap: Record<string, string> = {
+      '3000K': '30', '4000K': '40', '5000K': '50', '5700K': '57', '6500K': '65',
+    }
+    const cctCode = cctMap[cct] || cct.replace('K', '').replace('00', '')
+
+    // Color: Silver→S, White→W, Black→B, Bronze→BZ
     const colorMap: Record<string, string> = {
       'Silver': 'S', 'White': 'W', 'Black': 'B', 'Bronze': 'BZ',
       'silver': 'S', 'white': 'W', 'black': 'B', 'bronze': 'BZ',
+      'Red': 'R', 'Blue': 'BL', 'red': 'R', 'blue': 'BL',
     }
     const colorCode = colorMap[color] || color.charAt(0).toUpperCase()
 
-    // CCT code: "5000K" stays "5000K", "4000K" stays "4000K"
-    const cctCode = cct
-
+    // Build: AOK-OT-145W-NV-V-50-(S)
     const parts = [`AOK-${series}`, watt, voltCode, beamCode, cctCode].filter(Boolean)
     const sku = parts.join('-')
     return color ? `${sku}-(${colorCode})` : sku
