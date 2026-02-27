@@ -242,32 +242,63 @@ export function ISFSeriesClient() {
                 <summary className="flex items-center gap-2 p-3 cursor-pointer hover:bg-gray-50 text-sm list-none [&::-webkit-details-marker]:hidden">
                   <Download className="w-4 h-4 text-yellow-600" /><span>IES Files <span className="text-[10px] text-gray-400">(110)</span></span>
                 </summary>
-                <div className="border-t bg-gray-50 p-2 space-y-1 max-h-48 overflow-y-auto">
-                  {['15°','30°','20°×30°','35°×85°','PG60°'].map(angle => (
-                    <div key={angle}>
-                      <p className="text-[10px] font-semibold text-gray-500 px-2 py-1">{angle} Beam</p>
-                      <div className="grid grid-cols-3 gap-0.5">
-                        {wattageOptions.map(w => (
-                          <a key={`${angle}-${w.watt}`} href={`/docs/isf-series/ies/`} className="flex items-center gap-1 px-2 py-1 text-xs text-gray-700 hover:text-yellow-600 rounded transition-colors">
-                            <Download className="w-3 h-3" /> {w.watt}W
+                <div className="border-t bg-gray-50 p-2 space-y-1 max-h-64 overflow-y-auto">
+                  {([
+                    { label: '15° Beam', files: [
+                      { w: '400W', f: 'ISF-400W-15D-With-Visor-HV-277V.IES' },
+                      { w: '600W', f: 'ISF-600W-15D-With-Visor-HV-277V.IES' },
+                      { w: '800W', f: 'ISF-800W-15D-With-Visor-HV-277V.IES' },
+                      { w: '1200W', f: 'ISF-1200W-15D-With-Visor-HV-NA.IES' },
+                    ]},
+                    { label: '30° Beam', files: [
+                      { w: '400W', f: 'ISF-400W-30D-With-Visor-HV-277V.IES' },
+                      { w: '600W', f: 'ISF-600W-30D-With-Visor-HV-480V.IES' },
+                      { w: '800W', f: 'ISF-800W-30D-With-Visor-HV-277V.IES' },
+                      { w: '1200W', f: 'ISF-1200W-30D-With-Visor-HV-480V.IES' },
+                    ]},
+                    { label: '20°×30° Beam', files: [
+                      { w: '400W', f: 'ISF-400W-2030D-With-Visor-HV-277V.IES' },
+                      { w: '600W', f: 'ISF-600W-2030D-With-Visor-HV-277V.IES' },
+                      { w: '800W', f: 'ISF-800W-2030D-With-Visor-HV-277V.IES' },
+                      { w: '1200W', f: 'ISF-1200W-2030D-With-Visor-NA-480V.IES' },
+                    ]},
+                    { label: '35°×85° Beam', files: [
+                      { w: '400W', f: 'ISF-400W-3585D-With-Visor-HV-277V.IES' },
+                      { w: '600W', f: 'ISF-600W-3585D-With-Visor-HV-277V.IES' },
+                      { w: '800W', f: 'ISF-800W-3585D-With-Visor-HV-277V.IES' },
+                      { w: '1200W', f: 'ISF-1200W-3585D-With-Visor-HV-480V.IES' },
+                    ]},
+                    { label: 'PG60° Beam', files: [
+                      { w: '400W', f: 'ISF-400W-PG60D-AOK-400WiSF-NV-S5-00-5070-PG60D-P_IESNA2002.IES' },
+                      { w: '600W', f: 'ISF-600W-PG60D-AOK-600WiSF-NV-S5-00-5070-PG60D-P_IESNA2002.IES' },
+                      { w: '800W', f: 'ISF-800W-PG60D-AOK-800WiSF-NV-S5-00-5070-PG60D-P_IESNA2002.IES' },
+                      { w: '1200W', f: 'ISF-1200W-PG60D-AOK-1200WiSF-NV-S5-00-5070-PG60D-P_IESNA2002.IES' },
+                    ]},
+                  ] as const).map(beam => (
+                    <div key={beam.label}>
+                      <p className="text-[10px] font-semibold text-gray-500 px-2 py-1">{beam.label}</p>
+                      <div className="grid grid-cols-2 gap-0.5">
+                        {beam.files.map(({ w, f }) => (
+                          <a key={f} href={`/docs/isf-series/ies/${f}`} download className="flex items-center gap-1 px-2 py-1 text-xs text-gray-700 hover:text-yellow-600 rounded transition-colors">
+                            <Download className="w-3 h-3" /> {w}
                           </a>
                         ))}
                       </div>
                     </div>
                   ))}
-                  <p className="text-[10px] text-gray-400 px-2 py-1">Contact sales@auvolar.com for specific IES file requests</p>
+                  <p className="text-[10px] text-gray-400 px-2 py-1 mt-1">110 IES files total. Contact sales@auvolar.com for Without Visor or other voltage versions.</p>
                 </div>
               </details>
 
               {/* Spec Sheet */}
-              <a href="/contact?subject=ISF+Series+Spec+Sheet+Request" className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm">
-                <FileText className="w-4 h-4 text-yellow-600" /><span>Spec Sheet</span>
-              </a>
+              <div className="flex items-center gap-2 p-3 border rounded-lg bg-gray-50 text-sm text-gray-400 cursor-default">
+                <FileText className="w-4 h-4" /><span>Spec Sheet <span className="text-[10px]">(Coming Soon)</span></span>
+              </div>
 
               {/* Install Guide */}
-              <a href="/contact?subject=ISF+Series+Install+Guide+Request" className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm">
-                <FileText className="w-4 h-4 text-yellow-600" /><span>Install Guide</span>
-              </a>
+              <div className="flex items-center gap-2 p-3 border rounded-lg bg-gray-50 text-sm text-gray-400 cursor-default">
+                <FileText className="w-4 h-4" /><span>Install Guide <span className="text-[10px]">(Coming Soon)</span></span>
+              </div>
 
               {/* Warranty */}
               <a href="/support/returns" className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm">
