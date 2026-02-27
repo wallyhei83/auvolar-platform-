@@ -391,7 +391,8 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
                   A Proven Benchmark in Commercial Parking Lot Lighting
                 </h3>
                 <p className="text-gray-600 text-sm mt-1">
-                  Deployed nationwide — serving <strong>CarMax</strong>, <strong>The Home Depot</strong>, <strong>Ontario International Airport (CA)</strong>, and numerous branded automotive dealerships.
+                  Deployed nationwide — serving <strong>CarMax</strong> (240+ locations), <strong>The Home Depot</strong>, <strong>Ontario International Airport</strong>, and <strong>100+ auto dealerships</strong>. Installed since 2017 with near-zero failure rate.
+                  {' '}<a href="/case-studies" className="text-yellow-600 hover:underline font-medium">View case studies →</a>
                 </p>
               </div>
               <details className="group">
@@ -401,8 +402,8 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
                 </summary>
                 <div className="px-4 pb-4 pt-2 space-y-4 text-sm text-gray-600 bg-white">
                   <div>
-                    <h4 className="font-semibold text-gray-900 mb-1">10+ Years of Field Validation</h4>
-                    <p className="mb-1">Designed for demanding outdoor environments with over a decade of continuous real-world operation:</p>
+                    <h4 className="font-semibold text-gray-900 mb-1">7+ Years of Proven Reliability</h4>
+                    <p className="mb-1">First installed at CarMax locations nationwide in 2017–2018. After 7+ years of continuous operation with near-zero failure rates:</p>
                     <ul className="list-disc pl-5 space-y-0.5 text-xs">
                       <li>High lumen output with uniform light distribution</li>
                       <li>Low glare for enhanced visual comfort</li>

@@ -15,15 +15,15 @@ const OT_FEATURES: FeatureSection[] = [
     title: 'A Proven Benchmark in Commercial Parking Lot Lighting',
     icon: <Award className="w-5 h-5" />,
     content: [
-      'Selected by Leading U.S. Brands — This parking lot lighting system has been deployed nationwide, serving CarMax, The Home Depot, Ontario International Airport (CA), and numerous branded automotive dealerships.',
-      'Its adoption by high-visibility commercial facilities demonstrates its capability to meet strict illumination, reliability, and aesthetic standards.',
+      'Selected by Leading U.S. Brands — Deployed nationwide serving CarMax (240+ locations), The Home Depot, Ontario International Airport, and 100+ premium auto dealerships including Castle CDJR, Naperville Chevrolet, and Mercedes-Benz.',
+      'Installed since 2017 with near-zero failure rate after 7+ years of continuous operation — a testament to exceptional build quality and long-term reliability.',
     ],
   },
   {
-    title: '10+ Years of Field Validation',
+    title: '7+ Years of Proven Reliability',
     icon: <Clock className="w-5 h-5" />,
     content: [
-      'Designed for demanding outdoor environments, this product has accumulated over a decade of continuous real-world operation. It delivers:',
+      'First deployed at CarMax nationwide in 2017–2018, with 7+ years of continuous operation and near-zero failure rates. It delivers:',
       '• High lumen output with uniform light distribution',
       '• Low glare performance for enhanced visual comfort',
       '• Stable thermal management for long lifespan',

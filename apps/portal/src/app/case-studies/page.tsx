@@ -273,9 +273,9 @@ export default function CaseStudiesPage() {
             <span>CarMax</span>
             <span>The Home Depot</span>
             <span>Ontario Int&apos;l Airport</span>
-            <span>BMW Dealerships</span>
+            <span>Castle CDJR</span>
+            <span>Naperville Chevrolet</span>
             <span>Mercedes-Benz</span>
-            <span>Toyota</span>
           </div>
         </div>
       </section>
