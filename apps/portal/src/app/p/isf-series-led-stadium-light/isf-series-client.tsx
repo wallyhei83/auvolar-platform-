@@ -260,12 +260,12 @@ export function ISFSeriesClient() {
               </details>
 
               {/* Spec Sheet */}
-              <a href="mailto:sales@auvolar.com?subject=ISF Series Spec Sheet Request" className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm">
+              <a href="/contact?subject=ISF+Series+Spec+Sheet+Request" className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm">
                 <FileText className="w-4 h-4 text-yellow-600" /><span>Spec Sheet</span>
               </a>
 
               {/* Install Guide */}
-              <a href="mailto:sales@auvolar.com?subject=ISF Series Install Guide Request" className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm">
+              <a href="/contact?subject=ISF+Series+Install+Guide+Request" className="flex items-center gap-2 p-3 border rounded-lg hover:bg-gray-50 text-sm">
                 <FileText className="w-4 h-4 text-yellow-600" /><span>Install Guide</span>
               </a>
 
