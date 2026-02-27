@@ -142,7 +142,7 @@ export const productCategories: MainCategory[] = [
         slug: 'stadium-light',
         name: 'Stadium Lights',
         description: 'High-output LED stadium lights for sports fields, arenas, and large venue lighting.',
-        bcCategoryIds: [], // New category — not yet in BigCommerce
+        bcCategoryIds: [100], // BC category 100 = Stadium/Sports Lights
         image: '/images/products/isf-series-stadium-light.jpg',
       },
       {

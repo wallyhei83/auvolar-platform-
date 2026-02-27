@@ -34,6 +34,7 @@ export type WebsiteCategory = {
 // 57 = Security Light (parent: 60 Commercial)
 // 58 = Low Bay Light (parent: 61 Industrial)
 // 59 = Solar Area Light (parent: 29 Solar)
+// 100 = Stadium/Sports Lights (ISF + INS Series)
 
 export const websiteCategories: WebsiteCategory[] = [
   // Outdoor Lighting

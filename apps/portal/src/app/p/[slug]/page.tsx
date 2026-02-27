@@ -84,7 +84,7 @@ const catNames: Record<number, string> = {
   35: 'Vapor Tight', 36: 'LED Tubes', 43: 'Parking Lot', 45: 'Bollard Lights',
   46: 'Post Top Lights', 47: 'Solar Wall Pack', 48: 'Exit Signs', 51: 'Downlights',
   52: 'Ceiling Lights', 53: 'Canopy Lights', 54: 'Vanity Lights', 55: 'Barn Lights',
-  56: 'Grow Lights', 57: 'Security Lights', 58: 'Low Bay', 59: 'Solar Area Light',
+  56: 'Grow Lights', 57: 'Security Lights', 58: 'Low Bay', 59: 'Solar Area Light', 100: 'Stadium Lights',
   74: 'High Bay', 75: 'Troffer Panel', 76: 'LED Tubes', 77: 'Strip Lights',
   78: 'Vapor Tight', 79: 'Downlights', 80: 'Garage Lights', 81: 'Wrap Lights',
   82: 'Area Lights', 83: 'Flood Lights', 84: 'Wall Packs', 85: 'Canopy Lights',
@@ -112,6 +112,7 @@ const catToSubcategory: Record<number, { main: string; sub: string }> = {
   55: { main: 'outdoor', sub: 'barn' },
   59: { main: 'solar', sub: 'solar-area' },
   47: { main: 'solar', sub: 'solar-wall' },
+  100: { main: 'outdoor', sub: 'stadium-light' },
 }
 
 export default async function ProductPage({
