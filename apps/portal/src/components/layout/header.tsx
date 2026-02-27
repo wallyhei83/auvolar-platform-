@@ -396,18 +396,19 @@ export function Header() {
             Tailor Purchasing
           </Link>
 
-          {/* AI Tools Dropdown */}
+          {/* Platform Dropdown — 5 sections */}
           <div
             className="relative"
-            onMouseEnter={() => setActiveMenu('ai-tools')}
+            onMouseEnter={() => setActiveMenu('platform')}
             onMouseLeave={() => setActiveMenu(null)}
           >
             <button className="flex items-center gap-1 px-4 py-3 text-sm font-medium text-gray-700 hover:text-brand">
-              AI Tools
+              Platform
               <ChevronDown className="h-4 w-4" />
             </button>
-            {activeMenu === 'ai-tools' && (
-              <div className="absolute left-0 top-full z-50 w-80 rounded-b-xl border border-t-0 border-gray-200 bg-white p-4 shadow-xl">
+            {activeMenu === 'platform' && (
+              <div className="absolute left-0 top-full z-50 w-[420px] rounded-b-xl border border-t-0 border-gray-200 bg-white p-4 shadow-xl">
+                <div className="mb-2 px-3 text-xs font-semibold uppercase text-gray-400">AI Tools</div>
                 <div className="space-y-1">
                   <Link href="/tools/photometric-simulation" className="block rounded-lg px-3 py-2 hover:bg-gray-50">
                     <span className="font-medium text-gray-900">Photometric Simulation</span>
@@ -422,14 +423,21 @@ export function Header() {
                     <span className="block text-xs text-gray-500">Intelligent product selection & configuration</span>
                   </Link>
                 </div>
+                <div className="my-3 border-t border-gray-100" />
+                <div className="mb-2 px-3 text-xs font-semibold uppercase text-gray-400">Ecosystem</div>
+                <div className="space-y-1">
+                  <Link href="/partner" className="block rounded-lg px-3 py-2 hover:bg-gray-50">
+                    <span className="font-medium text-gray-900">Partner Program</span>
+                    <span className="block text-xs text-gray-500">Contractors, distributors, engineers & more</span>
+                  </Link>
+                  <Link href="/investor" className="block rounded-lg px-3 py-2 hover:bg-gray-50">
+                    <span className="font-medium text-gray-900">Investor Relations</span>
+                    <span className="block text-xs text-gray-500">Invest in the future of intelligent lighting</span>
+                  </Link>
+                </div>
               </div>
             )}
           </div>
-
-          {/* Partner */}
-          <Link href="/partner" className="px-4 py-3 text-sm font-medium text-gray-700 hover:text-brand">
-            Partner
-          </Link>
 
           {/* Service Dropdown */}
           <div
@@ -536,20 +544,17 @@ export function Header() {
                 Tailor Purchasing
               </Link>
 
-              {/* AI Tools */}
+              {/* Platform */}
               <div>
-                <div className="mb-2 py-2 font-medium text-gray-900">AI Tools</div>
+                <div className="mb-2 py-2 font-medium text-gray-900">Platform</div>
                 <div className="ml-4 space-y-1">
                   <Link href="/tools/photometric-simulation" className="block py-1 text-sm text-gray-600">Photometric Simulation</Link>
                   <Link href="/tools/product-design" className="block py-1 text-sm text-gray-600">Product Design Lab</Link>
                   <Link href="/tools/lightspec-ai" className="block py-1 text-sm text-gray-600">LightSpec AI</Link>
+                  <Link href="/partner" className="block py-1 text-sm text-gray-600">Partner Program</Link>
+                  <Link href="/investor" className="block py-1 text-sm text-gray-600">Investor Relations</Link>
                 </div>
               </div>
-
-              {/* Partner */}
-              <Link href="/partner" className="block py-2 font-medium text-gray-900">
-                Partner
-              </Link>
 
               {/* Service */}
               <div>
