@@ -193,6 +193,53 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
   const isOTSeries = product.slug.includes('ot-series') || product.slug.includes('aera-lighting-shoebox-ot')
   const isPLBSeries = product.slug.includes('plb-series') || product.slug.includes('area-shoebox-light-plb')
 
+  // Generate AOK ordering code SKU from selected options
+  // Format: AOK-[Series]-[Watt]-[Voltage]-[BeamAngle]-[CCT]-([Color])
+  const generateAOKSku = (selections: Record<string, string>): string | null => {
+    if (!isOTSeries && !isPLBSeries) return null
+    const series = isOTSeries ? 'OT' : 'PLB'
+
+    // Map option names to short codes
+    const watt = selections['Wattage'] || ''
+    const voltage = selections['AC Input'] || ''
+    const beam = selections['Beam Angle'] || selections['Distribution'] || ''
+    const cct = selections['CCT'] || selections['Color Temperature'] || ''
+    const color = selections['Color'] || selections['Housing Color'] || ''
+
+    // Voltage code: "100-277VAC" → "NV", "347VAC" → "HV347", "480VAC" → "HV480"
+    let voltCode = ''
+    if (voltage.includes('480')) voltCode = 'HV480'
+    else if (voltage.includes('347')) voltCode = 'HV347'
+    else if (voltage) voltCode = 'NV'
+
+    // Beam angle code: "Type III" → "T3", "Type IV" → "T4", "Type V" → "T5"
+    let beamCode = beam
+      .replace('Type III', 'T3')
+      .replace('Type IV', 'T4')
+      .replace('Type V', 'T5')
+      .replace('Type ', 'T')
+      .replace(/\s/g, '')
+
+    // Color code: first letter or abbreviation
+    const colorMap: Record<string, string> = {
+      'Silver': 'S', 'White': 'W', 'Black': 'B', 'Bronze': 'BZ',
+      'silver': 'S', 'white': 'W', 'black': 'B', 'bronze': 'BZ',
+    }
+    const colorCode = colorMap[color] || color.charAt(0).toUpperCase()
+
+    // CCT code: "5000K" stays "5000K", "4000K" stays "4000K"
+    const cctCode = cct
+
+    const parts = [`AOK-${series}`, watt, voltCode, beamCode, cctCode].filter(Boolean)
+    const sku = parts.join('-')
+    return color ? `${sku}-(${colorCode})` : sku
+  }
+
+  // Use AOK SKU for OT/PLB, fallback to BC variant SKU
+  const displaySku = (isOTSeries || isPLBSeries)
+    ? (generateAOKSku(selectedOptions) || selectedVariant?.sku || product.sku)
+    : (selectedVariant?.sku || product.sku)
+
   const images = product.images.length > 0
     ? product.images
     : [{ url: '', thumbnail: '', zoom: '', isPrimary: true, sortOrder: 0 }]
@@ -292,7 +339,7 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
           <h1 className="text-3xl font-bold text-gray-900 mb-2">{product.name}</h1>
 
           <div className="flex items-center gap-4 mb-4">
-            <span className="text-sm text-gray-500">SKU: {selectedVariant?.sku || product.sku}</span>
+            <span className="text-sm text-gray-500">SKU: {displaySku}</span>
             <span className="text-sm text-gray-300">|</span>
             <div className="flex items-center gap-1">
               {product.inStock ? (
@@ -436,8 +483,8 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
                 )
               })}
               {/* Show selected variant SKU */}
-              {selectedVariant && selectedVariant.sku && (
-                <p className="text-xs text-gray-400">SKU: {selectedVariant.sku}</p>
+              {displaySku && (
+                <p className="text-xs text-gray-400">SKU: {displaySku}</p>
               )}
               {!selectedVariant && Object.keys(selectedOptions).length > 0 && (
                 <p className="text-xs text-orange-500">This combination is not available. Please adjust your selections.</p>
@@ -487,7 +534,7 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
 
           {/* Request Quote */}
           <Link
-            href={`/contact?subject=Quote Request: ${encodeURIComponent(product.name)}&message=${encodeURIComponent(`I'd like a quote for ${product.name} (SKU: ${product.sku}). Quantity: ${quantity}.`)}`}
+            href={`/contact?subject=Quote Request: ${encodeURIComponent(product.name)}&message=${encodeURIComponent(`I'd like a quote for ${product.name} (SKU: ${displaySku}). Quantity: ${quantity}.`)}`}
             className="block text-center py-3 px-6 border-2 border-gray-900 rounded-lg font-semibold text-gray-900 hover:bg-gray-900 hover:text-white transition-all mb-8"
           >
             Request Volume Quote
