@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import nodemailer from 'nodemailer'
-import { upsertHubSpotContact } from '@/lib/hubspot'
+import { syncContactToHubSpot } from '@/lib/hubspot'
 
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL || 'sales@auvolar.com'
 
@@ -121,7 +121,7 @@ export async function POST(request: NextRequest) {
 
     // Sync contact to HubSpot CRM (non-blocking)
     if (customerEmail) {
-      upsertHubSpotContact({
+      syncContactToHubSpot({
         email: customerEmail,
         firstname: customerName || undefined,
         phone: (data.phone as string) || undefined,

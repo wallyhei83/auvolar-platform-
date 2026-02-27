@@ -7,6 +7,7 @@ import { CartProvider } from '@/lib/cart-context'
 import { ChatWidget } from '@/components/chat/chat-widget'
 import { OrganizationJsonLd, WebSiteJsonLd, LocalBusinessJsonLd } from '@/components/seo/json-ld'
 import Script from 'next/script'
+import { HubSpotIdentify } from '@/components/hubspot-identify'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -102,6 +103,7 @@ export default function RootLayout({
         <LocalBusinessJsonLd />
         <SessionProvider>
           <CartProvider>
+            <HubSpotIdentify />
             {children}
             <Toaster />
             <ChatWidget />
