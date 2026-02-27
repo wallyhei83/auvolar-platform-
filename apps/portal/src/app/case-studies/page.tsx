@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
+import { CaseStudyCard } from './case-study-card'
 import {
   Car, ShoppingCart, Plane, Building2, Factory, Warehouse, ParkingCircle,
   Trophy, ArrowRight, Play, MapPin, Zap, CheckCircle2, ExternalLink
@@ -50,7 +51,14 @@ const caseStudies: CaseStudy[] = [
     productSlug: 'aera-lighting-shoebox-ot-series-led-parking-lot-light-75w-420w',
     clients: ['CarMax'],
     location: 'Nationwide, USA',
-    images: [],
+    images: [
+      '/images/case-studies/carmax/carmax-2-lot-overview.jpg',
+      '/images/case-studies/carmax/carmax-3-lot-wide.jpg',
+      '/images/case-studies/carmax/carmax-5-lot-building.jpg',
+      '/images/case-studies/carmax/carmax-1-pole-closeup.jpg',
+      '/images/case-studies/carmax/carmax-6-fixture-closeup.jpg',
+      '/images/case-studies/carmax/carmax-4-pole-detail.jpg',
+    ],
     stats: [
       { label: 'Locations', value: '240+' },
       { label: 'Energy Savings', value: '70%' },
@@ -284,72 +292,7 @@ export default function CaseStudiesPage() {
 
               <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
                 {cases.map(cs => (
-                  <div key={cs.id} className="overflow-hidden rounded-2xl border border-gray-200 bg-white transition-shadow hover:shadow-lg">
-                    {/* Image / Video Placeholder */}
-                    <div className="relative aspect-video bg-gradient-to-br from-gray-100 to-gray-200">
-                      {cs.youtubeId ? (
-                        <iframe
-                          src={`https://www.youtube.com/embed/${cs.youtubeId}`}
-                          className="h-full w-full"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                        />
-                      ) : cs.images.length > 0 ? (
-                        <img src={cs.images[0]} alt={cs.title} className="h-full w-full object-cover" />
-                      ) : (
-                        <div className="flex h-full flex-col items-center justify-center text-gray-400">
-                          <Building2 className="mb-2 h-12 w-12" />
-                          <span className="text-sm">Project Photos Coming Soon</span>
-                        </div>
-                      )}
-                      {/* Category Badge */}
-                      <div className="absolute left-4 top-4 rounded-full bg-black/70 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
-                        {cs.category}
-                      </div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-6">
-                      <h3 className="mb-1 text-xl font-bold text-gray-900">{cs.title}</h3>
-                      <p className="mb-3 text-sm font-medium text-yellow-600">{cs.subtitle}</p>
-                      <p className="mb-4 text-sm leading-relaxed text-gray-500">{cs.description}</p>
-
-                      {/* Stats */}
-                      <div className="mb-4 grid grid-cols-4 gap-2">
-                        {cs.stats.map(s => (
-                          <div key={s.label} className="rounded-lg bg-gray-50 p-2 text-center">
-                            <div className="text-lg font-black text-gray-900">{s.value}</div>
-                            <div className="text-[10px] text-gray-500">{s.label}</div>
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Highlights */}
-                      <details className="group">
-                        <summary className="cursor-pointer text-sm font-medium text-yellow-600 hover:underline">
-                          View highlights →
-                        </summary>
-                        <ul className="mt-3 space-y-1.5">
-                          {cs.highlights.map(h => (
-                            <li key={h} className="flex items-start gap-2 text-sm text-gray-600">
-                              <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-yellow-500" />
-                              {h}
-                            </li>
-                          ))}
-                        </ul>
-                      </details>
-
-                      {/* Product + Location */}
-                      <div className="mt-4 flex flex-wrap items-center gap-3 border-t border-gray-100 pt-4 text-xs text-gray-500">
-                        <span className="flex items-center gap-1"><MapPin className="h-3 w-3" /> {cs.location}</span>
-                        {cs.productSlug && (
-                          <Link href={`/p/${cs.productSlug}`} className="flex items-center gap-1 text-yellow-600 hover:underline">
-                            <Zap className="h-3 w-3" /> {cs.product} <ExternalLink className="h-3 w-3" />
-                          </Link>
-                        )}
-                      </div>
-                    </div>
-                  </div>
+                  <CaseStudyCard key={cs.id} {...cs} />
                 ))}
               </div>
             </div>
