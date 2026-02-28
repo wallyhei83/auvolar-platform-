@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
+import { checkPermission } from "@/lib/permissions"
 import { put } from '@vercel/blob'
 
 // POST /api/admin/case-studies/upload — upload image to Vercel Blob
 export async function POST(request: NextRequest) {
-  const session = await getServerSession(authOptions)
-  if (!session || !['ADMIN', 'SUPER_ADMIN'].includes(session.user.role)) {
+  const { authorized } = await checkPermission('cases.manage')
+  if (!authorized) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
   }
 

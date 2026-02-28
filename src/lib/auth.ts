@@ -36,8 +36,9 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
           email: user.email,
           name: user.name ?? undefined,
-          role: user.role, // <-- 添加：将角色传递给session
-          companyName: user.companyName ?? undefined, // <-- 添加：将公司名传递给session
+          role: user.role,
+          permissions: user.permissions || [],
+          companyName: user.companyName ?? undefined,
         }
       },
     }),
@@ -46,16 +47,18 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id
-        token.role = user.role // <-- 添加：将角色保存到JWT
-        token.companyName = user.companyName // <-- 添加：将公司名保存到JWT
+        token.role = user.role
+        token.permissions = (user as any).permissions || []
+        token.companyName = user.companyName
       }
       return token
     },
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string
-        session.user.role = token.role as UserRole // <-- 添加：从JWT获取角色
-        session.user.companyName = token.companyName as string | undefined // <-- 添加：从JWT获取公司名
+        session.user.role = token.role as UserRole
+        session.user.permissions = (token.permissions as string[]) || []
+        session.user.companyName = token.companyName as string | undefined
       }
       return session
     },
@@ -78,7 +81,8 @@ declare module 'next-auth' {
     id: string
     email: string
     name?: string
-    role: UserRole // <-- 更新：使用UserRole枚举
+    role: UserRole
+    permissions?: string[]
     companyName?: string
   }
   interface Session {
@@ -86,7 +90,8 @@ declare module 'next-auth' {
       id: string
       email: string
       name?: string
-      role: UserRole // <-- 更新：使用UserRole枚举
+      role: UserRole
+      permissions: string[]
       companyName?: string
     }
   }
@@ -95,7 +100,8 @@ declare module 'next-auth' {
 declare module 'next-auth/jwt' {
   interface JWT {
     id: string
-    role: UserRole // <-- 更新：使用UserRole枚举
+    role: UserRole
+    permissions: string[]
     companyName?: string
   }
 }

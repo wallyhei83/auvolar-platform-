@@ -1,11 +1,10 @@
 import { NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/db'
+import { checkPermission } from '@/lib/permissions'
 
 export async function GET() {
-  const session = await getServerSession(authOptions)
-  if (!session || (session.user.role !== 'ADMIN' && session.user.role !== 'SUPER_ADMIN' && session.user.role !== 'STAFF')) {
+  const { authorized } = await checkPermission('documents.view')
+  if (!authorized) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 403 })
   }
 

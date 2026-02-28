@@ -20,6 +20,7 @@ export async function GET() {
       companyName: true,
       phone: true,
       role: true,
+      permissions: true,
       createdAt: true,
       updatedAt: true,
       _count: { select: { cases: true, quotes: true } },

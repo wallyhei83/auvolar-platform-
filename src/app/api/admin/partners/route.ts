@@ -1,14 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/db'
+import { checkPermission } from '@/lib/permissions'
 
 // GET - List all partners with user info
 export async function GET() {
-  const session = await getServerSession(authOptions)
-  if (!session || (session.user.role !== 'ADMIN' && session.user.role !== 'SUPER_ADMIN')) {
-    return NextResponse.json({ message: 'Unauthorized' }, { status: 403 })
-  }
+  const { authorized } = await checkPermission('partners.view')
+  if (!authorized) return NextResponse.json({ message: 'Unauthorized' }, { status: 403 })
 
   const partners = await prisma.partner.findMany({
     orderBy: { createdAt: 'desc' },

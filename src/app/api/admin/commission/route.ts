@@ -1,16 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/db'
-
-function isAdmin(session: any) {
-  return session?.user?.role === 'ADMIN' || session?.user?.role === 'SUPER_ADMIN'
-}
+import { checkPermission } from '@/lib/permissions'
 
 // GET - List all commission rules
 export async function GET() {
-  const session = await getServerSession(authOptions)
-  if (!isAdmin(session)) return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
+  const { authorized } = await checkPermission('commission.view')
+  if (!authorized) return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
 
   const rules = await prisma.commissionRule.findMany({
     orderBy: [{ isActive: 'desc' }, { createdAt: 'desc' }],
@@ -20,8 +15,8 @@ export async function GET() {
 
 // POST - Create a commission rule
 export async function POST(request: NextRequest) {
-  const session = await getServerSession(authOptions)
-  if (!isAdmin(session)) return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
+  const { authorized: auth } = await checkPermission('commission.manage')
+  if (!auth) return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
 
   const body = await request.json()
   const { tier, bcProductId, bcCategoryId, partnerId, rate, description } = body
@@ -46,8 +41,8 @@ export async function POST(request: NextRequest) {
 
 // PATCH - Update a rule
 export async function PATCH(request: NextRequest) {
-  const session = await getServerSession(authOptions)
-  if (!isAdmin(session)) return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
+  const { authorized: auth } = await checkPermission('commission.manage')
+  if (!auth) return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
 
   const body = await request.json()
   const { id, ...data } = body
@@ -63,8 +58,8 @@ export async function PATCH(request: NextRequest) {
 
 // DELETE - Delete a rule
 export async function DELETE(request: NextRequest) {
-  const session = await getServerSession(authOptions)
-  if (!isAdmin(session)) return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
+  const { authorized: auth } = await checkPermission('commission.manage')
+  if (!auth) return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
 
   const { searchParams } = new URL(request.url)
   const id = searchParams.get('id')

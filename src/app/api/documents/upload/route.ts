@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { put } from '@vercel/blob'
+import { checkPermission } from '@/lib/permissions'
 
 export async function POST(request: NextRequest) {
-  const session = await getServerSession(authOptions)
-  if (!session || (session.user.role !== 'ADMIN' && session.user.role !== 'SUPER_ADMIN')) {
-    return NextResponse.json({ message: 'Unauthorized' }, { status: 403 })
+  const { authorized, reason } = await checkPermission('documents.upload')
+  if (!authorized) {
+    return NextResponse.json({ message: reason || 'Unauthorized' }, { status: 403 })
   }
 
   const formData = await request.formData()
