@@ -6,6 +6,7 @@ import { generateProductSEO } from '@/lib/product-seo'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import ProductDetailClient from './product-detail-client'
+import { SpeakableJsonLd } from '@/components/seo/json-ld'
 
 // Generate all product pages at build time
 export async function generateStaticParams() {
@@ -162,6 +163,13 @@ export default async function ProductPage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(seo.jsonLdProduct) }}
+      />
+
+      {/* Speakable JSON-LD */}
+      <SpeakableJsonLd
+        name={product.name}
+        description={plainDescription.slice(0, 300)}
+        url={`https://www.auvolar.com/p/${slug}`}
       />
 
       {/* Breadcrumb JSON-LD */}
@@ -341,6 +349,39 @@ export default async function ProductPage({
           <div className="space-y-4">
             <details className="group border rounded-lg">
               <summary className="flex items-center justify-between cursor-pointer p-4 font-medium text-gray-900">
+                What is {product.name} best used for?
+                <svg className="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+              </summary>
+              <div className="px-4 pb-4 text-gray-600">
+                {product.categories.some(c => [30, 31, 58, 74].includes(c))
+                  ? `The ${product.name} is ideal for warehouses, manufacturing facilities, gymnasiums, and large indoor spaces that require powerful, uniform illumination. It delivers high lumen output with excellent energy efficiency, making it perfect for commercial and industrial applications.`
+                  : product.categories.some(c => [26, 43, 82].includes(c))
+                  ? `The ${product.name} is designed for parking lots, roadways, commercial properties, and outdoor areas requiring wide-area illumination. Its Type III/V distribution ensures optimal light coverage for safety and security.`
+                  : product.categories.some(c => [27, 84].includes(c))
+                  ? `The ${product.name} is perfect for building perimeters, entrances, walkways, and security lighting. It provides powerful illumination while maintaining an attractive, low-profile design.`
+                  : product.categories.some(c => [28, 83].includes(c))
+                  ? `The ${product.name} excels in security lighting, sports field illumination, signage lighting, and large outdoor areas. Its adjustable mounting allows precise aiming for maximum coverage.`
+                  : product.categories.some(c => [33, 75].includes(c))
+                  ? `The ${product.name} is ideal for offices, schools, healthcare facilities, and retail spaces. It provides glare-free, uniform lighting that enhances productivity and comfort.`
+                  : product.categories.some(c => [35, 78].includes(c))
+                  ? `The ${product.name} is built for harsh environments including car washes, food processing plants, cold storage, and industrial areas requiring IP65-rated moisture protection.`
+                  : product.categories.some(c => [100].includes(c))
+                  ? `The ${product.name} is engineered for professional sports fields, stadiums, and large outdoor venues requiring high-intensity, uniform illumination with precise beam control.`
+                  : `The ${product.name} is a versatile LED lighting solution suitable for a wide range of commercial and industrial applications. Contact our team for a free lighting design to find the best configuration for your space.`
+                }
+              </div>
+            </details>
+            <details className="group border rounded-lg">
+              <summary className="flex items-center justify-between cursor-pointer p-4 font-medium text-gray-900">
+                How do I install {product.name}?
+                <svg className="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+              </summary>
+              <div className="px-4 pb-4 text-gray-600">
+                Installation should be performed by a licensed electrician. Each Auvolar fixture includes detailed installation instructions and mounting hardware. Key steps: 1) Turn off power at the breaker, 2) Mount the bracket or housing, 3) Connect wiring per the included diagram, 4) Secure the fixture and restore power. Auvolar offers <strong>free photometric lighting design</strong> to help plan optimal fixture placement and spacing. Contact us at <a href="mailto:sales@auvolar.com" className="text-yellow-600 hover:underline">sales@auvolar.com</a> or call (626) 342-8856 for assistance.
+              </div>
+            </details>
+            <details className="group border rounded-lg">
+              <summary className="flex items-center justify-between cursor-pointer p-4 font-medium text-gray-900">
                 What is the warranty on {product.name}?
                 <svg className="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
               </summary>
@@ -385,6 +426,22 @@ export default async function ProductPage({
                 '@context': 'https://schema.org',
                 '@type': 'FAQPage',
                 mainEntity: [
+                  {
+                    '@type': 'Question',
+                    name: `What is ${product.name} best used for?`,
+                    acceptedAnswer: {
+                      '@type': 'Answer',
+                      text: `The ${product.name} is a versatile commercial LED fixture ideal for a wide range of applications including warehouses, offices, parking lots, and industrial facilities. Contact Auvolar for a free lighting design.`,
+                    },
+                  },
+                  {
+                    '@type': 'Question',
+                    name: `How do I install ${product.name}?`,
+                    acceptedAnswer: {
+                      '@type': 'Answer',
+                      text: 'Installation should be performed by a licensed electrician. Each Auvolar fixture includes detailed installation instructions and mounting hardware. Auvolar also offers free photometric lighting design to plan optimal fixture placement.',
+                    },
+                  },
                   {
                     '@type': 'Question',
                     name: `What is the warranty on ${product.name}?`,

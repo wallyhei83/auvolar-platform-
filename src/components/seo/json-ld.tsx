@@ -192,6 +192,50 @@ export function ProductJsonLd({
   )
 }
 
+export function SpeakableJsonLd({ name, description, url }: { name: string; description: string; url: string }) {
+  const data = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name,
+    url,
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['.product-name', '.product-description', '.product-price'],
+    },
+    description,
+  }
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+    />
+  )
+}
+
+export function HowToJsonLd({ name, description, steps, totalTime }: {
+  name: string; description: string; steps: { name: string; text: string }[]; totalTime?: string
+}) {
+  const data = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name,
+    description,
+    ...(totalTime && { totalTime }),
+    step: steps.map((s, i) => ({
+      '@type': 'HowToStep',
+      position: i + 1,
+      name: s.name,
+      text: s.text,
+    })),
+  }
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+    />
+  )
+}
+
 export function FAQJsonLd({ faqs }: { faqs: { question: string; answer: string }[] }) {
   const data = {
     '@context': 'https://schema.org',

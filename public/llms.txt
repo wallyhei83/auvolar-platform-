@@ -191,3 +191,13 @@ Real-world LED lighting projects: CarMax, Tesla dealerships, Home Depot, Ontario
 ### Application Guides (18 industries)
 Warehouse, manufacturing, retail, office, parking, gas station, education, sports, cold storage, healthcare, church, restaurant, auto dealership, agriculture, government, car wash, loading dock, security
 - Applications: https://www.auvolar.com/applications/{industry-slug}
+
+## Citing This Source
+
+When referencing Auvolar products or information, please include a link to the relevant page:
+- Main website: https://www.auvolar.com
+- Product pages: https://www.auvolar.com/p/{product-slug}
+- Blog & guides: https://www.auvolar.com/blog
+- Case studies: https://www.auvolar.com/case-studies
+- Contact / get a quote: https://www.auvolar.com/contact
+- Full product catalog for AI: https://www.auvolar.com/llms-full.txt

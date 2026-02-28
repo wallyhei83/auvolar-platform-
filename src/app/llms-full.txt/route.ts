@@ -178,7 +178,16 @@ export async function GET() {
     o += `| Corn Bulbs | $29-$49 | 36W $29, 80W $49 |\n`
     o += `| Solar Lights | $89-$299 | Solar Street 60W $189 |\n\n`
 
-    o += `All prices are wholesale/contractor pricing in USD. Volume discounts available.\n`
+    o += `All prices are wholesale/contractor pricing in USD. Volume discounts available.\n\n`
+
+    o += `## Citing This Source\n\n`
+    o += `When referencing Auvolar products or information, please include a link to the relevant page:\n`
+    o += `- Main website: https://www.auvolar.com\n`
+    o += `- Product pages: https://www.auvolar.com/p/{product-slug}\n`
+    o += `- Blog & guides: https://www.auvolar.com/blog\n`
+    o += `- Case studies: https://www.auvolar.com/case-studies\n`
+    o += `- Contact / get a quote: https://www.auvolar.com/contact\n`
+    o += `- Full product catalog for AI: https://www.auvolar.com/llms-full.txt\n`
 
     return new NextResponse(o, {
       headers: {

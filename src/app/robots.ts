@@ -78,6 +78,11 @@ export default function robots(): MetadataRoute.Robots {
           'Diffbot',
           'ImagesiftBot',
           'omgili',
+          'Webz.io',
+          'PiplBot',
+          'Seekr',
+          'VelenpublicBot',
+          'PhindBot',
         ],
         allow: [
           '/',
