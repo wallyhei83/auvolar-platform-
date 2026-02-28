@@ -31,7 +31,7 @@ export function CaseStudyCard({ id, category, title, subtitle, description, high
   return (
     <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white transition-shadow hover:shadow-lg">
       {/* Image / Video */}
-      <div className="relative aspect-video bg-gradient-to-br from-gray-100 to-gray-200">
+      <div className="relative aspect-[4/3] bg-gradient-to-br from-gray-100 to-gray-200">
         {youtubeId ? (
           <iframe
             src={`https://www.youtube.com/embed/${youtubeId}`}
@@ -44,7 +44,8 @@ export function CaseStudyCard({ id, category, title, subtitle, description, high
             <img
               src={images[currentImage]}
               alt={`${title} - Photo ${currentImage + 1}`}
-              className="h-full w-full object-cover"
+              className="h-full w-full object-contain bg-gray-100"
+              loading="eager"
             />
             {images.length > 1 && (
               <>
@@ -88,7 +89,7 @@ export function CaseStudyCard({ id, category, title, subtitle, description, high
                 i === currentImage ? 'ring-2 ring-yellow-400' : 'opacity-60 hover:opacity-100'
               }`}
             >
-              <img src={img} alt={`Thumbnail ${i + 1}`} className="h-full w-full object-cover" />
+              <img src={img} alt={`Thumbnail ${i + 1}`} className="h-full w-full object-contain bg-gray-100" />
             </button>
           ))}
         </div>
