@@ -8,7 +8,7 @@ const BC_ACCESS_TOKEN = process.env.BIGCOMMERCE_ACCESS_TOKEN!
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const categorySlug = searchParams.get('category')
-  const limit = parseInt(searchParams.get('limit') || '50')
+  const limit = parseInt(searchParams.get('limit') || '250')
   
   if (!categorySlug) {
     return NextResponse.json({ error: 'category parameter required' }, { status: 400 })

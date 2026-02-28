@@ -54,7 +54,7 @@ export async function GET(request: NextRequest) {
   
   try {
     // Fetch products with images (BC API doesn't support inventory_level filter, so we filter manually)
-    const url = `https://api.bigcommerce.com/stores/${BC_STORE_HASH}/v3/catalog/products?include=images&is_visible=true&limit=100`
+    const url = `https://api.bigcommerce.com/stores/${BC_STORE_HASH}/v3/catalog/products?include=images&is_visible=true&limit=250`
     
     const response = await fetch(url, {
       headers: {

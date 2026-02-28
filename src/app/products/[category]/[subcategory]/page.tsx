@@ -56,7 +56,7 @@ export default function SubcategoryPage() {
       
       try {
         const bcIds = subcategory.bcCategoryIds.join(',')
-        const res = await fetch(`/api/bigcommerce/products?category=${bcIds}&limit=50`)
+        const res = await fetch(`/api/bigcommerce/products?category=${bcIds}&limit=250`)
         const data = await res.json()
         setProducts(data.products || [])
       } catch (err) {

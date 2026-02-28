@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
     const page = parseInt(searchParams.get('page') || '1')
-    const limit = parseInt(searchParams.get('limit') || '100') // Increased default limit
+    const limit = parseInt(searchParams.get('limit') || '250') // Fetch all products by default
     const category = searchParams.get('category')
     const sku = searchParams.get('sku')
     const productId = searchParams.get('id')
