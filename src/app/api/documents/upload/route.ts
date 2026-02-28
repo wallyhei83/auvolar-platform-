@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
         bcProductId,
         sku,
         title,
-        docType: docType as 'CUT_SHEET' | 'IES' | 'INSTALL_GUIDE' | 'DIMENSIONS' | 'DLC_CERT' | 'WARRANTY' | 'OTHER',
+        docType: docType as any,
         url: blob.url,
         fileSize: file.size,
         mimeType: file.type || undefined,

@@ -71,18 +71,23 @@ model ProductDocAsset {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   
-  @@unique([bcProductId, docType, version])
   @@index([sku])
   @@index([bcProductId])
+  @@index([bcProductId, docType])
 }
 
 enum DocType {
   CUT_SHEET
+  SPEC_SHEET
   IES
+  IES_FILE
   INSTALL_GUIDE
   DIMENSIONS
   DLC_CERT
   WARRANTY
+  BROCHURE
+  CERTIFICATE
+  CAD_FILE
   OTHER
 }
 
