@@ -24,12 +24,18 @@ model User {
   role          UserRole  @default(CUSTOMER)
   bcCustomerId  String?   @unique  // BigCommerce customer ID
   
+  // B2B Tier & Rewards
+  customerTier    String    @default("BRONZE")  // BRONZE|SILVER|GOLD|PLATINUM
+  totalSpent      Decimal   @default(0) @db.Decimal(12,2)
+  rewardBalance   Decimal   @default(0) @db.Decimal(10,2)
+  
   // Relations
   cases              Case[]
   quotes             Quote[]
   projects           Project[]
   taxExemptDocuments TaxExemptDocument[]
   assignedCases      Case[]    @relation("AssignedCases")
+  rewards            CustomerReward[]
   
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -732,4 +738,22 @@ model AIStrategyPerformance {
   @@index([strategy])
   @@index([avgEffectiveness])
   @@index([conversionRate])
+}
+
+// ============================================
+// CUSTOMER REWARDS & LOYALTY
+// ============================================
+
+model CustomerReward {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type        String   // EARNED | REDEEMED | EXPIRED | ADJUSTMENT
+  amount      Decimal  @db.Decimal(10,2)
+  description String
+  orderId     String?  // BC order ID if applicable
+  createdAt   DateTime @default(now())
+  
+  @@index([userId])
+  @@index([type])
 }
