@@ -49,7 +49,7 @@ export function BCCategoryProducts({
     async function fetchProducts() {
       try {
         setLoading(true)
-        const res = await fetch(`/api/products/by-category?category=${categorySlug}&limit=100`)
+        const res = await fetch(`/api/products/by-category?category=${categorySlug}&limit=250`)
         const data = await res.json()
         
         if (data.error) {

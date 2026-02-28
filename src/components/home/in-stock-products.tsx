@@ -21,7 +21,7 @@ interface InStockProduct {
 
 async function getInStockProducts(): Promise<InStockProduct[]> {
   try {
-    const url = `https://api.bigcommerce.com/stores/${BC_STORE_HASH}/v3/catalog/products?include=images&is_visible=true&limit=100`;
+    const url = `https://api.bigcommerce.com/stores/${BC_STORE_HASH}/v3/catalog/products?include=images&is_visible=true&limit=250`;
     
     const response = await fetch(url, {
       headers: {
