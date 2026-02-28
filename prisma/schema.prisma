@@ -36,6 +36,7 @@ model User {
   taxExemptDocuments TaxExemptDocument[]
   assignedCases      Case[]    @relation("AssignedCases")
   rewards            CustomerReward[]
+  partner             Partner?
   
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -332,12 +333,13 @@ enum TaxExemptStatus {
 }
 
 // ============================================
-// PARTNER / COMMISSION (Phase 2)
+// PARTNER / DISTRIBUTOR / AFFILIATE SYSTEM
 // ============================================
 
 model Partner {
   id            String        @id @default(cuid())
   userId        String        @unique
+  user          User          @relation(fields: [userId], references: [id])
   partnerType   PartnerType
   companyName   String
   status        PartnerStatus @default(PENDING)
@@ -345,8 +347,22 @@ model Partner {
   // Attribution
   referralCode  String        @unique
   
-  // Commission
-  commissionRate Decimal?     @db.Decimal(5, 2)  // Percentage
+  // Tier & Commission
+  tier            DistributorTier @default(BASIC)
+  commissionRate  Decimal?        @db.Decimal(5, 2)  // Override rate (null = use tier default)
+  totalSales      Decimal         @default(0) @db.Decimal(12, 2)
+  totalCommission Decimal         @default(0) @db.Decimal(12, 2)
+  pendingPayout   Decimal         @default(0) @db.Decimal(12, 2)
+  
+  // Equity (for strategic partners)
+  equityEligible  Boolean   @default(false)
+  equityShares    Decimal?  @db.Decimal(10, 4)
+  equityNotes     String?   @db.Text
+  
+  // Contact
+  website       String?
+  serviceArea   String?
+  description   String?   @db.Text
   
   approvedAt    DateTime?
   approvedById  String?
@@ -355,8 +371,12 @@ model Partner {
   updatedAt     DateTime      @updatedAt
   
   attributions  PartnerAttribution[]
+  payouts       PartnerPayout[]
   
   @@index([referralCode])
+  @@index([tier])
+  @@index([status])
+  @@index([totalSales])
 }
 
 enum PartnerType {
@@ -372,20 +392,125 @@ enum PartnerStatus {
   SUSPENDED
 }
 
+enum DistributorTier {
+  BASIC       // 0+: default commission
+  ADVANCED    // $10K+: higher commission
+  PARTNER     // $50K+: higher commission + discounts
+  STRATEGIC   // $200K+: highest commission + equity eligible
+}
+
 model PartnerAttribution {
-  id          String   @id @default(cuid())
-  partnerId   String
-  partner     Partner  @relation(fields: [partnerId], references: [id])
+  id            String              @id @default(cuid())
+  partnerId     String
+  partner       Partner             @relation(fields: [partnerId], references: [id])
   
-  bcOrderId   String   // BigCommerce order ID
-  orderTotal  Decimal  @db.Decimal(12, 2)
-  commission  Decimal  @db.Decimal(12, 2)
-  paidAt      DateTime?
+  bcOrderId     String              @unique  // BigCommerce order ID
+  orderTotal    Decimal             @db.Decimal(12, 2)
+  commissionRate Decimal            @db.Decimal(5, 2)  // Rate at time of order
+  commission    Decimal             @db.Decimal(12, 2)
+  status        CommissionStatus    @default(PENDING)
   
-  createdAt   DateTime @default(now())
+  // Tracking
+  customerEmail String?
+  customerName  String?
+  
+  approvedAt    DateTime?
+  approvedById  String?
+  paidAt        DateTime?
+  payoutId      String?
+  payout        PartnerPayout?      @relation(fields: [payoutId], references: [id])
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
   
   @@index([partnerId])
   @@index([bcOrderId])
+  @@index([status])
+  @@index([payoutId])
+}
+
+enum CommissionStatus {
+  PENDING     // Order placed, waiting confirmation
+  APPROVED    // Order confirmed, commission approved
+  PAID        // Commission paid out
+  REJECTED    // Self-purchase or fraud
+  CANCELLED   // Order cancelled/refunded
+}
+
+model PartnerPayout {
+  id            String        @id @default(cuid())
+  partnerId     String
+  partner       Partner       @relation(fields: [partnerId], references: [id])
+  
+  amount        Decimal       @db.Decimal(12, 2)
+  method        String?       // BANK_TRANSFER, CHECK, PAYPAL, etc.
+  reference     String?       // Transaction reference
+  notes         String?       @db.Text
+  status        PayoutStatus  @default(PENDING)
+  
+  processedAt   DateTime?
+  processedById String?
+  
+  attributions  PartnerAttribution[]
+  
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  
+  @@index([partnerId])
+  @@index([status])
+}
+
+enum PayoutStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+// Commission rules: global defaults, per-product, per-category overrides
+model CommissionRule {
+  id            String    @id @default(cuid())
+  
+  // Scope: null = global default for that tier
+  tier          DistributorTier?
+  bcProductId   String?   // Product-specific override
+  bcCategoryId  String?   // Category-specific override
+  partnerId     String?   // Partner-specific override
+  
+  rate          Decimal   @db.Decimal(5, 2)  // Commission percentage
+  description   String?
+  isActive      Boolean   @default(true)
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  @@index([tier])
+  @@index([bcProductId])
+  @@index([bcCategoryId])
+  @@index([partnerId])
+  @@index([isActive])
+}
+
+// Referral tracking: visitor cookie → partner attribution
+model ReferralVisit {
+  id          String   @id @default(cuid())
+  referralCode String
+  visitorId   String   // Cookie-based visitor ID
+  ipAddress   String?
+  userAgent   String?  @db.Text
+  landingPage String?
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  
+  convertedAt DateTime?  // When visitor placed an order
+  bcOrderId   String?
+  
+  createdAt   DateTime @default(now())
+  
+  @@index([referralCode])
+  @@index([visitorId])
+  @@index([createdAt])
 }
 
 // ============================================

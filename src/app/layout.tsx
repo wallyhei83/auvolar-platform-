@@ -8,6 +8,8 @@ import { ChatWidgetV2 } from '@/components/chat/chat-widget'
 import { OrganizationJsonLd, WebSiteJsonLd, LocalBusinessJsonLd } from '@/components/seo/json-ld'
 import Script from 'next/script'
 import { HubSpotIdentify } from '@/components/hubspot-identify'
+import { Suspense } from 'react'
+import { ReferralTracker } from '@/components/ReferralTracker'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -104,6 +106,7 @@ export default function RootLayout({
         <SessionProvider>
           <CartProvider>
             <HubSpotIdentify />
+            <Suspense fallback={null}><ReferralTracker /></Suspense>
             {children}
             <Toaster />
             <ChatWidgetV2 />
