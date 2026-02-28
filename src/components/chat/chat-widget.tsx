@@ -1,181 +1,112 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { 
-  MessageCircle, X, Send, Minimize2, User, Bot, 
-  Mic, MicOff, Image, Paperclip, Volume2, VolumeX,
-  Camera, FileText, Upload, Play, Pause
-} from 'lucide-react'
+import { MessageCircle, X, Send, Paperclip, Mic, MicOff, Minimize2, Maximize2, User, Bot, Loader2, FileText } from 'lucide-react'
 
 interface Message {
   role: 'user' | 'assistant'
   content: string
   timestamp: Date
-  type?: 'text' | 'image' | 'voice' | 'document'
-  attachments?: {
-    type: 'image' | 'audio' | 'pdf'
-    url?: string
-    name?: string
-  }[]
-  voiceResponse?: string // base64 audio data
-  sentiment?: 'positive' | 'neutral' | 'negative'
-  engagement?: number
-}
-
-interface ClientProfile {
-  interestLevel?: 'low' | 'medium' | 'high'
-  communicationStyle?: string
-  estimatedBudget?: string
-  industry?: string
-}
-
-interface LeadData {
-  name?: string
-  email?: string
-  phone?: string
-  company?: string
-  position?: string
-  website?: string
-  industry?: string
-  conversationSummary?: string
-  interestLevel?: string
-  estimatedValue?: string
+  attachments?: { type: string; name: string }[]
 }
 
 export function ChatWidgetV2() {
   const [isOpen, setIsOpen] = useState(false)
-  const [isMinimized, setIsMinimized] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [sessionId, setSessionId] = useState<string | null>(null)
-  
-  // Multi-modal states
-  const [isRecording, setIsRecording] = useState(false)
-  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null)
-  const [audioBlob, setAudioBlob] = useState<Blob | null>(null)
+  const [sessionId, setSessionId] = useState('')
   const [selectedFiles, setSelectedFiles] = useState<File[]>([])
-  const [isPlayingVoice, setIsPlayingVoice] = useState<string | null>(null)
+  const [isRecording, setIsRecording] = useState(false)
+  const [recordingTime, setRecordingTime] = useState(0)
   
-  // Client intelligence
-  const [clientProfile, setClientProfile] = useState<ClientProfile>({})
-  const [clientInfo, setClientInfo] = useState({
-    name: '',
-    email: '', 
-    phone: '',
-    company: '',
-    website: '',
-    position: ''
-  })
-  const [showClientForm, setShowClientForm] = useState(false)
-  
-  // UI states
-  const [showNotification, setShowNotification] = useState(false)
-  const [leadCollected, setLeadCollected] = useState(false)
-  
-  // Refs
   const messagesEndRef = useRef<HTMLDivElement>(null)
-  const inputRef = useRef<HTMLInputElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const audioRef = useRef<HTMLAudioElement>(null)
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null)
+  const chunksRef = useRef<Blob[]>([])
+  const timerRef = useRef<NodeJS.Timeout | null>(null)
 
   // Auto-scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
-  // Focus input when opened
-  useEffect(() => {
-    if (isOpen && !isMinimized) {
-      inputRef.current?.focus()
-    }
-  }, [isOpen, isMinimized])
-
-  // Welcome message with client info collection
+  // Welcome message
   useEffect(() => {
     if (isOpen && messages.length === 0) {
-      setMessages([
-        {
-          role: 'assistant',
-          content: "Hey! 👋 I'm Alex from Auvolar - your AI lighting specialist. I can help you with technical specs, pricing, ROI calculations, and more. To give you the best recommendations, could you share:\\n\\n• Your company name and website\\n• Your role/position\\n• What lighting challenge you're facing\\n\\nOr just dive right in with your questions!",
-          timestamp: new Date(),
-        },
-      ])
+      setMessages([{
+        role: 'assistant',
+        content: "Hi! 👋 I'm Alex from Auvolar — your LED lighting expert. I know our entire product catalog and can help with:\n\n• **Product recommendations** for your space\n• **Technical specs** and comparisons\n• **Pricing** and volume discounts\n• **ROI calculations** for LED upgrades\n\nWhat are you working on?",
+        timestamp: new Date(),
+      }])
     }
-  }, [isOpen, messages.length])
-
-  // Show notification bubble
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (!isOpen) {
-        setShowNotification(true)
-      }
-    }, 5000)
-    return () => clearTimeout(timer)
   }, [isOpen])
 
-  // Initialize audio recording
+  // Voice recording
   const startRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
       const recorder = new MediaRecorder(stream)
-      const chunks: BlobPart[] = []
-
-      recorder.ondataavailable = (e) => chunks.push(e.data)
-      recorder.onstop = () => {
-        const blob = new Blob(chunks, { type: 'audio/wav' })
-        setAudioBlob(blob)
-        setIsRecording(false)
-        stream.getTracks().forEach(track => track.stop())
+      chunksRef.current = []
+      
+      recorder.ondataavailable = (e) => { if (e.data.size > 0) chunksRef.current.push(e.data) }
+      recorder.onstop = async () => {
+        stream.getTracks().forEach(t => t.stop())
+        const blob = new Blob(chunksRef.current, { type: 'audio/webm' })
+        // Transcribe using OpenAI Whisper via our API
+        await transcribeAndSend(blob)
       }
 
       recorder.start()
-      setMediaRecorder(recorder)
+      mediaRecorderRef.current = recorder
       setIsRecording(true)
-    } catch (error) {
-      console.error('Could not start recording:', error)
-      alert('Microphone access denied. Please allow microphone access to use voice messages.')
+      setRecordingTime(0)
+      timerRef.current = setInterval(() => setRecordingTime(t => t + 1), 1000)
+    } catch (err) {
+      alert('Please allow microphone access to use voice input.')
     }
   }
 
   const stopRecording = () => {
-    if (mediaRecorder) {
-      mediaRecorder.stop()
-      setMediaRecorder(null)
+    if (mediaRecorderRef.current?.state === 'recording') {
+      mediaRecorderRef.current.stop()
     }
+    setIsRecording(false)
+    if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null }
   }
 
-  const playVoiceResponse = async (voiceData: string, messageId: string) => {
+  const transcribeAndSend = async (audioBlob: Blob) => {
+    setIsLoading(true)
     try {
-      const audioBuffer = Uint8Array.from(atob(voiceData), c => c.charCodeAt(0))
-      const blob = new Blob([audioBuffer], { type: 'audio/mpeg' })
-      const audioUrl = URL.createObjectURL(blob)
-      
-      const audio = new Audio(audioUrl)
-      setIsPlayingVoice(messageId)
-      
-      audio.onended = () => {
-        setIsPlayingVoice(null)
-        URL.revokeObjectURL(audioUrl)
+      const formData = new FormData()
+      formData.append('audio', audioBlob, 'voice.webm')
+
+      const res = await fetch('/api/chat/transcribe', {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (res.ok) {
+        const { text } = await res.json()
+        if (text?.trim()) {
+          await sendMessage(text)
+        } else {
+          alert('Could not understand the audio. Please try again or type your message.')
+        }
+      } else {
+        alert('Voice transcription failed. Please type your message instead.')
       }
-      
-      await audio.play()
-    } catch (error) {
-      console.error('Could not play voice response:', error)
-      setIsPlayingVoice(null)
+    } catch {
+      alert('Voice feature unavailable. Please type your message.')
+    } finally {
+      setIsLoading(false)
     }
   }
 
-  const handleFileSelect = (files: FileList) => {
-    const validFiles = Array.from(files).filter(file => {
-      const isImage = file.type.startsWith('image/')
-      const isPDF = file.type === 'application/pdf'
-      const isAudio = file.type.startsWith('audio/')
-      return isImage || isPDF || isAudio
-    })
-    
-    if (validFiles.length > 0) {
-      setSelectedFiles(prev => [...prev, ...validFiles])
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setSelectedFiles(prev => [...prev, ...Array.from(e.target.files!)])
     }
   }
 
@@ -183,182 +114,59 @@ export function ChatWidgetV2() {
     setSelectedFiles(prev => prev.filter((_, i) => i !== index))
   }
 
-  const processAttachments = async (): Promise<any[]> => {
-    const attachments = []
-    
-    // Process voice recording
-    if (audioBlob) {
-      const audioBuffer = await audioBlob.arrayBuffer()
-      attachments.push({
-        type: 'audio',
-        data: Array.from(new Uint8Array(audioBuffer))
-      })
-    }
-    
-    // Process selected files
-    for (const file of selectedFiles) {
-      if (file.type.startsWith('image/')) {
-        // For images, create URL for vision analysis
-        const imageUrl = URL.createObjectURL(file)
-        attachments.push({
-          type: 'image',
-          url: imageUrl
-        })
-      } else if (file.type === 'application/pdf') {
-        // For PDFs, send file data
-        const pdfBuffer = await file.arrayBuffer()
-        attachments.push({
-          type: 'pdf',
-          data: Array.from(new Uint8Array(pdfBuffer))
-        })
-      }
-    }
-    
-    return attachments
-  }
+  const sendMessage = async (overrideText?: string) => {
+    const text = overrideText || input.trim()
+    if (!text && selectedFiles.length === 0) return
 
-  const sendMessage = async () => {
-    if ((!input.trim() && !audioBlob && selectedFiles.length === 0) || isLoading) return
+    const attachments = selectedFiles.map(f => ({
+      type: f.type.includes('image') ? 'image' : f.type.includes('pdf') ? 'pdf' : 'document',
+      name: f.name,
+    }))
 
-    const userContent = input.trim() || '[Voice/Media message]'
-    setInput('')
-    
-    const attachments = await processAttachments()
-    
-    const newUserMessage: Message = { 
-      role: 'user', 
-      content: userContent,
+    const userMessage: Message = {
+      role: 'user',
+      content: text || `[Sent ${selectedFiles.length} file(s)]`,
       timestamp: new Date(),
-      attachments: attachments.map(att => ({
-        type: att.type,
-        url: att.url,
-        name: att.name
-      }))
+      attachments: attachments.length > 0 ? attachments : undefined,
     }
-    
-    const updatedMessages = [...messages, newUserMessage]
+
+    const updatedMessages = [...messages, userMessage]
     setMessages(updatedMessages)
-    setIsLoading(true)
-    
-    // Clear inputs
-    setAudioBlob(null)
+    setInput('')
     setSelectedFiles([])
+    setIsLoading(true)
 
     try {
-      const requestBody = {
-        messages: updatedMessages.map(m => ({ 
-          role: m.role, 
-          content: m.content,
-          attachments: attachments.length > 0 ? attachments : undefined
-        })),
-        sessionId,
-        visitorInfo: {
-          page: typeof window !== 'undefined' ? window.location.pathname : undefined,
-          userAgent: typeof window !== 'undefined' ? navigator.userAgent : undefined,
-        },
-        clientInfo: Object.keys(clientInfo).some(key => clientInfo[key as keyof typeof clientInfo]) 
-          ? clientInfo 
-          : undefined
-      }
-
-      const res = await fetch('/api/chat-v2', {
+      const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestBody),
+        body: JSON.stringify({
+          messages: updatedMessages.map(m => ({
+            role: m.role,
+            content: m.content,
+            attachments: m.attachments,
+          })),
+          sessionId,
+        }),
       })
 
       const data = await res.json()
-
-      if (data.error) {
-        throw new Error(data.error)
-      }
-
-      const assistantMessage: Message = {
-        role: 'assistant',
-        content: data.reply,
-        timestamp: new Date(),
-        voiceResponse: data.voiceResponse,
-        sentiment: data.sentiment,
-        engagement: data.engagement
-      }
       
-      const allMessages = [...updatedMessages, assistantMessage]
-      setMessages(allMessages)
+      setMessages([...updatedMessages, {
+        role: 'assistant',
+        content: data.reply || "Sorry, I couldn't process that. Please try again.",
+        timestamp: new Date(),
+      }])
       
       if (data.sessionId) setSessionId(data.sessionId)
-      if (data.clientProfile) setClientProfile(data.clientProfile)
-
-      // Handle lead collection
-      if (data.leadCollected && data.leadData) {
-        setLeadCollected(true)
-        await saveLead(data.leadData, allMessages)
-      }
-
-      // Handle escalation
-      if (data.escalate) {
-        await notifyHuman(data.escalateReason, data.escalateData)
-      }
-
-      // Auto-play voice response if available
-      if (data.voiceResponse) {
-        setTimeout(() => {
-          playVoiceResponse(data.voiceResponse, assistantMessage.timestamp.toISOString())
-        }, 500)
-      }
-
-    } catch (error) {
-      console.error('Chat error:', error)
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: 'assistant',
-          content: "I'm experiencing a technical issue. Let me connect you with our team immediately. Please email sales@auvolar.com or call (626) 342-8856.",
-          timestamp: new Date(),
-        },
-      ])
+    } catch {
+      setMessages([...updatedMessages, {
+        role: 'assistant',
+        content: "I'm having trouble connecting. Please try again or email sales@auvolar.com.",
+        timestamp: new Date(),
+      }])
     } finally {
       setIsLoading(false)
-    }
-  }
-
-  const saveLead = async (leadData: LeadData, conversation: Message[]) => {
-    try {
-      await fetch('/api/email/send', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          type: 'advanced-chat-lead',
-          ...leadData,
-          conversation: conversation.map(m => ({
-            role: m.role,
-            content: m.content,
-            time: m.timestamp.toISOString(),
-            sentiment: m.sentiment,
-            engagement: m.engagement
-          })),
-          sessionId,
-          clientProfile
-        }),
-      })
-    } catch (error) {
-      console.error('Failed to save lead:', error)
-    }
-  }
-
-  const notifyHuman = async (reason: string, escalateData: any) => {
-    try {
-      await fetch('/api/email/send', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          type: 'chat-escalation-v2',
-          reason,
-          escalateData,
-          sessionId,
-        }),
-      })
-    } catch (error) {
-      console.error('Failed to notify human:', error)
     }
   }
 
@@ -369,244 +177,88 @@ export function ChatWidgetV2() {
     }
   }
 
-  const updateClientInfo = (field: string, value: string) => {
-    setClientInfo(prev => ({ ...prev, [field]: value }))
-  }
+  const formatTime = (s: number) => `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, '0')}`
 
-  // Render client intelligence indicator
-  const renderClientIntelligence = () => {
-    if (!Object.values(clientProfile).some(v => v)) return null
-    
-    return (
-      <div className="px-3 py-2 bg-blue-50 border-b border-blue-200">
-        <div className="flex items-center gap-2 text-xs">
-          <Bot className="h-3 w-3 text-blue-600" />
-          <span className="text-blue-800">
-            {clientProfile.industry && `${clientProfile.industry} • `}
-            {clientProfile.interestLevel && `${clientProfile.interestLevel} interest • `}
-            {clientProfile.estimatedBudget && `${clientProfile.estimatedBudget} budget`}
-          </span>
-        </div>
-      </div>
-    )
-  }
-
-  // Chat bubble (closed state)  
   if (!isOpen) {
     return (
-      <div className="fixed bottom-6 right-6 z-50">
-        {showNotification && (
-          <div className="absolute bottom-16 right-0 mb-2 animate-bounce">
-            <div className="bg-white rounded-lg shadow-lg p-3 max-w-[240px] border border-gray-200">
-              <p className="text-sm text-gray-800">🤖 New AI Sales Rep! I can analyze your lighting needs from photos, voice messages, and documents!</p>
-              <div className="absolute bottom-0 right-4 transform translate-y-1/2 rotate-45 w-3 h-3 bg-white border-r border-b border-gray-200"></div>
-            </div>
-          </div>
-        )}
-        <button
-          onClick={() => {
-            setIsOpen(true)
-            setShowNotification(false)
-          }}
-          className="flex h-14 w-14 items-center justify-center rounded-full bg-brand shadow-lg hover:bg-brand-dark transition-all hover:scale-105 relative"
-          aria-label="Open AI Sales Assistant"
-        >
-          <MessageCircle className="h-6 w-6 text-black" />
-          <span className="absolute -top-1 -right-1 flex h-5 w-5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-5 w-5 bg-green-500 items-center justify-center">
-              <Bot className="h-2.5 w-2.5 text-white" />
-            </span>
-          </span>
-        </button>
-      </div>
-    )
-  }
-
-  // Minimized state
-  if (isMinimized) {
-    return (
       <button
-        onClick={() => setIsMinimized(false)}
-        className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full bg-brand px-4 py-3 shadow-lg hover:bg-brand-dark transition-all"
+        onClick={() => setIsOpen(true)}
+        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-[#FFD60A] rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-transform"
+        aria-label="Open chat"
       >
-        <Bot className="h-5 w-5 text-black" />
-        <span className="font-medium text-black">AI Sales Assistant</span>
-        {messages.length > 1 && (
-          <span className="bg-black text-white text-xs px-2 py-0.5 rounded-full">
-            {messages.length}
-          </span>
-        )}
+        <MessageCircle className="h-6 w-6 text-black" />
       </button>
     )
   }
 
-  // Full chat window
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col w-[400px] h-[600px] max-h-[85vh] bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
+    <div className={`fixed z-50 ${isExpanded ? 'inset-4' : 'bottom-6 right-6 w-[400px] h-[600px]'} flex flex-col bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden transition-all duration-300`}>
       {/* Header */}
-      <div className="flex items-center justify-between bg-brand px-4 py-3">
+      <div className="bg-[#FFD60A] px-4 py-3 flex items-center justify-between flex-shrink-0">
         <div className="flex items-center gap-3">
-          <div className="relative">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-black/10">
-              <Bot className="h-5 w-5 text-black" />
-            </div>
-            <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-brand rounded-full"></span>
+          <div className="w-9 h-9 bg-black/10 rounded-full flex items-center justify-center">
+            <Bot className="h-5 w-5 text-black" />
           </div>
           <div>
-            <h3 className="font-semibold text-black">Alex - AI Sales Pro</h3>
-            <p className="text-xs text-gray-700">Multi-Modal • Learning AI</p>
+            <h3 className="font-bold text-black text-sm">Alex — LED Expert</h3>
+            <p className="text-black/60 text-[10px]">Auvolar Lighting Specialist</p>
           </div>
         </div>
-        <div className="flex gap-1">
-          <button
-            onClick={() => setShowClientForm(!showClientForm)}
-            className="p-2 hover:bg-black/10 rounded-lg transition-colors"
-            aria-label="Client Info"
-          >
-            <User className="h-4 w-4 text-black" />
+        <div className="flex items-center gap-1">
+          <button onClick={() => setIsExpanded(!isExpanded)} className="p-1.5 hover:bg-black/10 rounded-lg transition-colors">
+            {isExpanded ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
           </button>
-          <button
-            onClick={() => setIsMinimized(true)}
-            className="p-2 hover:bg-black/10 rounded-lg transition-colors"
-            aria-label="Minimize"
-          >
-            <Minimize2 className="h-4 w-4 text-black" />
-          </button>
-          <button
-            onClick={() => setIsOpen(false)}
-            className="p-2 hover:bg-black/10 rounded-lg transition-colors"
-            aria-label="Close"
-          >
-            <X className="h-4 w-4 text-black" />
+          <button onClick={() => setIsOpen(false)} className="p-1.5 hover:bg-black/10 rounded-lg transition-colors">
+            <X className="h-4 w-4" />
           </button>
         </div>
       </div>
 
-      {/* Client Intelligence Indicator */}
-      {renderClientIntelligence()}
-
-      {/* Client Info Form */}
-      {showClientForm && (
-        <div className="px-4 py-3 bg-gray-50 border-b border-gray-200">
-          <div className="space-y-2">
-            <div className="grid grid-cols-2 gap-2">
-              <input
-                type="text"
-                placeholder="Your name"
-                value={clientInfo.name}
-                onChange={(e) => updateClientInfo('name', e.target.value)}
-                className="text-xs border rounded px-2 py-1"
-              />
-              <input
-                type="email"
-                placeholder="Email"
-                value={clientInfo.email}
-                onChange={(e) => updateClientInfo('email', e.target.value)}
-                className="text-xs border rounded px-2 py-1"
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-2">
-              <input
-                type="text"
-                placeholder="Company"
-                value={clientInfo.company}
-                onChange={(e) => updateClientInfo('company', e.target.value)}
-                className="text-xs border rounded px-2 py-1"
-              />
-              <input
-                type="text"
-                placeholder="Website"
-                value={clientInfo.website}
-                onChange={(e) => updateClientInfo('website', e.target.value)}
-                className="text-xs border rounded px-2 py-1"
-              />
-            </div>
-            <input
-              type="text"
-              placeholder="Your role/position"
-              value={clientInfo.position}
-              onChange={(e) => updateClientInfo('position', e.target.value)}
-              className="w-full text-xs border rounded px-2 py-1"
-            />
-          </div>
-        </div>
-      )}
-
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
         {messages.map((msg, i) => (
-          <div
-            key={i}
-            className={`flex items-end gap-2 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-          >
+          <div key={i} className={`flex gap-2 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
             {msg.role === 'assistant' && (
-              <div className="flex-shrink-0 w-7 h-7 rounded-full bg-brand flex items-center justify-center">
+              <div className="w-7 h-7 bg-[#FFD60A] rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                 <Bot className="h-4 w-4 text-black" />
               </div>
             )}
-            <div
-              className={`max-w-[80%] rounded-2xl px-4 py-2 ${
-                msg.role === 'user'
-                  ? 'bg-brand text-black rounded-br-md'
-                  : 'bg-white text-gray-800 shadow-sm border border-gray-100 rounded-bl-md'
-              }`}
-            >
-              <p className="text-sm whitespace-pre-wrap leading-relaxed">{msg.content}</p>
-              
-              {/* Attachments Display */}
-              {msg.attachments && msg.attachments.length > 0 && (
-                <div className="mt-2 space-y-1">
-                  {msg.attachments.map((att, idx) => (
-                    <div key={idx} className="text-xs bg-gray-100 rounded px-2 py-1 flex items-center gap-1">
-                      {att.type === 'image' && <Image className="h-3 w-3" />}
-                      {att.type === 'audio' && <Mic className="h-3 w-3" />}
-                      {att.type === 'pdf' && <FileText className="h-3 w-3" />}
-                      {att.name || `${att.type} attachment`}
-                    </div>
-                  ))}
+            <div className={`max-w-[80%] ${msg.role === 'user' ? 'bg-[#FFD60A] text-black' : 'bg-white border'} rounded-2xl px-4 py-3 text-sm shadow-sm`}>
+              {/* Attachments */}
+              {msg.attachments?.map((a, j) => (
+                <div key={j} className="flex items-center gap-2 mb-2 text-xs opacity-75">
+                  <FileText className="h-3 w-3" />
+                  <span>{a.name}</span>
                 </div>
-              )}
-              
-              <div className="flex items-center justify-between mt-1">
-                <p className={`text-[10px] ${msg.role === 'user' ? 'text-black/50' : 'text-gray-400'}`}>
-                  {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                </p>
-                
-                {/* Voice Response Button */}
-                {msg.voiceResponse && msg.role === 'assistant' && (
-                  <button
-                    onClick={() => playVoiceResponse(msg.voiceResponse!, msg.timestamp.toISOString())}
-                    className="text-blue-500 hover:text-blue-700 ml-2"
-                    disabled={isPlayingVoice === msg.timestamp.toISOString()}
-                  >
-                    {isPlayingVoice === msg.timestamp.toISOString() ? (
-                      <VolumeX className="h-3 w-3" />
-                    ) : (
-                      <Volume2 className="h-3 w-3" />
-                    )}
-                  </button>
-                )}
-              </div>
+              ))}
+              {/* Message content with markdown-like formatting */}
+              <div className="whitespace-pre-wrap leading-relaxed" dangerouslySetInnerHTML={{
+                __html: msg.content
+                  .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                  .replace(/\[(.*?)\]\((\/p\/.*?)\)/g, '<a href="$2" target="_blank" class="text-blue-600 underline">$1</a>')
+                  .replace(/^• /gm, '• ')
+              }} />
+              <p className="text-[10px] opacity-40 mt-1.5">
+                {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              </p>
             </div>
             {msg.role === 'user' && (
-              <div className="flex-shrink-0 w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center">
+              <div className="w-7 h-7 bg-gray-200 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                 <User className="h-4 w-4 text-gray-600" />
               </div>
             )}
           </div>
         ))}
-        
         {isLoading && (
-          <div className="flex items-end gap-2 justify-start">
-            <div className="flex-shrink-0 w-7 h-7 rounded-full bg-brand flex items-center justify-center">
+          <div className="flex gap-2">
+            <div className="w-7 h-7 bg-[#FFD60A] rounded-full flex items-center justify-center flex-shrink-0">
               <Bot className="h-4 w-4 text-black" />
             </div>
-            <div className="bg-white text-gray-800 shadow-sm border border-gray-100 rounded-2xl rounded-bl-md px-4 py-3">
-              <div className="flex gap-1">
-                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
-                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
-                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
+            <div className="bg-white border rounded-2xl px-4 py-3 shadow-sm">
+              <div className="flex items-center gap-1">
+                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
               </div>
             </div>
           </div>
@@ -614,95 +266,76 @@ export function ChatWidgetV2() {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* File Preview */}
-      {(selectedFiles.length > 0 || audioBlob) && (
-        <div className="px-4 py-2 bg-gray-100 border-t border-gray-200">
-          <div className="flex gap-2 flex-wrap">
-            {audioBlob && (
-              <div className="flex items-center gap-2 bg-blue-100 rounded px-2 py-1 text-xs">
-                <Mic className="h-3 w-3 text-blue-600" />
-                Voice message
-                <button onClick={() => setAudioBlob(null)} className="text-red-500 hover:text-red-700">×</button>
-              </div>
-            )}
-            {selectedFiles.map((file, idx) => (
-              <div key={idx} className="flex items-center gap-2 bg-gray-200 rounded px-2 py-1 text-xs">
-                {file.type.startsWith('image/') && <Image className="h-3 w-3" />}
-                {file.type === 'application/pdf' && <FileText className="h-3 w-3" />}
-                {file.name}
-                <button onClick={() => removeFile(idx)} className="text-red-500 hover:text-red-700">×</button>
-              </div>
-            ))}
-          </div>
+      {/* Selected Files */}
+      {selectedFiles.length > 0 && (
+        <div className="px-4 py-2 bg-gray-50 border-t flex flex-wrap gap-2">
+          {selectedFiles.map((f, i) => (
+            <div key={i} className="flex items-center gap-1 bg-white border rounded-lg px-2 py-1 text-xs">
+              <FileText className="h-3 w-3 text-gray-400" />
+              <span className="max-w-[120px] truncate">{f.name}</span>
+              <button onClick={() => removeFile(i)} className="text-gray-400 hover:text-red-500">
+                <X className="h-3 w-3" />
+              </button>
+            </div>
+          ))}
         </div>
       )}
 
-      {/* Input Area */}
-      <div className="border-t border-gray-200 p-3 bg-white">
+      {/* Recording indicator */}
+      {isRecording && (
+        <div className="px-4 py-2 bg-red-50 border-t flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />
+            <span className="text-sm text-red-700 font-medium">Recording... {formatTime(recordingTime)}</span>
+          </div>
+          <button onClick={stopRecording} className="text-sm text-red-600 font-semibold hover:underline">
+            Stop & Send
+          </button>
+        </div>
+      )}
+
+      {/* Input */}
+      <div className="border-t bg-white p-3 flex-shrink-0">
         <div className="flex items-end gap-2">
-          {/* File Input */}
-          <input
-            ref={fileInputRef}
-            type="file"
-            multiple
-            accept="image/*,.pdf,audio/*"
-            onChange={(e) => e.target.files && handleFileSelect(e.target.files)}
-            className="hidden"
-          />
-          
-          {/* Attachment Button */}
+          <input ref={fileInputRef} type="file" className="hidden" multiple onChange={handleFileSelect} accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif,.ies" />
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="flex h-9 w-9 items-center justify-center rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
+            className="p-2 text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0"
+            title="Attach file"
           >
-            <Paperclip className="h-4 w-4" />
+            <Paperclip className="h-5 w-5" />
           </button>
-
-          {/* Voice Recording Button */}
           <button
             onClick={isRecording ? stopRecording : startRecording}
-            className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors ${
-              isRecording 
-                ? 'bg-red-100 text-red-600 hover:bg-red-200' 
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            }`}
+            className={`p-2 transition-colors flex-shrink-0 ${isRecording ? 'text-red-500 hover:text-red-700' : 'text-gray-400 hover:text-gray-600'}`}
+            title={isRecording ? 'Stop recording' : 'Voice input'}
           >
-            {isRecording ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+            {isRecording ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
           </button>
-
-          {/* Text Input */}
-          <input
-            ref={inputRef}
-            type="text"
+          <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Type, speak, or attach files..."
-            className="flex-1 rounded-xl border border-gray-300 px-4 py-2 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+            placeholder="Ask about our LED products..."
+            className="flex-1 resize-none border rounded-xl px-3 py-2 text-sm max-h-24 min-h-[40px] focus:outline-none focus:ring-2 focus:ring-[#FFD60A]/50"
+            rows={1}
           />
-
-          {/* Send Button */}
           <button
-            onClick={sendMessage}
-            disabled={(!input.trim() && !audioBlob && selectedFiles.length === 0) || isLoading}
-            className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand text-black hover:bg-brand-dark disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            onClick={() => sendMessage()}
+            disabled={isLoading || (!input.trim() && selectedFiles.length === 0)}
+            className="p-2 bg-[#FFD60A] text-black rounded-xl hover:bg-[#FFD60A]/80 transition-colors disabled:opacity-30 flex-shrink-0"
           >
-            <Send className="h-4 w-4" />
+            <Send className="h-5 w-5" />
           </button>
         </div>
-        
-        <div className="flex items-center justify-center gap-2 mt-2">
-          <span className="text-[10px] text-gray-400">🤖 Multi-Modal AI Sales Pro</span>
-          <span className="text-gray-300">•</span>
-          <a href="mailto:sales@auvolar.com" className="text-[10px] text-gray-400 hover:text-gray-600">
-            sales@auvolar.com
-          </a>
-          <span className="text-gray-300">•</span>
-          <a href="tel:+16263428856" className="text-[10px] text-gray-400 hover:text-gray-600">
-            (626) 342-8856
-          </a>
+        <div className="flex items-center justify-center gap-2 mt-2 text-[10px] text-gray-400">
+          <span>sales@auvolar.com</span>
+          <span>·</span>
+          <span>(626) 342-8856</span>
         </div>
       </div>
     </div>
   )
 }
+
+export default ChatWidgetV2
