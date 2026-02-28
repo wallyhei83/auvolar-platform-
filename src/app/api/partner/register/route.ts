@@ -21,8 +21,25 @@ export async function POST(request: NextRequest) {
     const {
       email, password, name, companyName, phone,
       partnerType, // CONTRACTOR | ENGINEER | ELECTRICIAN | PROPERTY_OWNER | PRODUCT_MANAGER | DISTRIBUTOR | SUPPLIER
-      website, serviceArea, licenseNumber, description
+      website, serviceArea, licenseNumber, description,
+      _gotcha, _ts
     } = body
+
+    // Anti-bot: honeypot
+    if (_gotcha) {
+      return NextResponse.json({ message: 'Account created successfully', user: { id: 'ok' } })
+    }
+
+    // Anti-bot: timing (< 3s = bot)
+    if (_ts && (Date.now() - parseInt(_ts)) < 3000) {
+      return NextResponse.json({ message: 'Account created successfully', user: { id: 'ok' } })
+    }
+
+    // Anti-bot: garbage name/company detection
+    const looksGarbage = (s: string) => s && s.length > 15 && !s.includes(' ') && (s.match(/[aeiouAEIOU]/g)?.length || 0) / s.length < 0.2
+    if (looksGarbage(name) || looksGarbage(companyName)) {
+      return NextResponse.json({ message: 'Please provide a valid name and company name.' }, { status: 400 })
+    }
 
     // Validate required fields
     if (!email || !password || !name || !companyName || !partnerType) {

@@ -16,7 +16,9 @@ export default function RegisterPage() {
     name: '',
     companyName: '',
     phone: '',
+    website: '', // honeypot - hidden from real users
   })
+  const [formLoadTime] = useState(Date.now())
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [showPw, setShowPw] = useState(false)
@@ -48,6 +50,8 @@ export default function RegisterPage() {
           name: formData.name,
           companyName: formData.companyName,
           phone: formData.phone,
+          website: formData.website, // honeypot
+          _ts: formLoadTime.toString(), // timing check
         }),
       })
 
@@ -159,6 +163,20 @@ export default function RegisterPage() {
                   onChange={handleChange}
                   className="input"
                   placeholder="(555) 123-4567"
+                />
+              </div>
+
+              {/* Honeypot field - hidden from real users, bots will fill it */}
+              <div className="absolute -left-[9999px]" aria-hidden="true">
+                <label htmlFor="website">Website</label>
+                <input
+                  id="website"
+                  name="website"
+                  type="text"
+                  value={formData.website}
+                  onChange={handleChange}
+                  tabIndex={-1}
+                  autoComplete="off"
                 />
               </div>
 
