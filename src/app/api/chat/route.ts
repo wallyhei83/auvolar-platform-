@@ -317,10 +317,11 @@ export async function POST(request: NextRequest) {
       engagement,
     })
   } catch (error: any) {
-    console.error('Chat error:', error)
+    console.error('Chat error:', error?.message || error?.code || error)
+    console.error('Chat error details:', JSON.stringify({ status: error?.status, code: error?.code, type: error?.type, message: error?.message }))
     const fallback = error?.status === 401 || error?.code === 'invalid_api_key'
       ? "I'm being updated. Please contact sales@auvolar.com or call (626) 342-8856!"
-      : "Technical issue — please try again or email sales@auvolar.com."
-    return NextResponse.json({ reply: fallback, sessionId: 'error' })
+      : `Technical issue — please try again or email sales@auvolar.com.`
+    return NextResponse.json({ reply: fallback, sessionId: 'error', debug: error?.message || error?.code || 'unknown' })
   }
 }

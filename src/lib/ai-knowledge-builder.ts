@@ -28,21 +28,21 @@ export async function buildKnowledgeBase(): Promise<string> {
 
   const sections: string[] = []
 
-  // 1. Full product catalog from llms-full.txt (already has descriptions)
+  // 1. Product catalog from llms.txt (condensed version, not the 94KB full version)
   try {
     const baseUrl = process.env.NEXTAUTH_URL || 'https://www.auvolar.com'
-    const res = await fetch(`${baseUrl}/llms-full.txt`, { cache: 'no-store' })
+    const res = await fetch(`${baseUrl}/llms.txt`, { cache: 'no-store' })
     if (res.ok) {
       const text = await res.text()
       sections.push(`
 ═══════════════════════════════════════
-COMPLETE PRODUCT CATALOG & DESCRIPTIONS
+PRODUCT CATALOG OVERVIEW
 ═══════════════════════════════════════
 ${text}
 `)
     }
   } catch (e) {
-    console.error('Knowledge builder: failed to fetch llms-full.txt', e)
+    console.error('Knowledge builder: failed to fetch llms.txt', e)
   }
 
   // 2. Detailed product info from BigCommerce (full descriptions with HTML stripped)
@@ -52,15 +52,9 @@ ${text}
     if (res.ok) {
       const data = await res.json()
       const products = data.products || []
-      const productDetails = products.map((p: any) => {
+      const productDetails = products.slice(0, 50).map((p: any) => {
         const desc = (p.description || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()
-        const features = (p.features || []).join(', ')
-        return `### ${p.name}
-SKU: ${p.sku} | Price: $${p.price} | URL: /p/${p.slug}
-${desc ? `Description: ${desc.substring(0, 500)}` : ''}
-${features ? `Features: ${features}` : ''}
-Variants: ${p.variants?.map((v: any) => `${v.sku || ''} $${v.price || ''}`).join(', ') || 'N/A'}
-`
+        return `- **${p.name}** | SKU:${p.sku} | $${p.price} | /p/${p.slug}${desc ? ` — ${desc.substring(0, 200)}` : ''}`
       }).join('\n')
 
       sections.push(`
