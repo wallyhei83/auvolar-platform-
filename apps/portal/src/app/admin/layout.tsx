@@ -35,7 +35,7 @@ export default async function AdminLayout({
 
   const navigation = [
     { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
-    { name: 'Cases', href: '/admin/cases', icon: FileText },
+    { name: 'Support Tickets', href: '/admin/cases', icon: FileText },
     { name: 'Quotes', href: '/admin/quotes', icon: Package },
     { name: 'Users', href: '/admin/users', icon: Users },
     { name: 'Partners', href: '/admin/partners', icon: Users },

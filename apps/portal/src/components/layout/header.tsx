@@ -423,7 +423,7 @@ export function Header() {
 
           {/* Case Studies */}
           <Link href="/case-studies" className="px-4 py-3 text-sm font-semibold text-gray-900 hover:text-brand">
-            Cases
+            Case Studies
           </Link>
 
           {/* Service Dropdown */}
@@ -536,7 +536,7 @@ export function Header() {
               <Link href="/tools/lightspec-ai" className="block py-2 font-medium text-gray-900">LightSpec AI</Link>
               <Link href="/partner" className="block py-2 font-medium text-gray-900">Partner</Link>
               <Link href="/investor" className="block py-2 font-medium text-gray-900">Investor</Link>
-              <Link href="/case-studies" className="block py-2 font-medium text-gray-900">Cases</Link>
+              <Link href="/case-studies" className="block py-2 font-medium text-gray-900">Case Studies</Link>
 
               {/* Service */}
               <div>
