@@ -14,7 +14,8 @@ import {
   Bot,
   BarChart3,
   LogOut,
-  ChevronRight
+  ChevronRight,
+  Trophy
 } from 'lucide-react'
 
 export default async function AdminLayout({
@@ -39,6 +40,7 @@ export default async function AdminLayout({
     { name: 'Users', href: '/admin/users', icon: Users },
     { name: 'Partners', href: '/admin/partners', icon: Users },
     { name: 'Tax Exempt', href: '/admin/tax-exempt', icon: FileCheck },
+    { name: 'Case Studies', href: '/admin/case-studies', icon: Trophy },
     { name: 'Products & Docs', href: '/admin/products', icon: FileText },
     { name: 'Integrations', href: '/admin/integrations', icon: Link2 },
     { name: 'AI Console', href: '/admin/ai', icon: Bot },

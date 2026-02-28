@@ -474,6 +474,36 @@ model AIChatLog {
 }
 
 // ============================================
+// CASE STUDIES (Project Showcases)
+// ============================================
+
+model CaseStudy {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  category      String   // "Parking Lot Lighting", "Auto Dealership Lighting", etc.
+  title         String
+  subtitle      String?
+  description   String   @db.Text
+  highlights    String[] // Array of bullet points
+  product       String?  // Product name reference
+  productSlug   String?  // Link to /p/[slug]
+  clients       String[] // Client names
+  location      String?
+  images        String[] // URLs (Vercel Blob or public paths)
+  youtubeId     String?
+  stats         Json?    // Array of {label, value}
+  sortOrder     Int      @default(0)
+  isPublished   Boolean  @default(true)
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  @@index([category])
+  @@index([isPublished])
+  @@index([sortOrder])
+}
+
+// ============================================
 // ANALYTICS EVENTS (for operational reporting)
 // ============================================
 

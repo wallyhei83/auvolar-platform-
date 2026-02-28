@@ -8,7 +8,7 @@ import {
   Phone, Mail, FileText, Download, Award
 } from 'lucide-react'
 import { useCart } from '@/lib/cart-context'
-import { ProductFeatures } from '@/components/products/product-features'
+// ProductFeatures removed — case study data now from database
 import { ProductVideo } from '@/components/products/product-video'
 import { CompatibleAccessories } from '@/components/products/compatible-accessories'
 
@@ -488,6 +488,10 @@ export default function ProductDetailClient({ product }: ProductDetailProps) {
                 ? // Force order for OT/PLB: Wattage → AC Input → CCT → Beam Angle → Color
                   ['Wattage', 'AC Input', 'CCT', 'Beam Angle', 'Color'].filter(name => optionGroups[name])
                   .concat(optionOrder.filter(name => !['Wattage', 'AC Input', 'CCT', 'Beam Angle', 'Color'].includes(name)))
+                : (isISFSeries || isINSSeries)
+                ? // Force order for ISF/INS: Wattage → AC Input → Beam Angle → CCT → Mounting
+                  ['Wattage', 'AC Input', 'Beam Angle', 'CCT', 'Mounting'].filter(name => optionGroups[name])
+                  .concat(optionOrder.filter(name => !['Wattage', 'AC Input', 'Beam Angle', 'CCT', 'Mounting'].includes(name)))
                 : optionOrder
               ).map(optName => {
                 const values = optionGroups[optName]
