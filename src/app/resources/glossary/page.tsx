@@ -5,7 +5,7 @@ import { Footer } from '@/components/layout/footer'
 import { BreadcrumbJsonLd } from '@/components/seo/json-ld'
 
 export const metadata: Metadata = {
-  title: 'LED Lighting Glossary | 60+ Terms Explained | Auvolar',
+  title: 'LED Lighting Glossary — 60+ Industry Terms Explained',
   description: 'Complete glossary of LED lighting terms: lumens, watts, CRI, CCT, DLC, IP rating, beam angle, L70, photometric, foot-candles, and more. Expert definitions from Auvolar.',
   alternates: { canonical: 'https://www.auvolar.com/resources/glossary' },
   keywords: [

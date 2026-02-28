@@ -177,6 +177,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const resources = [
     'glossary',
     'led-vs-traditional',
+    'statistics',
     'installation-guides',
     'cut-sheets',
     'ies-files',

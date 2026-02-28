@@ -9,7 +9,7 @@ import {
 } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'LED Lighting Resources | Guides, Tools, Downloads | Auvolar',
+  title: 'Free LED Lighting Resources — Guides, Tools & Downloads',
   description: 'Free LED lighting resources: installation guides, IES files, cut sheets, technical specs, ROI calculators, rebate finder, glossary, and educational content for contractors.',
   alternates: { canonical: 'https://www.auvolar.com/resources' },
 }

@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Contact Auvolar | Get a Free LED Lighting Quote',
+  title: 'Get a Free LED Lighting Quote — Contact Us',
   description: 'Contact Auvolar for wholesale LED lighting quotes, free photometric lighting design, and technical support. Call (626) 342-8856 or email sales@auvolar.com.',
   alternates: { canonical: 'https://www.auvolar.com/contact' },
 }

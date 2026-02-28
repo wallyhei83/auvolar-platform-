@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'About Auvolar | B2B LED Lighting Manufacturer in California',
+  title: 'About Us — B2B LED Lighting Manufacturer in California',
   description: 'Auvolar is a leading B2B commercial LED lighting manufacturer based in City of Industry, California. 125+ DLC-certified fixtures, wholesale pricing, and dedicated support for contractors and distributors.',
   alternates: { canonical: 'https://www.auvolar.com/about' },
 }

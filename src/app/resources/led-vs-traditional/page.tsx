@@ -6,7 +6,7 @@ import { BreadcrumbJsonLd } from '@/components/seo/json-ld'
 import { CheckCircle2, XCircle, ArrowRight } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'LED vs Metal Halide vs Fluorescent vs HPS | Complete Comparison | Auvolar',
+  title: 'LED vs Metal Halide vs Fluorescent vs HPS — Full Comparison',
   description: 'Comprehensive comparison of LED vs metal halide, fluorescent, and HPS lighting. Energy savings, lifespan, cost analysis, and ROI calculations for commercial applications.',
   alternates: { canonical: 'https://www.auvolar.com/resources/led-vs-traditional' },
   keywords: [

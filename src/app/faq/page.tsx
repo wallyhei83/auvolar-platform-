@@ -5,7 +5,7 @@ import { Footer } from '@/components/layout/footer'
 import { BreadcrumbJsonLd } from '@/components/seo/json-ld'
 
 export const metadata: Metadata = {
-  title: 'LED Lighting FAQ | 50+ Questions Answered | Auvolar',
+  title: 'LED Lighting FAQ | 50+ Common Questions Answered',
   description: 'Frequently asked questions about commercial LED lighting: DLC rebates, installation, warranties, pricing, energy savings, and more. Expert answers from Auvolar.',
   alternates: { canonical: 'https://www.auvolar.com/faq' },
   keywords: [

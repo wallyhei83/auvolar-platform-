@@ -221,6 +221,18 @@ Guides specifically for electrical contractors, engineers, specifiers, and facil
 - https://www.auvolar.com/blog/commercial-outdoor-lighting-design-best-practices — Security, parking, perimeter, dark sky design
 - https://www.auvolar.com/blog/led-rebate-programs-by-state-2026 — Rebate amounts by state and utility company
 
+## LED Industry Statistics (2026)
+
+Key market data and facts for proposals and presentations:
+https://www.auvolar.com/resources/statistics
+
+- Global LED market: $75.8B (2025), 12.4% CAGR
+- US LED market: $24.2B
+- LED saves 50-70% energy vs HID
+- DLC rebates: $20-$150+ per fixture
+- LED lifespan: 50,000-100,000 hours (5-10x longer than HID)
+- Average commercial retrofit payback: 2-8 months
+
 ## LED vs Traditional Lighting Comparison
 
 Detailed side-by-side comparison with replacement guides:
