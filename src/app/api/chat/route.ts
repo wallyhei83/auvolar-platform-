@@ -1,31 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
 import { getProductKnowledge } from '@/lib/product-knowledge'
+import { buildKnowledgeBase } from '@/lib/ai-knowledge-builder'
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
-// Cache product catalog (refresh every hour)
-let productCache: string = ''
-let productCacheTime = 0
-
-async function getProductCatalog(): Promise<string> {
-  if (productCache && Date.now() - productCacheTime < 3600000) return productCache
-  try {
-    const baseUrl = process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://www.auvolar.com'
-    const res = await fetch(`${baseUrl}/api/bigcommerce/products?limit=250`, { cache: 'no-store' })
-    if (!res.ok) throw new Error('fetch failed')
-    const data = await res.json()
-    const catalog = (data.products || []).map((p: any) =>
-      `${p.name} | SKU:${p.sku} | $${p.price} | ${p.variants?.length||0}var | /p/${p.slug}`
-    ).join('\n')
-    productCache = catalog
-    productCacheTime = Date.now()
-    return catalog
-  } catch { return productCache || '(catalog loading...)' }
-}
-
-function buildSystemPrompt(catalog: string) {
-  const productKnowledge = getProductKnowledge()
+function buildSystemPrompt(siteKnowledge: string, productKnowledge: string) {
   return `You are **Alex**, Auvolar's elite AI Lighting Consultant, Sales Expert & Technical Advisor.
 
 ═══════════════════════════════════════════════
@@ -107,11 +87,11 @@ SECTION 3: CLIENT INTELLIGENCE & PROFILING
 SECTION 4: COMPLETE PRODUCT KNOWLEDGE
 ═══════════════════════════════════════════════
 
-### LIVE PRODUCT CATALOG (from BigCommerce):
-${catalog}
-
-### DEEP PRODUCT KNOWLEDGE BASE:
+### PRODUCT EXPERTISE & SELLING KNOWLEDGE:
 ${productKnowledge}
+
+### LIVE WEBSITE DATA (products, case studies, company info, documents):
+${siteKnowledge}
 
 ### KEY PRODUCT SERIES (SUMMARY):
 
@@ -281,8 +261,11 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    const catalog = await getProductCatalog()
-    const systemPrompt = buildSystemPrompt(catalog)
+    const [siteKnowledge, productKnowledge] = await Promise.all([
+      buildKnowledgeBase(),
+      Promise.resolve(getProductKnowledge()),
+    ])
+    const systemPrompt = buildSystemPrompt(siteKnowledge, productKnowledge)
 
     // Build context-enriched messages
     const processedMessages = messages.map((m: any) => {
