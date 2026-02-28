@@ -16,13 +16,25 @@ export async function POST(request: NextRequest) {
       select: { id: true, name: true, email: true, companyName: true, createdAt: true },
     })
 
+    // If action=list, just return all customers for inspection
+    const action = request.headers.get('x-action')
+    if (action === 'list') {
+      return NextResponse.json({ customers })
+    }
+
     const spamUsers = customers.filter(u => {
       const name = u.name || ''
       const company = u.companyName || ''
-      // Detect garbage: long string with no spaces and low vowel ratio
-      const isGarbage = (s: string) => 
-        s.length > 12 && !s.includes(' ') && 
-        ((s.match(/[aeiouAEIOU]/g)?.length || 0) / s.length < 0.25)
+      // Detect garbage: long no-space string OR excessive case mixing
+      const isGarbage = (s: string) => {
+        if (s.length < 8) return false
+        const noSpaces = !s.includes(' ')
+        const lowVowel = ((s.match(/[aeiouAEIOU]/g)?.length || 0) / s.length) < 0.3
+        const caseMix = s.length > 10 && (s.split('').filter((c, i) => 
+          i > 0 && c !== c.toLowerCase() && s[i-1] === s[i-1].toLowerCase()
+        ).length / s.length) > 0.3
+        return (noSpaces && lowVowel) || caseMix
+      }
       return isGarbage(name) || isGarbage(company)
     })
 
