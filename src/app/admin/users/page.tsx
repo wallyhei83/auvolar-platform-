@@ -387,30 +387,6 @@ function DeleteUserDialog({ user, open, onClose, onSuccess }: { user: User; open
   )
 }
 
-// Permission groups for quick assignment
-const PERMISSION_GROUPS: Record<string, { label: string; permissions: string[] }> = {
-  product_manager: {
-    label: '🛒 Product Manager',
-    permissions: ['products.view', 'products.edit', 'products.create', 'documents.view', 'documents.upload', 'documents.delete', 'cases.view', 'cases.manage'],
-  },
-  sales_manager: {
-    label: '💰 Sales Manager',
-    permissions: ['products.view', 'documents.view', 'orders.view', 'orders.manage', 'partners.view', 'partners.manage', 'commission.view', 'commission.manage', 'payouts.view', 'payouts.manage', 'analytics.view'],
-  },
-  support_agent: {
-    label: '🎧 Support Agent',
-    permissions: ['products.view', 'documents.view', 'orders.view', 'tickets.view', 'tickets.manage', 'cases.view'],
-  },
-  content_editor: {
-    label: '✏️ Content Editor',
-    permissions: ['products.view', 'products.edit', 'documents.view', 'documents.upload', 'cases.view', 'cases.manage'],
-  },
-  full_admin: {
-    label: '👑 Full Admin',
-    permissions: Object.keys(ALL_PERMISSIONS_MAP),
-  },
-}
-
 const ALL_PERMISSIONS_MAP: Record<string, string> = {
   'products.view': 'View products',
   'products.edit': 'Edit products',
@@ -435,6 +411,30 @@ const ALL_PERMISSIONS_MAP: Record<string, string> = {
   'tickets.manage': 'Manage tickets',
   'analytics.view': 'View analytics',
   'settings.manage': 'Manage settings',
+}
+
+// Permission groups for quick assignment
+const PERMISSION_GROUPS: Record<string, { label: string; permissions: string[] }> = {
+  product_manager: {
+    label: '🛒 Product Manager',
+    permissions: ['products.view', 'products.edit', 'products.create', 'documents.view', 'documents.upload', 'documents.delete', 'cases.view', 'cases.manage'],
+  },
+  sales_manager: {
+    label: '💰 Sales Manager',
+    permissions: ['products.view', 'documents.view', 'orders.view', 'orders.manage', 'partners.view', 'partners.manage', 'commission.view', 'commission.manage', 'payouts.view', 'payouts.manage', 'analytics.view'],
+  },
+  support_agent: {
+    label: '🎧 Support Agent',
+    permissions: ['products.view', 'documents.view', 'orders.view', 'tickets.view', 'tickets.manage', 'cases.view'],
+  },
+  content_editor: {
+    label: '✏️ Content Editor',
+    permissions: ['products.view', 'products.edit', 'documents.view', 'documents.upload', 'cases.view', 'cases.manage'],
+  },
+  full_admin: {
+    label: '👑 Full Admin',
+    permissions: Object.keys(ALL_PERMISSIONS_MAP),
+  },
 }
 
 // Group permissions by category for display
