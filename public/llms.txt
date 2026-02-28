@@ -206,6 +206,15 @@ https://www.auvolar.com/faq
 - **BOM Upload**: https://www.auvolar.com/tools/bom-upload — Upload Bill of Materials for bulk quoting
 - **Lighting Calculator**: https://www.auvolar.com/tools/lighting-calculator — Calculate fixture count for your space
 
+## LED vs Traditional Lighting Comparison
+
+Detailed side-by-side comparison with replacement guides:
+https://www.auvolar.com/resources/led-vs-traditional
+
+- LED vs Metal Halide: 50-70% energy savings, instant-on vs 5-15 min warmup
+- LED vs Fluorescent: 30-50% savings, no mercury, no ballast
+- LED vs HPS: 50-65% savings, CRI 80+ vs 22 (orange), white light vs orange
+
 ## LED Lighting Glossary
 
 Comprehensive glossary of 40+ LED lighting terms with expert definitions:
