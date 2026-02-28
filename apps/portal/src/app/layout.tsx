@@ -4,7 +4,7 @@ import './globals.css'
 import { SessionProvider } from '@/components/providers/session-provider'
 import { Toaster } from '@/components/ui/toaster'
 import { CartProvider } from '@/lib/cart-context'
-import { ChatWidget } from '@/components/chat/chat-widget'
+import { ChatWidgetV2 } from '@/components/chat/chat-widget'
 import { OrganizationJsonLd, WebSiteJsonLd, LocalBusinessJsonLd } from '@/components/seo/json-ld'
 import Script from 'next/script'
 import { HubSpotIdentify } from '@/components/hubspot-identify'
@@ -106,7 +106,7 @@ export default function RootLayout({
             <HubSpotIdentify />
             {children}
             <Toaster />
-            <ChatWidget />
+            <ChatWidgetV2 />
           </CartProvider>
         </SessionProvider>
       </body>

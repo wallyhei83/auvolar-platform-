@@ -6,7 +6,7 @@ import { PrismaClient } from '@prisma/client'
 import SmartConfig, { hasDatabase } from './smart-config'
 
 declare global {
-  var __prisma: PrismaClient | undefined
+  var __prisma: PrismaClient | null | undefined
 }
 
 // 创建安全的Prisma客户端
@@ -32,7 +32,7 @@ function createPrismaClient() {
 // 单例模式的Prisma客户端
 const prisma = globalThis.__prisma ?? createPrismaClient()
 
-if (config.isDevelopment) {
+if (process.env.NODE_ENV === 'development') {
   globalThis.__prisma = prisma
 }
 

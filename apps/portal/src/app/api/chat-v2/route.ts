@@ -69,8 +69,8 @@ export async function POST(request: NextRequest) {
     const currentSessionId = sessionId || crypto.randomUUID()
     
     // Initialize AI components
-    const clientAnalyzer = new AIClientAnalyzer(process.env.OPENAI_API_KEY)
-    const multiModalProcessor = new MultiModalProcessor(process.env.OPENAI_API_KEY)
+    const clientAnalyzer = new AIClientAnalyzer(smartConfig.openai.apiKey)
+    const multiModalProcessor = new MultiModalProcessor(smartConfig.openai.apiKey)
     const alexPersona = new AlexPersona()
 
     // Get or create client profile
