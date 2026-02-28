@@ -58,3 +58,4 @@
     "seed": "npx tsx prisma/seed.ts"
   }
 }
+// Force deployment - Sat Feb 28 06:30:18 UTC 2026
