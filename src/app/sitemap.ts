@@ -45,6 +45,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly',
       priority: 0.7,
     },
+    ...['replacement', 'roi-calculator', 'rebate-finder', 'lighting-calculator', 'lightspec-ai', 'bom-upload', 'photometric-request', 'rfq', 'quick-order', 'spec-package', 'photometric-simulation', 'product-design', 'replacement-finder'].map(tool => ({
+      url: `${baseUrl}/tools/${tool}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    })),
     {
       url: `${baseUrl}/services`,
       lastModified: new Date(),

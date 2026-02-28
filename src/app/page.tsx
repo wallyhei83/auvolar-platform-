@@ -539,6 +539,47 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Resources Hub — internal linking for SEO/GEO */}
+      <section className="bg-gray-50 py-12 border-t">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <h2 className="text-xl font-bold text-gray-900 mb-6 text-center">LED Lighting Resources</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+            <Link href="/faq" className="p-3 bg-white rounded-lg border hover:border-yellow-400 transition-colors">
+              <span className="font-semibold text-gray-900">FAQ Hub</span>
+              <p className="text-gray-500 mt-1">26+ questions answered</p>
+            </Link>
+            <Link href="/resources/glossary" className="p-3 bg-white rounded-lg border hover:border-yellow-400 transition-colors">
+              <span className="font-semibold text-gray-900">LED Glossary</span>
+              <p className="text-gray-500 mt-1">40+ terms explained</p>
+            </Link>
+            <Link href="/resources/led-vs-traditional" className="p-3 bg-white rounded-lg border hover:border-yellow-400 transition-colors">
+              <span className="font-semibold text-gray-900">LED vs Traditional</span>
+              <p className="text-gray-500 mt-1">Side-by-side comparison</p>
+            </Link>
+            <Link href="/resources" className="p-3 bg-white rounded-lg border hover:border-yellow-400 transition-colors">
+              <span className="font-semibold text-gray-900">All Resources</span>
+              <p className="text-gray-500 mt-1">Guides, tools, downloads</p>
+            </Link>
+            <Link href="/blog/electrical-contractor-led-wholesale-pricing-guide" className="p-3 bg-white rounded-lg border hover:border-yellow-400 transition-colors">
+              <span className="font-semibold text-gray-900">Contractor Pricing</span>
+              <p className="text-gray-500 mt-1">Wholesale guide</p>
+            </Link>
+            <Link href="/blog/led-rebate-programs-by-state-2026" className="p-3 bg-white rounded-lg border hover:border-yellow-400 transition-colors">
+              <span className="font-semibold text-gray-900">Rebates by State</span>
+              <p className="text-gray-500 mt-1">2026 updated guide</p>
+            </Link>
+            <Link href="/blog/how-many-led-lights-per-square-foot-commercial" className="p-3 bg-white rounded-lg border hover:border-yellow-400 transition-colors">
+              <span className="font-semibold text-gray-900">Lighting Calculator</span>
+              <p className="text-gray-500 mt-1">Fixtures per sq ft</p>
+            </Link>
+            <Link href="/case-studies" className="p-3 bg-white rounded-lg border hover:border-yellow-400 transition-colors">
+              <span className="font-semibold text-gray-900">Case Studies</span>
+              <p className="text-gray-500 mt-1">Real project results</p>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <Footer />
     </div>
   )
