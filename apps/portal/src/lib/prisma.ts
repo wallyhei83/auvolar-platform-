@@ -3,7 +3,7 @@
  */
 
 import { PrismaClient } from '@prisma/client'
-import { config, hasValidDatabase } from './config'
+import SmartConfig, { hasDatabase } from './smart-config'
 
 declare global {
   var __prisma: PrismaClient | undefined
@@ -11,7 +11,9 @@ declare global {
 
 // 创建安全的Prisma客户端
 function createPrismaClient() {
-  if (!hasValidDatabase()) {
+  const smartConfig = SmartConfig.getFullConfig()
+  
+  if (!hasDatabase()) {
     // 如果没有有效数据库连接，返回一个mock客户端
     console.warn('⚠️ Database not configured, using mock client')
     return null
@@ -20,10 +22,10 @@ function createPrismaClient() {
   return new PrismaClient({
     datasources: {
       db: {
-        url: config.database.url
+        url: smartConfig.database.url
       }
     },
-    log: config.isDevelopment ? ['query', 'error', 'warn'] : ['error']
+    log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error']
   })
 }
 
@@ -41,7 +43,7 @@ export async function safeDbOperation<T>(
   operation: (prisma: PrismaClient) => Promise<T>,
   fallback?: T
 ): Promise<T | null> {
-  if (!prisma || !hasValidDatabase()) {
+  if (!prisma || !hasDatabase()) {
     console.warn('⚠️ Database operation skipped - no valid connection')
     return fallback || null
   }
