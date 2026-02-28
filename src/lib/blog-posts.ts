@@ -565,8 +565,11 @@ const seoExpansionPosts: BlogPost[] = getAllSEOExpansionPosts().map(p => ({
   content: p.content,
 }))
 
+// Import contractor/engineer SEO blog posts
+import { contractorBlogPosts } from './blog-posts-contractor-seo'
+
 // Merge all blog posts
-const allBlogPosts = [...blogPosts, ...newBlogPosts, ...californiaBlogPosts, ...seoExpansionPosts]
+const allBlogPosts = [...blogPosts, ...newBlogPosts, ...californiaBlogPosts, ...seoExpansionPosts, ...contractorBlogPosts]
 
 export function getBlogPost(slug: string): BlogPost | undefined {
   return allBlogPosts.find(p => p.slug === slug)
