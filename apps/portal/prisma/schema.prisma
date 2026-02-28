@@ -504,7 +504,7 @@ model CaseStudy {
 }
 
 // ============================================
-// ANALYTICS EVENTS (for operational reporting)
+// ANALYTICS EVENTS (for operational reporting)  
 // ============================================
 
 model AnalyticsEvent {
@@ -518,4 +518,218 @@ model AnalyticsEvent {
   
   @@index([eventName])
   @@index([createdAt])
+}
+
+// ============================================
+// AI SALES SYSTEM - CLIENT INTELLIGENCE & LEARNING
+// ============================================
+
+model AIClientProfile {
+  id            String    @id @default(cuid())
+  sessionId     String    @unique
+  
+  // Basic Info
+  name          String?
+  email         String?
+  phone         String?  
+  company       String?
+  website       String?
+  position      String?
+  
+  // Intelligence Data
+  industry      String?
+  companySize   CompanySize?
+  communicationStyle String? // 'direct', 'relationship', 'analytical', 'expressive'
+  decisionSpeed String?     // 'fast', 'moderate', 'slow'
+  techLevel     String?     // 'expert', 'intermediate', 'basic'
+  priceSensitivity String?  // 'high', 'medium', 'low'
+  
+  // Behavioral Analysis
+  avgResponseTime Int?      // milliseconds
+  messageLength   String?   // 'short', 'medium', 'long'  
+  interestLevel   String?   // 'low', 'medium', 'high'
+  
+  // Business Context
+  painPoints    String[]    // Array of identified pain points
+  budget        String?
+  timeline      String?
+  competitors   String[]    // Competitors mentioned
+  
+  // Conversation Summary
+  conversationSummary String? @db.Text
+  totalMessages       Int     @default(0)
+  avgSentiment       Float?   // -1 to 1
+  avgEngagement      Float?   // 0 to 100
+  
+  // Learning Data
+  strategyEffectiveness Json? // Record<strategy, effectiveness_score>
+  
+  // Relations
+  conversations AIConversation[]
+  leadData      AILeadData?
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  lastActiveAt  DateTime  @default(now())
+  
+  @@index([email])
+  @@index([company])
+  @@index([industry])
+  @@index([interestLevel])
+  @@index([lastActiveAt])
+}
+
+enum CompanySize {
+  STARTUP
+  SMB  
+  ENTERPRISE
+  FORTUNE500
+}
+
+model AIConversation {
+  id            String    @id @default(cuid())
+  sessionId     String
+  profileId     String
+  
+  role          String    // 'user' or 'assistant'
+  content       String    @db.Text
+  messageType   String?   // 'text', 'image', 'voice', 'document'
+  attachments   Json?     // Array of attachment info
+  
+  // Analysis Data
+  sentiment     Float?    // -1 to 1
+  engagement    Float?    // 0 to 100
+  intent        String[]  // Array of detected intents
+  urgency       String?   // 'low', 'medium', 'high'
+  
+  // AI Strategy
+  strategy      String?   // Strategy used for this response
+  effectiveness Float?    // How effective was this strategy (0-1)
+  
+  profile       AIClientProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  
+  createdAt     DateTime  @default(now())
+  
+  @@index([sessionId])
+  @@index([profileId])
+  @@index([createdAt])
+}
+
+model AILeadData {
+  id            String    @id @default(cuid())
+  profileId     String    @unique
+  
+  // Lead Qualification
+  leadScore     Int       @default(0) // 0-100
+  leadStatus    LeadStatus @default(NEW)
+  estimatedValue String?  // '$1K-5K', '$5K-50K', etc.
+  
+  // Sales Process
+  salesStage    SalesStage @default(DISCOVERY)
+  nextAction    String?    @db.Text
+  notes         String?    @db.Text
+  
+  // Assignment  
+  assignedTo    String?    // Staff user ID
+  followUpAt    DateTime?
+  
+  // Conversion Tracking
+  convertedAt   DateTime?
+  conversionValue Float?
+  
+  profile       AIClientProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  @@index([leadStatus])
+  @@index([salesStage])
+  @@index([leadScore])
+  @@index([assignedTo])
+  @@index([followUpAt])
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  PROPOSAL
+  NEGOTIATION
+  WON
+  LOST
+  ARCHIVED
+}
+
+enum SalesStage {
+  DISCOVERY
+  NEEDS_ANALYSIS
+  PROPOSAL
+  NEGOTIATION
+  CLOSING
+  FOLLOW_UP
+}
+
+model AICompanyIntelligence {
+  id            String    @id @default(cuid())
+  companyName   String    @unique
+  website       String?
+  
+  // Company Data
+  industry      String?
+  size          CompanySize?
+  description   String?   @db.Text
+  
+  // Intelligence
+  painPoints    String[]  // Common pain points for this industry/company
+  budgetEstimate String?
+  decisionMakers String[] // Array of typical decision maker roles
+  competitors   String[]  // Our competitors they might consider
+  
+  // News & Context
+  recentNews    Json?     // Array of recent news items
+  marketTrends  Json?     // Relevant market trends
+  
+  // Contact Info
+  phone         String?
+  email         String?
+  address       String?
+  
+  // Usage Stats
+  timesAnalyzed Int       @default(1)
+  lastAnalyzed  DateTime  @default(now())
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  @@index([industry])
+  @@index([size])
+  @@index([lastAnalyzed])
+}
+
+model AIStrategyPerformance {
+  id            String    @id @default(cuid())
+  strategy      String    // Strategy name/type
+  
+  // Context
+  industry      String?
+  companySize   CompanySize?
+  clientType    String?   // Role/position type
+  
+  // Performance Metrics  
+  timesUsed     Int       @default(1)
+  avgEffectiveness Float  @default(0.5) // 0-1
+  conversionRate Float?   // Leads that converted
+  avgEngagement Float?    // Average engagement score
+  
+  // Learning Data
+  successFactors Json?    // What makes this strategy work
+  failureReasons Json?    // Why it sometimes fails
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  @@unique([strategy, industry, companySize, clientType])
+  @@index([strategy])
+  @@index([avgEffectiveness])
+  @@index([conversionRate])
 }
