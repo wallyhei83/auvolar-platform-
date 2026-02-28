@@ -97,13 +97,19 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     dateModified: post.date,
     author: {
       '@type': 'Organization',
-      name: post.author,
-      url: 'https://www.auvolar.com',
+      name: 'Auvolar Lighting Engineers',
+      url: 'https://www.auvolar.com/about',
+      logo: 'https://www.auvolar.com/logo.png',
     },
     publisher: {
       '@type': 'Organization',
+      '@id': 'https://www.auvolar.com/#organization',
       name: 'Auvolar',
       url: 'https://www.auvolar.com',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://www.auvolar.com/logo.png',
+      },
     },
     mainEntityOfPage: {
       '@type': 'WebPage',

@@ -192,6 +192,20 @@ Real-world LED lighting projects: CarMax, Tesla dealerships, Home Depot, Ontario
 Warehouse, manufacturing, retail, office, parking, gas station, education, sports, cold storage, healthcare, church, restaurant, auto dealership, agriculture, government, car wash, loading dock, security
 - Applications: https://www.auvolar.com/applications/{industry-slug}
 
+## FAQ Hub
+
+Comprehensive FAQ with 26+ questions across 6 categories (About, Products, DLC/Rebates, Installation, Shipping/Warranty, Energy Savings):
+https://www.auvolar.com/faq
+
+## Free Tools for Contractors
+
+- **Replacement Finder**: https://www.auvolar.com/tools/replacement — Find LED replacements for HID/fluorescent
+- **ROI Calculator**: https://www.auvolar.com/tools/roi-calculator — Calculate payback period and savings
+- **Rebate Finder**: https://www.auvolar.com/tools/rebate-finder — Look up utility rebates by location
+- **LightSpec AI**: https://www.auvolar.com/tools/lightspec-ai — AI-powered fixture recommendations
+- **BOM Upload**: https://www.auvolar.com/tools/bom-upload — Upload Bill of Materials for bulk quoting
+- **Lighting Calculator**: https://www.auvolar.com/tools/lighting-calculator — Calculate fixture count for your space
+
 ## LED Lighting Glossary
 
 Comprehensive glossary of 40+ LED lighting terms with expert definitions:

@@ -146,6 +146,21 @@ export default async function ProductPage({
   const specs = parseSpecs(product.description)
   const plainDescription = stripHtml(product.description)
 
+  // Video mapping for VideoObject JSON-LD
+  const productVideos: Record<string, Array<{ url: string; title: string; thumbnail: string }>> = {
+    'ot-series': [
+      { url: 'https://www.youtube.com/watch?v=IJiL0PeGotQ', title: 'OT Series LED Area Light - Product Overview', thumbnail: 'https://img.youtube.com/vi/IJiL0PeGotQ/maxresdefault.jpg' },
+      { url: 'https://www.youtube.com/watch?v=bMVf9FcBRuk', title: 'OT Series LED Area Light - Installation Guide', thumbnail: 'https://img.youtube.com/vi/bMVf9FcBRuk/maxresdefault.jpg' },
+    ],
+    'plb-series': [
+      { url: 'https://www.youtube.com/watch?v=zwPluiRgN3A', title: 'PLB Series LED Area Light - Product Overview', thumbnail: 'https://img.youtube.com/vi/zwPluiRgN3A/maxresdefault.jpg' },
+    ],
+  }
+  const videoKey = slug.includes('ot-series') || slug.includes('aera-lighting-shoebox-ot') ? 'ot-series'
+    : slug.includes('plb-series') || slug.includes('area-shoebox-light-plb') ? 'plb-series'
+    : null
+  const videos = videoKey ? productVideos[videoKey] || [] : []
+
   // Find primary category for breadcrumb
   const primaryCatId = product.categories.find(
     (c) => catNames[c] && ![23, 25, 63, 64, 65].includes(c)
@@ -164,6 +179,26 @@ export default async function ProductPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(seo.jsonLdProduct) }}
       />
+
+      {/* VideoObject JSON-LD */}
+      {videos.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(videos.map(v => ({
+              '@context': 'https://schema.org',
+              '@type': 'VideoObject',
+              name: v.title,
+              description: `${v.title} by Auvolar LED Lighting. Learn about the features, specifications, and installation of this commercial LED fixture.`,
+              thumbnailUrl: v.thumbnail,
+              uploadDate: '2025-01-01',
+              contentUrl: v.url,
+              embedUrl: v.url.replace('watch?v=', 'embed/'),
+              publisher: { '@type': 'Organization', name: 'Auvolar', url: 'https://www.auvolar.com' },
+            }))),
+          }}
+        />
+      )}
 
       {/* Speakable JSON-LD */}
       <SpeakableJsonLd
