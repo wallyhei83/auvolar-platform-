@@ -38,6 +38,10 @@ export const metadata: Metadata = {
   ],
   other: {
     'google-site-verification': 'Qq-Q9kxfMTJRHUHc1Sd0ib6Tmhz55UGxPywxCQ4sI4E',
+    'ai-content-declarations': 'none',
+    'citation_title': 'Auvolar - Commercial & Industrial LED Lighting Manufacturer',
+    'citation_author': 'Auvolar',
+    'citation_public_url': 'https://www.auvolar.com',
   },
   viewport: 'width=device-width, initial-scale=1',
   robots: {

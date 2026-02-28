@@ -147,6 +147,18 @@ const faqs = [
     question: 'Can I get custom or bulk orders from Auvolar?',
     answer: 'Yes, Auvolar offers custom lighting solutions through our Tailor Purchasing program. We accommodate custom wattages, color temperatures, mounting options, and large bulk orders with project pricing. Contact our sales team for a custom quote.',
   },
+  {
+    question: 'How do I choose the right LED light for my space?',
+    answer: 'Auvolar offers free photometric lighting design for any project. Tell us your space dimensions, ceiling height, and application type, and our engineers will create a custom layout using AGi32/DIALux software with foot-candle calculations. You can also use our Replacement Finder tool at auvolar.com/tools/replacement to find LED replacements for existing HID or fluorescent fixtures.',
+  },
+  {
+    question: 'Does Auvolar sell LED stadium lights?',
+    answer: 'Yes, Auvolar offers the ISF Series (400W-1800W) and INS Series (300W-1800W) LED stadium lights. These are IP66/IP67 rated with IK10 impact resistance, multiple beam angles (15°-90°), and are ideal for football fields, baseball diamonds, tennis courts, and large outdoor venues. Prices range from $399 to $1,899.',
+  },
+  {
+    question: 'What areas does Auvolar serve?',
+    answer: 'Auvolar ships nationwide across all 50 US states from our California warehouse. We have dedicated service pages for major markets including Los Angeles, San Francisco, Houston, Dallas, Chicago, Miami, New York, Atlanta, Seattle, Phoenix, and 40+ other metro areas with local utility rebate information.',
+  },
 ]
 
 export default function HomePage() {
