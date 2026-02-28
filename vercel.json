@@ -1,6 +1,5 @@
 {
-  "buildCommand": "pnpm build",
+  "buildCommand": "cd apps/portal && npm install && npm run build",
   "outputDirectory": "apps/portal/.next",
-  "installCommand": "pnpm install",
-  "framework": null
+  "installCommand": "cd apps/portal && npm install"
 }
