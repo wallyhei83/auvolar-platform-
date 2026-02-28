@@ -43,6 +43,33 @@ export default async function CaseStudiesPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'CollectionPage',
+          name: 'LED Lighting Case Studies',
+          url: 'https://www.auvolar.com/case-studies',
+          description: 'Real-world LED lighting projects: CarMax, Home Depot, Ontario Airport, Tesla dealerships, and more. See how Auvolar fixtures deliver energy savings and superior illumination.',
+          mainEntity: {
+            '@type': 'ItemList',
+            name: 'Auvolar LED Lighting Case Studies',
+            itemListElement: caseStudies.slice(0, 10).map((cs, i) => ({
+              '@type': 'ListItem',
+              position: i + 1,
+              name: cs.title,
+              url: `https://www.auvolar.com/case-studies#${cs.slug || cs.title.toLowerCase().replace(/\s+/g, '-')}`,
+            })),
+          },
+          breadcrumb: {
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.auvolar.com' },
+              { '@type': 'ListItem', position: 2, name: 'Case Studies', item: 'https://www.auvolar.com/case-studies' },
+            ],
+          },
+        }) }}
+      />
       <Header />
 
       {/* Hero */}
