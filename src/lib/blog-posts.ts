@@ -549,9 +549,24 @@ Solar LED lighting is one of the fastest-growing segments in commercial lighting
 import { newBlogPosts } from './blog-posts-new'
 // Import California-focused blog posts
 import { californiaBlogPosts } from './blog-posts-california'
+// Import SEO expansion blog posts (Phase 3)
+import { getAllSEOExpansionPosts } from './blog-posts-seo-expansion'
+
+// Convert SEO expansion posts to BlogPost format
+const seoExpansionPosts: BlogPost[] = getAllSEOExpansionPosts().map(p => ({
+  slug: p.slug,
+  title: p.title,
+  description: p.metaDescription,
+  date: p.publishDate,
+  author: 'Auvolar Engineering Team',
+  category: p.category,
+  tags: p.keywords,
+  readTime: p.readTime + ' read',
+  content: p.content,
+}))
 
 // Merge all blog posts
-const allBlogPosts = [...blogPosts, ...newBlogPosts, ...californiaBlogPosts]
+const allBlogPosts = [...blogPosts, ...newBlogPosts, ...californiaBlogPosts, ...seoExpansionPosts]
 
 export function getBlogPost(slug: string): BlogPost | undefined {
   return allBlogPosts.find(p => p.slug === slug)

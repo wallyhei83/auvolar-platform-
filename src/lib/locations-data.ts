@@ -482,15 +482,21 @@ export const locations: LocationData[] = [
   },
 ]
 
+// Import expansion locations
+import { newLocations } from './locations-expansion'
+
+// Merge all locations
+const allLocations = [...locations, ...newLocations]
+
 // Helper functions
 export function getLocation(slug: string): LocationData | undefined {
-  return locations.find(l => l.slug === slug)
+  return allLocations.find(l => l.slug === slug)
 }
 
 export function getAllLocationSlugs(): string[] {
-  return locations.map(l => l.slug)
+  return allLocations.map(l => l.slug)
 }
 
 export function getAllLocations(): LocationData[] {
-  return locations
+  return allLocations
 }
