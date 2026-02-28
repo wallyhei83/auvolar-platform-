@@ -1,6 +1,5 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "pnpm build",
+  "buildCommand": "cd apps/portal && pnpm install && bash prisma-build.sh && pnpm build",
   "outputDirectory": "apps/portal/.next",
   "installCommand": "pnpm install --frozen-lockfile",
   "framework": null,
@@ -8,9 +7,5 @@
     "apps/portal/src/app/api/**": {
       "maxDuration": 30
     }
-  },
-  "regions": ["iad1"],
-  "env": {
-    "SKIP_ENV_VALIDATION": "1"
   }
 }
