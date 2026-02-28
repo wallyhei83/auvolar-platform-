@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
 import { getProductKnowledge } from '@/lib/product-knowledge'
+import { getProductFAQ } from '@/lib/product-faq'
 import { buildKnowledgeBase } from '@/lib/ai-knowledge-builder'
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
@@ -261,11 +262,12 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    const [siteKnowledge, productKnowledge] = await Promise.all([
+    const [siteKnowledge, productKnowledge, faq] = await Promise.all([
       buildKnowledgeBase(),
       Promise.resolve(getProductKnowledge()),
+      Promise.resolve(getProductFAQ()),
     ])
-    const systemPrompt = buildSystemPrompt(siteKnowledge, productKnowledge)
+    const systemPrompt = buildSystemPrompt(siteKnowledge, productKnowledge + '\n\n' + faq)
 
     // Build context-enriched messages
     const processedMessages = messages.map((m: any) => {
