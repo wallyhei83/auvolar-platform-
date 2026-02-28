@@ -160,3 +160,34 @@ Local utility rebate information, climate-specific recommendations, and shipping
 - [Detailed product data with specifications](https://www.auvolar.com/llms-full.txt)
 - [XML Sitemap](https://www.auvolar.com/sitemap.xml)
 - [Google Merchant Product Feed](https://www.auvolar.com/api/feed/google-merchant)
+
+## Content Index
+
+### Service Locations (51 US metros)
+We serve all 50 US states. Dedicated landing pages with local utility rebate information:
+- **California**: Los Angeles, San Francisco, San Diego, Sacramento, San Jose, Inland Empire, Orange County, Fresno, Long Beach
+- **Texas**: Houston, Dallas, San Antonio, Austin
+- **Florida**: Miami, Tampa, Jacksonville
+- **Northeast**: New York, Boston, Baltimore, Pittsburgh, Virginia Beach-Norfolk
+- **Southeast**: Atlanta, Nashville, Charlotte, Raleigh-Durham, New Orleans, Memphis, Louisville
+- **Midwest**: Chicago, Detroit, Minneapolis, Columbus, Indianapolis, Milwaukee, Kansas City, Cincinnati, Oklahoma City
+- **West**: Seattle, Phoenix, Denver, Portland, Las Vegas
+- Location pages: https://www.auvolar.com/locations/{city-slug}
+
+### Expert Blog & Guides (47 articles)
+In-depth guides covering product selection, ROI calculation, code compliance, and installation:
+- Cost calculators: LED upgrade cost, high bay spacing, parking lot lumens
+- Sports lighting: Stadium cost per field, tennis court, baseball field
+- Regulations: Title 24 California, OSHA requirements
+- ROI guides: Section 179 tax deduction, utility rebate application, building type ROI
+- Application guides: Cold storage/freezer, car dealerships, parking garages
+- Product comparisons: UFO vs linear, LED vs metal halide, wall pack vs barn light
+- Blog index: https://www.auvolar.com/blog
+
+### Case Studies (9 projects)
+Real-world LED lighting projects: CarMax, Tesla dealerships, Home Depot, Ontario International Airport, Kroger, retail plazas, municipal sports complexes, distribution centers
+- Case studies: https://www.auvolar.com/case-studies
+
+### Application Guides (18 industries)
+Warehouse, manufacturing, retail, office, parking, gas station, education, sports, cold storage, healthcare, church, restaurant, auto dealership, agriculture, government, car wash, loading dock, security
+- Applications: https://www.auvolar.com/applications/{industry-slug}
