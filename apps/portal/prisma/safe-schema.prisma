@@ -1,0 +1,11 @@
+// Safe Prisma Schema for Build Time
+// This is used when DATABASE_URL is not available during build
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}

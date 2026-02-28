@@ -12,10 +12,11 @@ import {
   MultiModalProcessor 
 } from '@/lib/ai-sales-system'
 import { AlexPersona } from '@/lib/alex-ai-persona'
+import { config, hasValidOpenAI } from '@/lib/config'
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-})
+const openai = hasValidOpenAI() ? new OpenAI({
+  apiKey: config.openai.apiKey,
+}) : null
 
 // In-memory client profiles (in production, use Redis/Database)
 const clientProfiles: Map<string, ClientProfile> = new Map()
@@ -56,11 +57,12 @@ export async function POST(request: NextRequest) {
     const body: ChatRequest = await request.json()
     const { messages, sessionId, visitorInfo, clientInfo } = body
 
-    if (!process.env.OPENAI_API_KEY) {
-      return NextResponse.json(
-        { error: 'OpenAI API key not configured' },
-        { status: 500 }
-      )
+    if (!hasValidOpenAI() || !openai) {
+      return NextResponse.json({
+        reply: "I'm Alex from Auvolar! I'm currently being configured with advanced AI capabilities. In the meantime, please feel free to contact us directly at sales@auvolar.com or call (626) 342-8856 for immediate assistance with your lighting needs!",
+        sessionId: sessionId || crypto.randomUUID(),
+        needsConfiguration: true
+      })
     }
 
     const currentSessionId = sessionId || crypto.randomUUID()
