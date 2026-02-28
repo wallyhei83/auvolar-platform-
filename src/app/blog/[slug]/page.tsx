@@ -114,6 +114,15 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       '@type': 'Thing',
       name: 'Commercial LED Lighting',
     },
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['article h1', 'article h2', 'article p:first-of-type'],
+    },
+    isPartOf: {
+      '@type': 'WebSite',
+      '@id': 'https://www.auvolar.com/#website',
+      name: 'Auvolar',
+    },
   }
 
   return (

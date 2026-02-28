@@ -8,7 +8,7 @@ import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { FeaturedProducts } from '@/components/home/featured-products'
 import InStockProducts from '@/components/home/in-stock-products'
-import { FAQJsonLd, BreadcrumbJsonLd } from '@/components/seo/json-ld'
+import { FAQJsonLd, BreadcrumbJsonLd, SpeakableJsonLd } from '@/components/seo/json-ld'
 
 // All product subcategories — product main images only (no project/application photos)
 const categories = [
@@ -154,6 +154,11 @@ export default function HomePage() {
     <div className="min-h-screen bg-white">
       <BreadcrumbJsonLd items={[{ name: 'Home', url: 'https://www.auvolar.com' }]} />
       <FAQJsonLd faqs={faqs} />
+      <SpeakableJsonLd
+        name="Auvolar - Commercial & Industrial LED Lighting"
+        description="Auvolar is a B2B LED lighting manufacturer in City of Industry, California. 125+ DLC-certified commercial fixtures at wholesale pricing for contractors. Free photometric lighting design. Ships nationwide in 24h."
+        url="https://www.auvolar.com"
+      />
       <Header />
       
       {/* Hero Section */}

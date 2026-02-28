@@ -12,6 +12,7 @@ import {
 } from 'lucide-react'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
+import { BreadcrumbJsonLd } from '@/components/seo/json-ld'
 
 const values = [
   {
@@ -52,6 +53,25 @@ const certifications = [
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-white">
+      <BreadcrumbJsonLd items={[
+        { name: 'Home', url: 'https://www.auvolar.com' },
+        { name: 'About', url: 'https://www.auvolar.com/about' },
+      ]} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'AboutPage',
+          name: 'About Auvolar',
+          url: 'https://www.auvolar.com/about',
+          description: 'Auvolar is a B2B commercial LED lighting manufacturer based in City of Industry, California. 125+ DLC-certified fixtures at wholesale pricing.',
+          mainEntity: { '@id': 'https://www.auvolar.com/#organization' },
+          speakable: {
+            '@type': 'SpeakableSpecification',
+            cssSelector: ['h1', '.about-description', '.stats'],
+          },
+        }) }}
+      />
       <Header />
       
       {/* Hero */}

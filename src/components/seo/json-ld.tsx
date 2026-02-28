@@ -20,7 +20,27 @@ export function OrganizationJsonLd() {
       '@type': 'Country',
       name: 'United States',
     },
-    sameAs: [],
+    sameAs: [
+      'https://www.facebook.com/auvolar',
+      'https://www.linkedin.com/company/auvolar',
+      'https://www.instagram.com/auvolar_led',
+      'https://www.youtube.com/@auvolar',
+      'https://www.pinterest.com/auvolar',
+      'https://www.tiktok.com/@auvolar',
+    ],
+    foundingDate: '2020',
+    numberOfEmployees: { '@type': 'QuantitativeValue', minValue: 10, maxValue: 50 },
+    slogan: 'Quality LED Lighting at Contractor Pricing',
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'Commercial LED Lighting Products',
+      itemListElement: [
+        { '@type': 'OfferCatalog', name: 'Indoor Lighting', description: 'High bays, troffers, panels, tubes, strip lights, vapor tight, downlights' },
+        { '@type': 'OfferCatalog', name: 'Outdoor Lighting', description: 'Area lights, wall packs, flood lights, bollards, post tops, barn lights' },
+        { '@type': 'OfferCatalog', name: 'Solar Lighting', description: 'Solar street lights, solar wall packs, solar flood lights' },
+        { '@type': 'OfferCatalog', name: 'Stadium Lighting', description: 'ISF and INS series LED stadium lights, 400W-1800W' },
+      ],
+    },
     contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'sales',
@@ -86,9 +106,10 @@ export function LocalBusinessJsonLd() {
     description: 'Commercial LED lighting manufacturer and wholesale distributor serving contractors and businesses across the United States.',
     address: {
       '@type': 'PostalAddress',
+      streetAddress: '17531 Railroad St Ste F',
       addressLocality: 'City of Industry',
       addressRegion: 'CA',
-      postalCode: '91745',
+      postalCode: '91748',
       addressCountry: 'US',
     },
     geo: {
@@ -96,7 +117,16 @@ export function LocalBusinessJsonLd() {
       latitude: 34.0197,
       longitude: -117.9587,
     },
+    telephone: '(626) 342-8856',
+    email: 'sales@auvolar.com',
     priceRange: '$$',
+    paymentAccepted: ['Credit Card', 'Wire Transfer', 'Check', 'Net 30'],
+    currenciesAccepted: 'USD',
+    areaServed: {
+      '@type': 'Country',
+      name: 'United States',
+    },
+    hasMap: 'https://maps.google.com/?q=17531+Railroad+St+Ste+F+City+of+Industry+CA+91748',
     openingHoursSpecification: {
       '@type': 'OpeningHoursSpecification',
       dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
