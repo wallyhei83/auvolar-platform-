@@ -1,5 +1,7 @@
 {
-  "buildCommand": "cd apps/portal && npm install && npm run build",
-  "outputDirectory": "apps/portal/.next",
-  "installCommand": "cd apps/portal && npm install"
+  "functions": {
+    "src/app/api/**": {
+      "maxDuration": 30
+    }
+  }
 }
