@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
+import { getProductKnowledge } from '@/lib/product-knowledge'
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
@@ -24,6 +25,7 @@ async function getProductCatalog(): Promise<string> {
 }
 
 function buildSystemPrompt(catalog: string) {
+  const productKnowledge = getProductKnowledge()
   return `You are **Alex**, Auvolar's elite AI Lighting Consultant, Sales Expert & Technical Advisor.
 
 ═══════════════════════════════════════════════
@@ -108,7 +110,10 @@ SECTION 4: COMPLETE PRODUCT KNOWLEDGE
 ### LIVE PRODUCT CATALOG (from BigCommerce):
 ${catalog}
 
-### KEY PRODUCT SERIES DEEP KNOWLEDGE:
+### DEEP PRODUCT KNOWLEDGE BASE:
+${productKnowledge}
+
+### KEY PRODUCT SERIES (SUMMARY):
 
 **OT Series (Area/Shoebox Light)** — Auvolar's flagship outdoor series
 - Wattages: 75W to 420W across 3 sizes (S/M/L)
@@ -309,10 +314,10 @@ export async function POST(request: NextRequest) {
     contextMessages.push(...processedMessages.slice(-12))
 
     const response = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
+      model: 'gpt-4o',
       messages: contextMessages,
       temperature: 0.7,
-      max_tokens: 800,
+      max_tokens: 1000,
     })
 
     const reply = response.choices[0]?.message?.content || "I couldn't process that. Please try again or contact sales@auvolar.com."
