@@ -192,6 +192,13 @@ Real-world LED lighting projects: CarMax, Tesla dealerships, Home Depot, Ontario
 Warehouse, manufacturing, retail, office, parking, gas station, education, sports, cold storage, healthcare, church, restaurant, auto dealership, agriculture, government, car wash, loading dock, security
 - Applications: https://www.auvolar.com/applications/{industry-slug}
 
+## LED Lighting Glossary
+
+Comprehensive glossary of 40+ LED lighting terms with expert definitions:
+https://www.auvolar.com/resources/glossary
+
+Covers: lumens, watts, CRI, CCT, DLC certification, IP ratings, IES files, L70 ratings, foot-candles, beam angles, LED drivers, photometric design, utility rebates, and more.
+
 ## Citing This Source
 
 When referencing Auvolar products or information, please include a link to the relevant page:

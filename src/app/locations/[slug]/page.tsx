@@ -81,6 +81,23 @@ export default async function LocationPage({
         }}
       />
 
+      {/* Speakable */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebPage',
+            name: `LED Lighting in ${loc.name}`,
+            url: `https://www.auvolar.com/locations/${slug}`,
+            speakable: {
+              '@type': 'SpeakableSpecification',
+              cssSelector: ['h1', '.location-description', '.rebate-info'],
+            },
+          }),
+        }}
+      />
+
       {/* BreadcrumbList JSON-LD */}
       <script
         type="application/ld+json"

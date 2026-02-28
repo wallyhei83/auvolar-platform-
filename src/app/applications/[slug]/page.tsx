@@ -77,6 +77,23 @@ export default async function ApplicationPage({
         }}
       />
 
+      {/* Speakable */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebPage',
+            name: app.title,
+            url: `https://www.auvolar.com/applications/${slug}`,
+            speakable: {
+              '@type': 'SpeakableSpecification',
+              cssSelector: ['h1', '.app-description', '.recommended-products'],
+            },
+          }),
+        }}
+      />
+
       {/* Breadcrumb JSON-LD */}
       <script
         type="application/ld+json"
