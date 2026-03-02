@@ -80,8 +80,16 @@ export default function AdminProductsPage() {
     setUploadingType(docType)
     let successCount = 0
     let failCount = 0
+    let lastError = ''
 
     for (const file of Array.from(files)) {
+      // 前端文件大小验证 (4.5MB)
+      if (file.size > 4.5 * 1024 * 1024) {
+        lastError = `文件 "${file.name}" 超过4.5MB限制`
+        failCount++
+        continue
+      }
+
       try {
         const formData = new FormData()
         formData.append('file', file)
@@ -90,16 +98,28 @@ export default function AdminProductsPage() {
         formData.append('docType', docType)
         formData.append('title', file.name)
         const res = await fetch('/api/documents', { method: 'POST', body: formData })
-        if (res.ok) successCount++
-        else failCount++
-      } catch { failCount++ }
+        if (res.ok) {
+          successCount++
+        } else {
+          failCount++
+          try {
+            const errData = await res.json()
+            lastError = errData.message || `HTTP ${res.status}`
+          } catch {
+            lastError = `HTTP ${res.status}`
+          }
+        }
+      } catch (err) {
+        failCount++
+        lastError = err instanceof Error ? err.message : '网络错误'
+      }
     }
 
     if (successCount > 0) {
-      toast({ title: '上传成功', description: `${successCount} 个文件已上传${failCount > 0 ? `，${failCount} 个失败` : ''}` })
+      toast({ title: '上传成功', description: `${successCount} 个文件已上传${failCount > 0 ? `，${failCount} 个失败: ${lastError}` : ''}` })
       fetchDocuments(selectedProduct.id.toString())
     } else {
-      toast({ title: '上传失败', description: '所有文件上传失败', variant: 'destructive' })
+      toast({ title: '上传失败', description: lastError || '所有文件上传失败', variant: 'destructive' })
     }
     setUploadingType(null)
   }

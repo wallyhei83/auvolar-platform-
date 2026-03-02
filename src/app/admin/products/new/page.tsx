@@ -109,7 +109,7 @@ export default function AdminUploadProductDocsPage() {
         formData.append('title', files[i].title)
         formData.append('docType', files[i].docType)
 
-        const res = await fetch('/api/documents/upload', {
+        const res = await fetch('/api/documents', {
           method: 'POST',
           body: formData,
         })
