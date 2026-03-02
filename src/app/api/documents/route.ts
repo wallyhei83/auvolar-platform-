@@ -25,6 +25,9 @@ function getFileExtension(filename: string): string {
 }
 
 function validateFile(file: File): string | null {
+  if (!file.size || file.size === 0) {
+    return `File "${file.name}" is empty (0 bytes)`
+  }
   if (file.size > MAX_FILE_SIZE) {
     return `File "${file.name}" exceeds 4.5MB limit (${(file.size / 1024 / 1024).toFixed(1)}MB)`
   }

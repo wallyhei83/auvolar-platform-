@@ -41,6 +41,13 @@ export async function POST(request: NextRequest) {
     )
   }
 
+  if (!file.size || file.size === 0) {
+    return NextResponse.json(
+      { message: `File "${file.name}" is empty (0 bytes)` },
+      { status: 400 }
+    )
+  }
+
   if (file.size > MAX_FILE_SIZE) {
     return NextResponse.json(
       { message: `File "${file.name}" exceeds 4.5MB limit` },
