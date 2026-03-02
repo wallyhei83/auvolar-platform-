@@ -75,6 +75,63 @@ export default function AdminProductsPage() {
     finally { setLoadingDocs(false) }
   }
 
+  const uploadSmallFile = async (file: File, product: BCProduct, docType: string): Promise<{ ok: boolean; error?: string }> => {
+    const formData = new FormData()
+    formData.append('file', file)
+    formData.append('bcProductId', product.id.toString())
+    formData.append('sku', product.sku || 'unknown')
+    formData.append('docType', docType)
+    formData.append('title', file.name)
+
+    const res = await fetch('/api/documents', { method: 'POST', body: formData })
+    if (res.ok) return { ok: true }
+    try {
+      const errData = await res.json()
+      return { ok: false, error: errData.message || `HTTP ${res.status}` }
+    } catch {
+      return { ok: false, error: `HTTP ${res.status}` }
+    }
+  }
+
+  const uploadLargeFile = async (file: File, product: BCProduct, docType: string): Promise<{ ok: boolean; error?: string }> => {
+    try {
+      // Step 1: 客户端直传到Vercel Blob
+      const { upload } = await import('@vercel/blob/client')
+      const blob = await upload(
+        `products/${product.sku || 'unknown'}/${docType}/${file.name}`,
+        file,
+        {
+          access: 'public',
+          handleUploadUrl: '/api/documents/get-upload-url',
+        }
+      )
+
+      // Step 2: 保存记录到数据库
+      const res = await fetch('/api/documents', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          bcProductId: product.id.toString(),
+          sku: product.sku || 'unknown',
+          docType,
+          title: file.name,
+          url: blob.url,
+          fileSize: file.size,
+          mimeType: file.type,
+        }),
+      })
+      if (res.ok) return { ok: true }
+      try {
+        const errData = await res.json()
+        return { ok: false, error: errData.message || `HTTP ${res.status}` }
+      } catch {
+        return { ok: false, error: `HTTP ${res.status}` }
+      }
+    } catch (err) {
+      return { ok: false, error: err instanceof Error ? err.message : '大文件上传失败' }
+    }
+  }
+
   const handleUpload = async (files: FileList, docType: string) => {
     if (!files.length || !selectedProduct) return
     setUploadingType(docType)
@@ -89,36 +146,32 @@ export default function AdminProductsPage() {
         failCount++
         continue
       }
-      // 前端验证：文件大小 (4.5MB)
-      if (file.size > 4.5 * 1024 * 1024) {
-        lastError = `文件 "${file.name}" 超过4.5MB限制 (${(file.size / 1024 / 1024).toFixed(1)}MB)`
+      // 前端验证：最大50MB
+      if (file.size > 50 * 1024 * 1024) {
+        lastError = `文件 "${file.name}" 超过50MB限制 (${(file.size / 1024 / 1024).toFixed(1)}MB)`
         failCount++
         continue
       }
 
       try {
-        const formData = new FormData()
-        formData.append('file', file)
-        formData.append('bcProductId', selectedProduct.id.toString())
-        formData.append('sku', selectedProduct.sku || 'unknown')
-        formData.append('docType', docType)
-        formData.append('title', file.name)
+        let result: { ok: boolean; error?: string }
+        if (file.size <= 4 * 1024 * 1024) {
+          // 小文件 (<=4MB): 走API route直传
+          result = await uploadSmallFile(file, selectedProduct, docType)
+        } else {
+          // 大文件 (>4MB): 走客户端直传
+          result = await uploadLargeFile(file, selectedProduct, docType)
+        }
 
-        const res = await fetch('/api/documents', { method: 'POST', body: formData })
-        if (res.ok) {
+        if (result.ok) {
           successCount++
         } else {
           failCount++
-          try {
-            const errData = await res.json()
-            lastError = errData.message || `服务器错误 (HTTP ${res.status})`
-          } catch {
-            lastError = `服务器错误 (HTTP ${res.status})`
-          }
+          lastError = result.error || '未知错误'
         }
       } catch (err) {
         failCount++
-        lastError = err instanceof Error ? `网络错误: ${err.message}` : '网络连接失败，请检查网络'
+        lastError = err instanceof Error ? `错误: ${err.message}` : '网络连接失败'
       }
     }
 
